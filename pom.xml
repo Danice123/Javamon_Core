@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>dev.dankins.javamon</groupId>
+  <artifactId>Parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  
+  <name>Javamon Parent</name>
+  
+  <properties>
+  	<maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  	<gdxVersion>1.9.10</gdxVersion>
+  	<jacksonVersion>2.9.9</jacksonVersion>
+  </properties>
+  
+  <repositories>
+  </repositories>
+  
+  <dependencyManagement>
+  	<dependencies>
+  		<dependency>
+  			<groupId>com.badlogicgames.gdx</groupId>
+  			<artifactId>gdx</artifactId>
+  			<version>${gdxVersion}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.badlogicgames.gdx</groupId>
+  			<artifactId>gdx-freetype</artifactId>
+  			<version>${gdxVersion}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.badlogicgames.gdx</groupId>
+  			<artifactId>gdx-controllers</artifactId>
+  			<version>${gdxVersion}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.google.guava</groupId>
+  			<artifactId>guava</artifactId>
+  			<version>23.5-jre</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.fasterxml.jackson.core</groupId>
+  			<artifactId>jackson-databind</artifactId>
+  			<version>${jacksonVersion}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>com.fasterxml.jackson.dataformat</groupId>
+  			<artifactId>jackson-dataformat-yaml</artifactId>
+  			<version>${jacksonVersion}</version>
+  		</dependency>
+  	</dependencies>
+  </dependencyManagement>
+  
+  <modules>
+  	<module>Menu-Subsystem</module>
+  	<module>Core</module>
+  	<module>Monster-Data</module>
+  	<module>Desktop</module>
+  </modules>
+</project>

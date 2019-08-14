@@ -1,0 +1,59 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>dev.dankins.javamon</groupId>
+    <artifactId>Parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>Desktop</artifactId>
+  <name>Javamon Desktop Launcher</name>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>dev.dankins.javamon</groupId>
+  		<artifactId>Core</artifactId>
+  		<version>${parent.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>dev.dankins.javamon</groupId>
+  		<artifactId>Menu-Gen1</artifactId>
+  		<version>${parent.version}</version>
+  	</dependency>
+  	<dependency>
+ 		<groupId>com.badlogicgames.gdx</groupId>
+ 		<artifactId>gdx-backend-lwjgl</artifactId>
+ 		<version>${gdxVersion}</version>
+ 	</dependency>
+ 	<dependency>
+ 		<groupId>com.badlogicgames.gdx</groupId>
+ 		<artifactId>gdx-controllers-desktop</artifactId>
+ 		<version>${gdxVersion}</version>
+ 	</dependency>
+ 	<dependency>
+ 		<groupId>com.badlogicgames.gdx</groupId>
+ 		<artifactId>gdx-tools</artifactId>
+ 		<version>${gdxVersion}</version>
+ 	</dependency>
+ 	 	<dependency>
+ 		<groupId>com.badlogicgames.gdx</groupId>
+ 		<artifactId>gdx-platform</artifactId>
+ 		<version>${gdxVersion}</version>
+ 		<classifier>natives-desktop</classifier>
+ 	</dependency>
+ 	<dependency>
+ 		<groupId>com.badlogicgames.gdx</groupId>
+ 		<artifactId>gdx-controllers-platform</artifactId>
+ 		<version>${gdxVersion}</version>
+ 		<classifier>natives-desktop</classifier>
+ 	</dependency>
+ 	<dependency>
+ 		<groupId>com.badlogicgames.gdx</groupId>
+ 		<artifactId>gdx-freetype-platform</artifactId>
+ 		<version>${gdxVersion}</version>
+ 		<classifier>natives-desktop</classifier>
+ 	</dependency>
+  </dependencies>
+  
+</project>
