@@ -7,7 +7,7 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,18 +24,20 @@ public class SaveLoader extends SynchronousAssetLoader<SaveFile, SaveLoader.Para
 	private final ObjectMapper mapper;
 
 	public SaveLoader(final ObjectMapper mapper) {
-		super(new InternalFileHandleResolver());
+		super(new ExternalFileHandleResolver());
 		this.mapper = mapper;
 	}
 
 	@Override
-	public SaveFile load(final AssetManager assetManager, final String fileName, final FileHandle file, final Parameters parameter) {
+	public SaveFile load(final AssetManager assetManager, final String fileName,
+			final FileHandle file, final Parameters parameter) {
 		return loadSave(file);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file, final Parameters parameter) {
+	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		final SaveFile save = loadSave(file);
 
 		final List<AssetDescriptor> deps = Lists.newArrayList();

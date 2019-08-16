@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.github.danice123.javamon.logic.battlesystem.Trainer;
 
 import dev.dankins.javamon.data.monster.instance.PartyImpl;
 import dev.dankins.javamon.display.Spriteset;
+import dev.dankins.javamon.logic.battlesystem.Trainer;
 
 public class TrainerHandler extends WalkableHandler implements Trainer {
 

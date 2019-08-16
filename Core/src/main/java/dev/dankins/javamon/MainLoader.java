@@ -1,40 +1,29 @@
 package dev.dankins.javamon;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator.Feature;
-import com.github.danice123.javamon.logic.map.MapData;
 import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.data.SaveFile;
-import dev.dankins.javamon.data.item.Item;
-import dev.dankins.javamon.data.loader.AttackLoader;
-import dev.dankins.javamon.data.loader.EncounterListLoader;
 import dev.dankins.javamon.data.loader.EntityLoader;
-import dev.dankins.javamon.data.loader.ItemLoader;
-import dev.dankins.javamon.data.loader.MonsterListLoader;
-import dev.dankins.javamon.data.loader.MonsterLoader;
 import dev.dankins.javamon.data.loader.SaveLoader;
 import dev.dankins.javamon.data.loader.ScriptLoader;
-import dev.dankins.javamon.data.loader.TriggerListLoader;
-import dev.dankins.javamon.data.map.EncounterList;
-import dev.dankins.javamon.data.map.TriggerList;
-import dev.dankins.javamon.data.monster.MonsterImpl;
-import dev.dankins.javamon.data.monster.MonsterListImpl;
-import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.display.animation.Animation;
 import dev.dankins.javamon.display.loader.AnimationLoader;
+import dev.dankins.javamon.display.loader.FreeTypeFontLoader;
 import dev.dankins.javamon.logic.MenuHandler;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.menu.BagHandler;
@@ -59,49 +48,38 @@ import dev.dankins.javamon.logic.menu.TrainerHandler;
 
 public class MainLoader extends AssetManager {
 
-	public final ObjectMapper objectMapper;
+	static public final MenuFileHandleResolver MENU_FILE_RESOLVER = new MenuFileHandleResolver();
+	static public final InternalFileHandleResolver FILE_RESOLVER = new InternalFileHandleResolver();
 
-	public MainLoader() {
-		super();
-		objectMapper = new ObjectMapper(new YAMLFactory().enable(Feature.MINIMIZE_QUOTES));
+	public final ObjectMapper objectMapper = new ObjectMapper(
+			new YAMLFactory().enable(Feature.MINIMIZE_QUOTES));
+
+	public MainLoader(final String gamepath) {
+		super(MENU_FILE_RESOLVER);
+		setLoader(FreeTypeFontGenerator.class, new FreeTypeFontLoader(MENU_FILE_RESOLVER));
 		objectMapper.findAndRegisterModules();
 
-		setLoader(AttackBase.class, new AttackLoader(objectMapper));
-		setLoader(MonsterImpl.class, new MonsterLoader(objectMapper));
-		setLoader(MonsterListImpl.class, new MonsterListLoader(objectMapper));
-		setLoader(Item.class, new ItemLoader(objectMapper));
-
-		setLoader(TriggerList.class, new TriggerListLoader(objectMapper));
-		setLoader(EncounterList.class, new EncounterListLoader(objectMapper));
-		setLoader(EntityHandler.class, new EntityLoader(objectMapper));
-		setLoader(MapData.class, new MapLoader());
-		setLoader(Script.class, new ScriptLoader(new InternalFileHandleResolver()));
-		setLoader(Animation.class, new AnimationLoader(objectMapper));
+		setLoader(MasterFile.class, new MasterFileLoader(objectMapper));
 		setLoader(SaveFile.class, new SaveLoader(objectMapper));
 
-		loadGUI();
-		loadMenus();
-		load("Pokemon", MonsterListImpl.class);
-		load("assets/entity/sprites/Red.png", Texture.class);
-		load("Player.yaml", SaveFile.class);
-		load("assets/scripts/Start.ps", Script.class);
+		// TODO: mess with these?
+		setLoader(EntityHandler.class, new EntityLoader(objectMapper));
+		setLoader(Script.class, new ScriptLoader());
+		setLoader(Animation.class, new AnimationLoader(objectMapper));
+
+		load(gamepath, MasterFile.class);
 	}
 
-	private void loadGUI() {
-		load("assets/gui/border.png", Texture.class);
-		load("assets/gui/arrow.png", Texture.class);
-	}
-
-	static List<Class<? extends MenuHandler<?>>> handlers = Lists.newArrayList(BagHandler.class,
-			BattleMenuHandler.class, ChatboxHandler.class, ChoiceboxHandler.class,
+	static private List<Class<? extends MenuHandler<?>>> handlers = Lists.newArrayList(
+			BagHandler.class, BattleMenuHandler.class, ChatboxHandler.class, ChoiceboxHandler.class,
 			ChooseItemHandler.class, ChoosePokemonHandler.class, GameMenuHandler.class,
 			ItemStorageHandler.class, PartyHandler.class, PartyStatusHandler.class, PCHandler.class,
 			PlayerBattleHandler.class, PokedexHandler.class, PokedexPageHandler.class,
 			SaveHandler.class, ShopHandler.class, StartMenuHandler.class, TextInputHandler.class,
 			TrainerHandler.class);
 
-	private void loadMenus() {
-		final List<Class<?>> menuClasses = getMenuClasses();
+	public void loadMenus(final MasterFile master) {
+		final List<Class<?>> menuClasses = getMenuClasses(master.getMenuJar());
 
 		try {
 			for (final Class<? extends MenuHandler<?>> handler : handlers) {
@@ -122,15 +100,18 @@ public class MainLoader extends AssetManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Class<?>> getMenuClasses() {
+	private List<Class<?>> getMenuClasses(final FileHandle jarFile) {
 		try {
 			final URLClassLoader child = new URLClassLoader(
-					new URL[] { new File("assets/menu.jar").toURI().toURL() },
-					this.getClass().getClassLoader());
+					new URL[] { jarFile.file().toURI().toURL() }, this.getClass().getClassLoader());
 
-			final Class<LoadMenusFromHere> loader = (Class<LoadMenusFromHere>) Class
+			final Class<LoadMenusFromHere> loaderClass = (Class<LoadMenusFromHere>) Class
 					.forName("dev.dankins.javamon.MenuLoader", true, child);
-			return loader.newInstance().load();
+			final LoadMenusFromHere loader = loaderClass.newInstance();
+			for (final AssetDescriptor<?> resource : loader.loadResources()) {
+				load(resource);
+			}
+			return loader.load();
 		} catch (final ClassNotFoundException | InstantiationException | IllegalAccessException
 				| MalformedURLException e) {
 			e.printStackTrace();

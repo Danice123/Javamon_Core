@@ -8,15 +8,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import dev.dankins.javamon.ThreadUtils;
 import dev.dankins.javamon.display.RenderInfo;
+import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.Key;
-import dev.dankins.javamon.logic.abstraction.Game;
 
 public abstract class Screen {
 
 	protected boolean disposeMe = false;
 	protected boolean renderBehind = false;
-	protected SpriteBatch batch;
-	protected ShapeRenderer shape;
+
+	private SpriteBatch batch;
+	private ShapeRenderer shape;
 
 	private boolean isChild = false;
 	// private Screen parent = null;
@@ -45,21 +46,21 @@ public abstract class Screen {
 		return child;
 	}
 
-	public void init(final Game game) {
+	public void init(final Game game, final RenderInfo ri) {
 		if (!initialized) {
 			batch = new SpriteBatch();
 			shape = new ShapeRenderer();
-			init(game.getAssets());
+			init(game.getAssets(), ri);
 			initialized = true;
 		}
 		if (hasChild) {
-			child.init(game);
+			child.init(game, ri);
 		}
 	}
 
-	protected abstract void init(AssetManager assets);
+	protected abstract void init(AssetManager assets, RenderInfo ri);
 
-	protected abstract void renderScreen(RenderInfo ri, float delta);
+	protected abstract void renderScreen(RenderHelper rh, float delta);
 
 	protected abstract void tickSelf(float delta);
 
@@ -87,7 +88,7 @@ public abstract class Screen {
 		}
 		if (hasChild) {
 			if (child.renderBehind()) {
-				renderScreen(ri, delta);
+				renderScreen(new RenderHelper(ri, batch, shape), delta);
 			} else {
 				Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -99,7 +100,7 @@ public abstract class Screen {
 				Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 			}
-			renderScreen(ri, delta);
+			renderScreen(new RenderHelper(ri, batch, shape), delta);
 		}
 	}
 

@@ -3,6 +3,7 @@ package dev.dankins.javamon.display;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -24,6 +25,11 @@ public class AnimationImpl implements Animation {
 			}
 		}
 		this.frames = frames.toArray(new TextureRegion[0]);
+	}
+
+	@Override
+	public void init(final AssetManager assets, final RenderInfo ri) {
+
 	}
 
 	@Override

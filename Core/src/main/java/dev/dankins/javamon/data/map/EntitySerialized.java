@@ -7,7 +7,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.danice123.javamon.logic.entity.behavior.BehaviorFactory;
 import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.Coord;
@@ -21,6 +20,7 @@ import dev.dankins.javamon.logic.Dir;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.entity.TrainerHandler;
 import dev.dankins.javamon.logic.entity.WalkableHandler;
+import dev.dankins.javamon.logic.entity.behavior.BehaviorFactory;
 
 public class EntitySerialized {
 
@@ -78,7 +78,7 @@ public class EntitySerialized {
 		switch (type) {
 		case SIGN:
 			final EntityHandler sign = new EntityHandler(name, getSpriteset(assets, spriteset));
-			sign.setScript(assets.get("assets/scripts/Sign.ps", Script.class));
+			sign.setScript(assets.get("scripts/Sign.ps", Script.class));
 			return sign;
 		case NPC:
 			final WalkableHandler npc = new WalkableHandler(name, getSpriteset(assets, spriteset));
@@ -90,7 +90,8 @@ public class EntitySerialized {
 			final PartyImpl party = new PartyImpl();
 			for (final TrainerMonsterSerialized monster : trainer.party) {
 				final MonsterInstanceImpl p = new MonsterInstanceImpl(
-						assets.get(monster.name, MonsterImpl.class), monster.level, name, trainerId);
+						assets.get(monster.name, MonsterImpl.class), monster.level, name,
+						trainerId);
 				party.add(p);
 			}
 
@@ -113,14 +114,13 @@ public class EntitySerialized {
 		if (name == null || name == "") {
 			return Optional.empty();
 		}
-		return Optional
-				.of(new Spriteset((Texture) assets.get("assets/entity/sprites/" + name + ".png")));
+		return Optional.of(new Spriteset((Texture) assets.get("entity/sprites/" + name + ".png")));
 	}
 
 	private Script getScript(final AssetManager assets, final String localScriptPath,
 			final String name) {
 		if (name.startsWith("$")) {
-			return assets.get("assets/scripts/" + name.substring(1) + ".ps", Script.class);
+			return assets.get("scripts/" + name.substring(1) + ".ps", Script.class);
 		} else {
 			return assets.get(localScriptPath + "/" + name + ".ps", Script.class);
 		}

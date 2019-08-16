@@ -2,9 +2,6 @@ package dev.dankins.javamon.logic.menu;
 
 import java.util.Arrays;
 
-import com.github.danice123.javamon.logic.battlesystem.Battlesystem;
-import com.github.danice123.javamon.logic.battlesystem.Trainer;
-import com.github.danice123.javamon.logic.battlesystem.WildTrainer;
 import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.Coord;
@@ -18,18 +15,21 @@ import dev.dankins.javamon.logic.EffectHandler;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
 import dev.dankins.javamon.logic.battlesystem.BattleAction;
+import dev.dankins.javamon.logic.battlesystem.BattlesystemImpl;
+import dev.dankins.javamon.logic.battlesystem.Trainer;
+import dev.dankins.javamon.logic.battlesystem.WildTrainer;
 
 public class BattleMenuHandler extends MenuHandler<BattleMenu> implements EffectHandler {
 
 	static public final Class<? extends Menu> MENU_TYPE = BattleMenu.class;
 	static public Class<? extends BattleMenu> Menu_Class;
 
-	private final Battlesystem battlesystem;
+	private final BattlesystemImpl battlesystem;
 	private boolean battleIsOver = false;
 
 	public BattleMenuHandler(final Game game, final Trainer player, final Trainer enemy) {
 		super(game, Menu_Class);
-		battlesystem = new Battlesystem(this, player, enemy);
+		battlesystem = new BattlesystemImpl(this, player, enemy);
 		menu.setupMenu(battlesystem, player, enemy);
 		initScreen();
 		ThreadUtils.makeAnonThread(battlesystem);
@@ -39,7 +39,7 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Effect
 			final MonsterInstanceImpl wildPokemon) {
 		super(game, Menu_Class);
 		final WildTrainer enemy = new WildTrainer(wildPokemon);
-		battlesystem = new Battlesystem(this, player, enemy);
+		battlesystem = new BattlesystemImpl(this, player, enemy);
 		menu.setupMenu(battlesystem, player, enemy);
 		initScreen();
 		ThreadUtils.makeAnonThread(battlesystem);

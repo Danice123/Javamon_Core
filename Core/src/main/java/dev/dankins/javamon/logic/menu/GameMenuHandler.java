@@ -1,7 +1,6 @@
 package dev.dankins.javamon.logic.menu;
 
-import com.badlogic.gdx.files.FileHandle;
-
+import dev.dankins.javamon.MasterFile;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.GameMenu;
 import dev.dankins.javamon.display.screen.menu.GameMenu.GameMenuAction;
@@ -15,9 +14,9 @@ public class GameMenuHandler extends MenuHandler<GameMenu> {
 
 	private GameMenuAction action;
 
-	public GameMenuHandler(final Game game) {
+	public GameMenuHandler(final Game game, final MasterFile master, final boolean hasSave) {
 		super(game, Menu_Class);
-		menu.setupMenu(new FileHandle("Player.yaml").exists());
+		menu.setupMenu(master.getName(), hasSave);
 		initScreen();
 	}
 

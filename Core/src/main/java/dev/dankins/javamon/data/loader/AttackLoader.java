@@ -17,13 +17,19 @@ public class AttackLoader extends SynchronousAssetLoader<AttackBase, AttackLoade
 
 	private final ObjectMapper mapper;
 
-	public AttackLoader(final ObjectMapper mapper) {
-		super(new AttackFileResolver());
+	public AttackLoader(final ObjectMapper mapper, final FileHandle directory) {
+		super(new FileHandleResolver() {
+			@Override
+			public FileHandle resolve(final String attackName) {
+				return directory.child(attackName.replace(' ', '_') + ".yaml");
+			}
+		});
 		this.mapper = mapper;
 	}
 
 	@Override
-	public AttackBase load(final AssetManager manager, final String fileName, final FileHandle file, final Parameters parameter) {
+	public AttackBase load(final AssetManager manager, final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		try {
 			return mapper.readValue(file.file(), AttackBase.class);
 		} catch (final IOException e) {
@@ -34,19 +40,11 @@ public class AttackLoader extends SynchronousAssetLoader<AttackBase, AttackLoade
 
 	@SuppressWarnings({ "rawtypes" })
 	@Override
-	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file, final Parameters parameter) {
+	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		return null;
 	}
 
 	static public class Parameters extends AssetLoaderParameters<AttackBase> {
-	}
-
-	static private class AttackFileResolver implements FileHandleResolver {
-
-		@Override
-		public FileHandle resolve(final String attackName) {
-			return new FileHandle("assets/db/attack/" + attackName.replace(' ', '_') + ".yaml");
-		}
-
 	}
 }

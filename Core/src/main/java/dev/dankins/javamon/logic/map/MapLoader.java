@@ -1,4 +1,4 @@
-package dev.dankins.javamon;
+package dev.dankins.javamon.logic.map;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,15 +8,13 @@ import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
-import com.github.danice123.javamon.logic.map.MapData;
-import com.github.danice123.javamon.logic.map.MapHandler;
 import com.google.common.collect.Lists;
 
+import dev.dankins.javamon.MainLoader;
 import dev.dankins.javamon.data.map.EncounterList;
 import dev.dankins.javamon.data.map.TriggerList;
 import dev.dankins.javamon.data.script.Script;
@@ -27,9 +25,14 @@ public class MapLoader extends SynchronousAssetLoader<MapData, MapLoader.Paramet
 
 	private final TmxMapLoader tmxMapLoader;
 
-	public MapLoader() {
-		super(new MapFileResolver());
-		tmxMapLoader = new TmxMapLoader(new InternalFileHandleResolver());
+	public MapLoader(final FileHandle directory) {
+		super(new FileHandleResolver() {
+			@Override
+			public FileHandle resolve(final String mapName) {
+				return new FileHandle("maps/" + mapName);
+			}
+		});
+		tmxMapLoader = new TmxMapLoader(MainLoader.FILE_RESOLVER);
 	}
 
 	@Override
@@ -97,15 +100,6 @@ public class MapLoader extends SynchronousAssetLoader<MapData, MapLoader.Paramet
 		public Parameters(final MapHandler handler) {
 			this.handler = handler;
 		}
-	}
-
-	static private class MapFileResolver implements FileHandleResolver {
-
-		@Override
-		public FileHandle resolve(final String mapName) {
-			return new FileHandle("assets/maps/" + mapName);
-		}
-
 	}
 
 }

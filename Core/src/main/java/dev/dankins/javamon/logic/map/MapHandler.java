@@ -1,18 +1,15 @@
-package com.github.danice123.javamon.logic.map;
+package dev.dankins.javamon.logic.map;
 
 import java.util.Map;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.Coord;
-import dev.dankins.javamon.MapLoader;
 import dev.dankins.javamon.ThreadUtils;
-import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.logic.Dir;
 import dev.dankins.javamon.logic.entity.Player;
 
@@ -108,6 +105,9 @@ public class MapHandler {
 	}
 
 	public void render(final OrthographicCamera camera) {
+		if (map == null) {
+			return;
+		}
 		MapData mapData;
 		if (!mapCache.containsKey(map)) {
 			mapData = loadMapRenderThread(map);
@@ -140,14 +140,6 @@ public class MapHandler {
 	}
 
 	private MapData loadMapRenderThread(final String mapName) {
-		final FileHandle mapFolder = new FileHandle("assets/maps/" + mapName);
-		for (final FileHandle script : mapFolder.list()) {
-			if (script.extension().equals("ps")) {
-				if (!assets.isLoaded(script.path())) {
-					assets.load(script.path(), Script.class);
-				}
-			}
-		}
 		if (!assets.isLoaded(mapName)) {
 			assets.load(mapName, MapData.class, new MapLoader.Parameters(this));
 		}

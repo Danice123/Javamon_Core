@@ -9,7 +9,6 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.github.danice123.javamon.logic.battlesystem.BattleStatus;
 import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.RandomNumberGenerator;
@@ -20,6 +19,7 @@ import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Status;
 import dev.dankins.javamon.data.monster.attack.Attack;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
+import dev.dankins.javamon.logic.battlesystem.BattleStatus;
 
 public class MonsterInstanceImpl implements MonsterInstance {
 

@@ -4,7 +4,7 @@ import dev.dankins.javamon.display.screen.Menu;
 
 public interface GameMenu extends Menu {
 
-	void setupMenu(boolean hasSave);
+	void setupMenu(String gameName, boolean hasSave);
 
 	GameMenuAction getMenuAction();
 

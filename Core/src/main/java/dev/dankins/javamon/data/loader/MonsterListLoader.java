@@ -13,19 +13,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dev.dankins.javamon.data.monster.MonsterListImpl;
 
-public class MonsterListLoader extends SynchronousAssetLoader<MonsterListImpl, MonsterListLoader.Parameters> {
+public class MonsterListLoader
+		extends SynchronousAssetLoader<MonsterListImpl, MonsterListLoader.Parameters> {
 
 	private final ObjectMapper mapper;
 
-	public MonsterListLoader(final ObjectMapper mapper) {
-		super(new MonsterListFileResolver());
+	public MonsterListLoader(final ObjectMapper mapper, final FileHandle directory) {
+		super(new FileHandleResolver() {
+			@Override
+			public FileHandle resolve(final String monsterName) {
+				return directory.child("__index.yaml");
+			}
+		});
 		this.mapper = mapper;
 	}
 
 	@Override
-	public MonsterListImpl load(final AssetManager assetManager, final String fileName, final FileHandle file, final Parameters parameter) {
+	public MonsterListImpl load(final AssetManager assetManager, final String fileName,
+			final FileHandle file, final Parameters parameter) {
 		try {
-			final MonsterListImpl monsterList = mapper.readValue(file.file(), MonsterListImpl.class);
+			final MonsterListImpl monsterList = mapper.readValue(file.file(),
+					MonsterListImpl.class);
 			monsterList.initLoader(assetManager);
 			return monsterList;
 		} catch (final IOException e) {
@@ -36,20 +44,11 @@ public class MonsterListLoader extends SynchronousAssetLoader<MonsterListImpl, M
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file, final Parameters parameter) {
+	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		return null;
 	}
 
 	static public class Parameters extends AssetLoaderParameters<MonsterListImpl> {
 	}
-
-	public static class MonsterListFileResolver implements FileHandleResolver {
-
-		@Override
-		public FileHandle resolve(final String monsterName) {
-			return new FileHandle("assets/db/monster/__index.yaml");
-		}
-
-	}
-
 }

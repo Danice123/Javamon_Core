@@ -67,6 +67,7 @@ public class Item implements dev.dankins.javamon.data.abstraction.Item {
 		return tag;
 	}
 
+	@Override
 	public int getCost() {
 		return cost;
 	}
@@ -75,6 +76,7 @@ public class Item implements dev.dankins.javamon.data.abstraction.Item {
 		return stackable;
 	}
 
+	@Override
 	public boolean isTossable() {
 		return tossable;
 	}
@@ -99,14 +101,14 @@ public class Item implements dev.dankins.javamon.data.abstraction.Item {
 		if (script == null) {
 			return Optional.empty();
 		}
-		return Optional.of("assets/db/item/" + script + ".ps");
+		return Optional.of("db/item/" + script + ".ps");
 	}
 
 	public Optional<Script> getScript(final AssetManager assetManager) {
 		if (script == null) {
 			return Optional.empty();
 		}
-		return Optional.of(assetManager.get("assets/db/item/" + script + ".ps"));
+		return Optional.of(assetManager.get("db/item/" + script + ".ps"));
 	}
 
 	@Override

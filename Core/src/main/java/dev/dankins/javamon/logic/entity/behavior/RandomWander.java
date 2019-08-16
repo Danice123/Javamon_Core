@@ -1,11 +1,10 @@
-package com.github.danice123.javamon.logic.entity.behavior;
-
-import com.github.danice123.javamon.logic.map.MapHandler;
+package dev.dankins.javamon.logic.entity.behavior;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.RandomNumberGenerator;
 import dev.dankins.javamon.logic.Dir;
 import dev.dankins.javamon.logic.entity.WalkableHandler;
+import dev.dankins.javamon.logic.map.MapHandler;
 
 public class RandomWander implements EntityBehavior {
 

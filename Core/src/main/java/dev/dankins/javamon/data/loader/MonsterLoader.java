@@ -3,7 +3,6 @@ package dev.dankins.javamon.data.loader;
 import java.io.IOException;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
@@ -21,13 +20,19 @@ public class MonsterLoader extends SynchronousAssetLoader<MonsterImpl, MonsterLo
 
 	private final ObjectMapper mapper;
 
-	public MonsterLoader(final ObjectMapper mapper) {
-		super(new MonsterFileResolver());
+	public MonsterLoader(final ObjectMapper mapper, final FileHandle directory) {
+		super(new FileHandleResolver() {
+			@Override
+			public FileHandle resolve(final String monsterName) {
+				return directory.child(monsterName.replace(' ', '_') + ".yaml");
+			}
+		});
 		this.mapper = mapper;
 	}
 
 	@Override
-	public MonsterImpl load(final AssetManager assetManager, final String fileName, final FileHandle file, final Parameters parameter) {
+	public MonsterImpl load(final AssetManager assetManager, final String fileName,
+			final FileHandle file, final Parameters parameter) {
 		final MonsterImpl monster = loadMonster(file);
 		for (final String attackName : getMonsterAttackNames(monster)) {
 			monster.cachedAttacks.put(attackName, assetManager.get(attackName, AttackBase.class));
@@ -37,7 +42,8 @@ public class MonsterLoader extends SynchronousAssetLoader<MonsterImpl, MonsterLo
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file, final Parameters parameter) {
+	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		final MonsterImpl monster = loadMonster(file);
 		final List<AssetDescriptor> deps = Lists.newArrayList();
 		for (final String attackName : getMonsterAttackNames(monster)) {
@@ -62,14 +68,5 @@ public class MonsterLoader extends SynchronousAssetLoader<MonsterImpl, MonsterLo
 	}
 
 	static public class Parameters extends AssetLoaderParameters<MonsterImpl> {
-	}
-
-	public static class MonsterFileResolver implements FileHandleResolver {
-
-		@Override
-		public FileHandle resolve(final String monsterName) {
-			return Gdx.files.internal("assets/db/monster/" + monsterName + ".yaml");
-		}
-
 	}
 }

@@ -6,21 +6,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.github.danice123.javamon.logic.map.MapHandler;
-import com.github.danice123.javamon.logic.map.WildEncounter;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.ThreadUtils;
 import dev.dankins.javamon.data.map.Trigger;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
 import dev.dankins.javamon.display.RenderInfo;
-import dev.dankins.javamon.display.screen.Screen;
 import dev.dankins.javamon.logic.Dir;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.Key;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.entity.Player;
 import dev.dankins.javamon.logic.entity.TrainerHandler;
+import dev.dankins.javamon.logic.map.MapHandler;
+import dev.dankins.javamon.logic.map.WildEncounter;
 import dev.dankins.javamon.logic.menu.BattleMenuHandler;
 import dev.dankins.javamon.logic.menu.StartMenuHandler;
 
@@ -36,14 +35,14 @@ public class World extends Screen {
 	}
 
 	@Override
-	protected void init(final AssetManager assets) {
+	protected void init(final AssetManager assets, final RenderInfo ri) {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 15, 10);
 		camera.update();
 	}
 
 	@Override
-	protected void renderScreen(final RenderInfo ri, final float delta) {
+	protected void renderScreen(final RenderHelper rh, final float delta) {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		mapHandler.render(camera);

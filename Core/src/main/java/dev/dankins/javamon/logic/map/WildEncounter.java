@@ -1,4 +1,4 @@
-package com.github.danice123.javamon.logic.map;
+package dev.dankins.javamon.logic.map;
 
 public class WildEncounter {
 

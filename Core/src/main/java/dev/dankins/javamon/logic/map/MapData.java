@@ -1,4 +1,4 @@
-package com.github.danice123.javamon.logic.map;
+package dev.dankins.javamon.logic.map;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Matrix4;
-import com.github.danice123.javamon.logic.entity.behavior.EntityBehaviorThread;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -27,6 +26,7 @@ import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.entity.Player;
 import dev.dankins.javamon.logic.entity.TrainerHandler;
 import dev.dankins.javamon.logic.entity.WalkableHandler;
+import dev.dankins.javamon.logic.entity.behavior.EntityBehaviorThread;
 import dev.dankins.javamon.logic.script.ScriptHandler;
 
 public class MapData {

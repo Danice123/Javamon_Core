@@ -2,14 +2,13 @@ package dev.dankins.javamon.logic.entity;
 
 import java.util.Optional;
 
-import com.github.danice123.javamon.logic.entity.behavior.EntityBehavior;
-import com.github.danice123.javamon.logic.map.MapHandler;
-
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.ThreadUtils;
 import dev.dankins.javamon.display.Spriteset;
 import dev.dankins.javamon.display.entity.Walkable;
 import dev.dankins.javamon.logic.Dir;
+import dev.dankins.javamon.logic.entity.behavior.EntityBehavior;
+import dev.dankins.javamon.logic.map.MapHandler;
 
 public class WalkableHandler extends EntityHandler {
 

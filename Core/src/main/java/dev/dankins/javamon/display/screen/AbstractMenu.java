@@ -25,8 +25,8 @@ public class AbstractMenu extends Screen {
 	}
 
 	@Override
-	protected void init(final AssetManager assets) {
-		menu.init(assets);
+	protected void init(final AssetManager assets, final RenderInfo ri) {
+		menu.init(assets, ri);
 	}
 
 	@Override
@@ -38,8 +38,8 @@ public class AbstractMenu extends Screen {
 	}
 
 	@Override
-	protected void renderScreen(final RenderInfo ri, final float delta) {
-		menu.renderScreen(ri, batch, shape, delta);
+	protected void renderScreen(final RenderHelper rh, final float delta) {
+		menu.renderScreen(rh, delta);
 	}
 
 	@Override

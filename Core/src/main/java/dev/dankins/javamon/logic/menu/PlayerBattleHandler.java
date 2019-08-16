@@ -1,7 +1,5 @@
 package dev.dankins.javamon.logic.menu;
 
-import com.github.danice123.javamon.logic.battlesystem.Battlesystem;
-
 import dev.dankins.javamon.ThreadUtils;
 import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.item.ItemStack;
@@ -11,6 +9,7 @@ import dev.dankins.javamon.display.screen.menu.PlayerBattleMenu;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
 import dev.dankins.javamon.logic.battlesystem.BattleAction;
+import dev.dankins.javamon.logic.battlesystem.Battlesystem;
 
 public class PlayerBattleHandler extends MenuHandler<PlayerBattleMenu> {
 
@@ -70,7 +69,8 @@ public class PlayerBattleHandler extends MenuHandler<PlayerBattleMenu> {
 				return true;
 			}
 		case Attack:
-			if (system.getPlayerMonster().attacks.get(menu.getAction().info).currentUsage <= 0) {
+			if (system.getPlayerMonster().getAttacks().get(menu.getAction().info)
+					.getCurrentUsage() <= 0) {
 				final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
 						"That move doesn't have any PP!");
 				chatboxHandler.waitAndHandle();

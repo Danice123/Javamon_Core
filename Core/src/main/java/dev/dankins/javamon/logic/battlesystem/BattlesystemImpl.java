@@ -1,4 +1,4 @@
-package com.github.danice123.javamon.logic.battlesystem;
+package dev.dankins.javamon.logic.battlesystem;
 
 import java.util.Collection;
 import java.util.Random;
@@ -11,11 +11,10 @@ import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.AttackInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl.Levelup;
-import dev.dankins.javamon.logic.battlesystem.BattleAction;
 import dev.dankins.javamon.logic.entity.Player;
 import dev.dankins.javamon.logic.menu.BattleMenuHandler;
 
-public class Battlesystem implements dev.dankins.javamon.logic.battlesystem.Battlesystem, Runnable {
+public class BattlesystemImpl implements Battlesystem, Runnable {
 
 	private final Random random;
 	private final BattleMenuHandler menu;
@@ -28,7 +27,8 @@ public class Battlesystem implements dev.dankins.javamon.logic.battlesystem.Batt
 	private final boolean isRunnable;
 	private boolean run = false;
 
-	public Battlesystem(final BattleMenuHandler menu, final Trainer player, final Trainer enemy) {
+	public BattlesystemImpl(final BattleMenuHandler menu, final Trainer player,
+			final Trainer enemy) {
 		this.menu = menu;
 		this.player = player;
 		this.enemy = enemy;

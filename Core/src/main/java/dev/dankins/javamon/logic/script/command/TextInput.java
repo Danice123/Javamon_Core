@@ -20,6 +20,7 @@ public class TextInput extends Command {
 	private boolean canCancel;
 	private String output;
 
+	// !TextInput:<Title> <CanCancel> <Variable>
 	public TextInput(final List<String> args) throws ScriptLoadingException {
 		super(args);
 		try {
@@ -43,9 +44,11 @@ public class TextInput extends Command {
 
 		if (textInputHandler.isCancelled()) {
 			game.getPlayer().getStrings().put(parseString(output, strings), "");
+			strings.put(parseString(output, strings), "");
 		} else {
 			game.getPlayer().getStrings().put(parseString(output, strings),
 					textInputHandler.getInput());
+			strings.put(parseString(output, strings), textInputHandler.getInput());
 		}
 
 		return Optional.empty();

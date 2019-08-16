@@ -3,18 +3,18 @@ package dev.dankins.javamon.data.loader;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 
+import dev.dankins.javamon.MainLoader;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.data.script.ScriptLoadingException;
 
 public class ScriptLoader extends SynchronousAssetLoader<Script, ScriptLoader.Parameters> {
 
-	public ScriptLoader(final FileHandleResolver resolver) {
-		super(resolver);
+	public ScriptLoader() {
+		super(MainLoader.FILE_RESOLVER);
 	}
 
 	@Override

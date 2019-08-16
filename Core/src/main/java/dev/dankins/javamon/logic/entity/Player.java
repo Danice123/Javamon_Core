@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.github.danice123.javamon.logic.battlesystem.Trainer;
 import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.Coord;
@@ -15,6 +14,7 @@ import dev.dankins.javamon.data.Inventory;
 import dev.dankins.javamon.data.SaveFile;
 import dev.dankins.javamon.data.monster.instance.PartyImpl;
 import dev.dankins.javamon.display.Spriteset;
+import dev.dankins.javamon.logic.battlesystem.Trainer;
 
 public class Player extends WalkableHandler
 		implements dev.dankins.javamon.logic.abstraction.Player, Trainer {
@@ -54,6 +54,7 @@ public class Player extends WalkableHandler
 		flag.put(s, state);
 	}
 
+	@Override
 	public CollectionLibraryImpl getPokeData() {
 		return pokeData;
 	}
@@ -63,6 +64,7 @@ public class Player extends WalkableHandler
 		return party;
 	}
 
+	@Override
 	public Inventory getInventory() {
 		return inventory;
 	}
@@ -124,13 +126,13 @@ public class Player extends WalkableHandler
 	@Override
 	public Texture getImage(final AssetManager assets) {
 		// return assets.get("res/trainer/player.png");
-		return new Texture("assets/trainer/player.png");
+		return new Texture("trainer/player.png");
 	}
 
 	@Override
 	public Texture getBackImage(final AssetManager assets) {
 		// return assets.get("res/playerBack.png");
-		return new Texture("assets/playerBack.png");
+		return new Texture("playerBack.png");
 	}
 
 	@Override

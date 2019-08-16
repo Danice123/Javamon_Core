@@ -1,4 +1,4 @@
-package com.github.danice123.javamon.logic.battlesystem;
+package dev.dankins.javamon.logic.battlesystem;
 
 public enum BattleMenuResponse {
 	

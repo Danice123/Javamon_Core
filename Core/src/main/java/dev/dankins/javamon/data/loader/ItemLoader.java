@@ -18,23 +18,31 @@ public class ItemLoader extends SynchronousAssetLoader<Item, ItemLoader.Paramete
 
 	private final ObjectMapper mapper;
 
-	public ItemLoader(final ObjectMapper mapper) {
-		super(new ItemFileResolver());
+	public ItemLoader(final ObjectMapper mapper, final FileHandle directory) {
+		super(new FileHandleResolver() {
+			@Override
+			public FileHandle resolve(final String itemTag) {
+				return directory.child(itemTag.replace(' ', '_') + ".yaml");
+			}
+		});
 		this.mapper = mapper;
 	}
 
 	@Override
-	public Item load(final AssetManager assetManager, final String fileName, final FileHandle file, final Parameters parameter) {
+	public Item load(final AssetManager assetManager, final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		return loadItem(file);
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file, final Parameters parameter) {
+	public Array<AssetDescriptor> getDependencies(final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		final Item item = loadItem(file);
 
 		if (item.getScriptPath().isPresent()) {
-			return Array.with(new AssetDescriptor<Script>(item.getScriptPath().get(), Script.class));
+			return Array
+					.with(new AssetDescriptor<Script>(item.getScriptPath().get(), Script.class));
 		}
 		return null;
 	}
@@ -50,14 +58,5 @@ public class ItemLoader extends SynchronousAssetLoader<Item, ItemLoader.Paramete
 	}
 
 	static public class Parameters extends AssetLoaderParameters<Item> {
-	}
-
-	static private class ItemFileResolver implements FileHandleResolver {
-
-		@Override
-		public FileHandle resolve(final String itemTag) {
-			return new FileHandle("assets/db/item/" + itemTag + ".yaml");
-		}
-
 	}
 }

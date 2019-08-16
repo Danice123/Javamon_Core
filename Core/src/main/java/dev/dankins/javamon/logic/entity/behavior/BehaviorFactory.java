@@ -1,4 +1,4 @@
-package com.github.danice123.javamon.logic.entity.behavior;
+package dev.dankins.javamon.logic.entity.behavior;
 
 import java.util.Optional;
 

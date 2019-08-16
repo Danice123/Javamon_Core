@@ -5,11 +5,12 @@ import java.util.Optional;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 
-import dev.dankins.javamon.display.RenderInfo;
 import dev.dankins.javamon.display.screen.Screen;
 import dev.dankins.javamon.logic.Game;
 
 public class Display implements ApplicationListener {
+
+	static private final String gamePath = "Red.yaml";
 
 	private final Game game;
 	// private FPSLogger fpsLogger;
@@ -18,10 +19,8 @@ public class Display implements ApplicationListener {
 	private final RenderInfo renderInfo;
 
 	public Display(final int width, final int height) {
-		renderInfo = new RenderInfo();
-		renderInfo.screenWidth = width;
-		renderInfo.screenHeight = height;
-		game = new Game(this);
+		renderInfo = new RenderInfo(width, height);
+		game = new Game(this, gamePath);
 		// fpsLogger = new FPSLogger();
 	}
 
@@ -29,7 +28,7 @@ public class Display implements ApplicationListener {
 	public void render() {
 		if (screen != null) {
 			final float delta = Gdx.graphics.getDeltaTime();
-			screen.init(game);
+			screen.init(game, renderInfo);
 			screen.tick(delta);
 			screen.render(renderInfo, delta);
 			// fpsLogger.log();
@@ -38,7 +37,6 @@ public class Display implements ApplicationListener {
 
 	@Override
 	public void create() {
-		renderInfo.init();
 		new Thread(game).start();
 	}
 

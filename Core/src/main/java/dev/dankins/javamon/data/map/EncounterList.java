@@ -6,11 +6,11 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.danice123.javamon.logic.map.WildEncounter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.RandomNumberGenerator;
+import dev.dankins.javamon.logic.map.WildEncounter;
 
 public class EncounterList {
 

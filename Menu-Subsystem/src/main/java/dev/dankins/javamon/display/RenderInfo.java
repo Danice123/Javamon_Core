@@ -1,36 +1,19 @@
 package dev.dankins.javamon.display;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-
 public class RenderInfo {
 
-	public int screenWidth;
-	public int screenHeight;
-	public BitmapFont font;
-	public BorderBox border;
-	public Arrow arrow;
+	public final int screenWidth = 240;
+	public final int screenHeight = 160;
 
-	public void init() {
-		border = new BorderBox(new Texture("assets/gui/border.png"), getScale());
-		arrow = new Arrow(new Texture("assets/gui/arrow.png"));
+	public final int windowWidth;
+	public final int windowHeight;
 
-		final FreeTypeFontGenerator fontGen = new FreeTypeFontGenerator(
-				Gdx.files.internal("assets/gui/font.ttf"));
-		final FreeTypeFontParameter param = new FreeTypeFontParameter();
-		param.size = 8 * getScale();
-		font = fontGen.generateFont(param);
-		fontGen.dispose();
+	public RenderInfo(final int windowWidth, final int windowHeight) {
+		this.windowWidth = windowWidth;
+		this.windowHeight = windowHeight;
 	}
 
 	public int getScale() {
-		return screenWidth / 240;
-	}
-
-	public int convertXToRightSided(final int x) {
-		return (screenWidth - x * getScale()) / getScale();
+		return windowWidth / screenWidth;
 	}
 }
