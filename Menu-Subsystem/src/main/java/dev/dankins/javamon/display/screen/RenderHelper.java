@@ -1,13 +1,11 @@
 package dev.dankins.javamon.display.screen;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFontCache;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Align;
 
 import dev.dankins.javamon.display.RenderInfo;
@@ -17,7 +15,7 @@ import dev.dankins.javamon.display.SpriteBatchRenderer;
 public class RenderHelper {
 
 	private final SpriteBatch spriteBatch;
-	private final ShapeRenderer shapeRenderer;
+	private final ShapeHelper shapeHelper;
 
 	public final RenderInfo ri;
 
@@ -25,7 +23,7 @@ public class RenderHelper {
 			final ShapeRenderer shapeRenderer) {
 		this.ri = ri;
 		this.spriteBatch = spriteBatch;
-		this.shapeRenderer = shapeRenderer;
+		shapeHelper = new ShapeHelper(shapeRenderer, ri);
 	}
 
 	public void withSpriteBatch(final SpriteBatchRenderer renderer) {
@@ -35,9 +33,7 @@ public class RenderHelper {
 	}
 
 	public void withShapeRenderer(final ShapeRendererRender renderer) {
-		shapeRenderer.begin(ShapeType.Filled);
-		renderer.render(shapeRenderer);
-		shapeRenderer.end();
+		renderer.render(shapeHelper);
 	}
 
 	public void sprite(final TextureRegion tex, final int x, final int y, final int width,
@@ -66,12 +62,5 @@ public class RenderHelper {
 
 	public void text(final BitmapFontCache cache, final int start, final int end) {
 		cache.draw(spriteBatch, start, end);
-	}
-
-	public void box(final float x, final float y, final float width, final float height,
-			final Color color) {
-		shapeRenderer.setColor(color);
-		shapeRenderer.rect(x * ri.getScale(), y * ri.getScale(), width * ri.getScale(),
-				height * ri.getScale());
 	}
 }

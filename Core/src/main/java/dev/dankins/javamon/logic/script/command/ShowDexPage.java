@@ -18,15 +18,21 @@ import dev.dankins.javamon.logic.script.ScriptTarget;
 public class ShowDexPage extends Command {
 
 	private String monster;
+	private boolean withInfo;
 
-	// !ShowDexPage:<Monster>
+	// !ShowDexPage:<Monster> <withInfo>
 	public ShowDexPage(final List<String> args) throws ScriptLoadingException {
 		super(args);
 		try {
 			final Iterator<String> i = args.iterator();
 			monster = i.next();
+			if (i.hasNext()) {
+				withInfo = Boolean.parseBoolean(i.next());
+			} else {
+				withInfo = false;
+			}
 		} catch (final NoSuchElementException e) {
-			throw new ScriptLoadingException("Goto",
+			throw new ScriptLoadingException("ShowDexPage",
 					SCRIPT_LOADING_ERROR_TYPE.invalidNumberOfArguments);
 		}
 	}
@@ -35,7 +41,7 @@ public class ShowDexPage extends Command {
 	public Optional<String> execute(final Game game, final Map<String, String> strings,
 			final Optional<ScriptTarget> target) throws ScriptException {
 		final MonsterImpl pokemon = game.getMonsterList().getMonster(parseString(monster, strings));
-		final PokedexPageHandler handler = new PokedexPageHandler(game, pokemon, false);
+		final PokedexPageHandler handler = new PokedexPageHandler(game, pokemon, withInfo);
 		handler.waitAndHandle();
 		game.getPlayer().getPokeData().seen(pokemon.number);
 

@@ -66,15 +66,19 @@ public class ControlProcessor implements InputProcessor, Runnable {
 	public boolean keyDown(final int keycode) {
 		switch (keycode) {
 		case Keys.UP:
+		case Keys.I:
 			moving.add(Dir.North);
 			return true;
 		case Keys.DOWN:
+		case Keys.K:
 			moving.add(Dir.South);
 			return true;
 		case Keys.RIGHT:
+		case Keys.L:
 			moving.add(Dir.East);
 			return true;
 		case Keys.LEFT:
+		case Keys.J:
 			moving.add(Dir.West);
 			return true;
 		case Keys.Z:
@@ -97,15 +101,19 @@ public class ControlProcessor implements InputProcessor, Runnable {
 	public boolean keyUp(final int keycode) {
 		switch (keycode) {
 		case Keys.UP:
+		case Keys.I:
 			moving.remove(Dir.North);
 			return true;
 		case Keys.DOWN:
+		case Keys.K:
 			moving.remove(Dir.South);
 			return true;
 		case Keys.RIGHT:
+		case Keys.L:
 			moving.remove(Dir.East);
 			return true;
 		case Keys.LEFT:
+		case Keys.J:
 			moving.remove(Dir.West);
 			return true;
 		case Keys.Z:
