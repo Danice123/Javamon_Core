@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class SetFlag extends Effect {
 
@@ -13,14 +14,16 @@ public class SetFlag extends Effect {
 	private String text;
 
 	@JsonCreator
-	public SetFlag(@JsonProperty("target") final Target target, @JsonProperty("flag") final String flag, @JsonProperty("text") final String text) {
+	public SetFlag(@JsonProperty("target") final Target target,
+			@JsonProperty("flag") final String flag, @JsonProperty("text") final String text) {
 		this.target = target;
 		this.flag = flag;
 		this.text = text;
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(final EffectHandler effectHandler, final MonsterInstanceImpl user,
+			final MonsterInstanceImpl target, final AttackBase move) {
 		MonsterInstanceImpl p;
 		if (this.target == Target.TARGET) {
 			p = target;
@@ -32,9 +35,10 @@ public class SetFlag extends Effect {
 		if (text != null) {
 			text = text.replace("$target", p.getName());
 			if (p.battleStatus.lastMove != -1) {
-				text = text.replace("$lastMove", p.attacks.get(p.battleStatus.lastMove).attack.name);
+				text = text.replace("$lastMove",
+						p.attacks.get(p.battleStatus.lastMove).attack.name);
 			}
-			// menu.print(text);
+			effectHandler.print(text);
 		}
 	}
 }

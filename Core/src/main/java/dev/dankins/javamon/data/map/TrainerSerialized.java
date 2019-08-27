@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TrainerSerialized {
 
 	public final String trainerName;
+	public final String trainerImage;
 	public final Integer trainerRange;
 	public final List<TrainerMonsterSerialized> party;
 	public final String trainerLossQuip;
@@ -15,11 +16,13 @@ public class TrainerSerialized {
 
 	@JsonCreator
 	public TrainerSerialized(@JsonProperty("trainerName") final String trainerName,
+			@JsonProperty("trainerImage") final String trainerImage,
 			@JsonProperty("trainerRange") final int trainerRange,
 			@JsonProperty("party") final List<TrainerMonsterSerialized> party,
 			@JsonProperty("trainerLossQuip") final String trainerLossQuip,
 			@JsonProperty("winnings") final int winnings) {
 		this.trainerName = trainerName;
+		this.trainerImage = trainerImage;
 		this.trainerRange = trainerRange;
 		this.party = party;
 		this.trainerLossQuip = trainerLossQuip;

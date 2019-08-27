@@ -96,7 +96,8 @@ public class EntitySerialized {
 			}
 
 			final TrainerHandler t = new TrainerHandler(name, getSpriteset(assets, spriteset),
-					trainer.trainerName, trainer.trainerLossQuip, trainer.winnings, party);
+					trainer.trainerName, trainer.trainerImage, trainer.trainerLossQuip,
+					trainer.winnings, party);
 			if (trainer.trainerRange != null) {
 				t.setRange(trainer.trainerRange);
 			}

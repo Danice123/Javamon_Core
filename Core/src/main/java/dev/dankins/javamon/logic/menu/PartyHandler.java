@@ -31,7 +31,7 @@ public class PartyHandler extends MenuHandler<PartyMenu> {
 			return true;
 		case Switch:
 			party.swap(menu.getSwitchChoice(), menu.getPokemonChoice());
-			menu.setupMenu(PartyMenuType.View, party);
+			menu.resetAfterSwitch();
 			return true;
 		case Exit:
 			return false;

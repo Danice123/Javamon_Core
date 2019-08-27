@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class StaticDamage extends Effect {
 
@@ -20,7 +21,7 @@ public class StaticDamage extends Effect {
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(EffectHandler effectHandler, final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
 		if (pDamage) {
 			target.changeHealth((int) -(target.getHealth() / (100.0 / percent)));
 		} else {

@@ -1,16 +1,16 @@
 package dev.dankins.javamon.logic.abstraction;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
 import dev.dankins.javamon.data.CollectionLibrary;
 import dev.dankins.javamon.data.abstraction.Inventory;
 
-public interface Player {
+public interface Player extends Trainer {
 
 	String getName();
 
-	Texture getImage(AssetManager assets);
+	AssetDescriptor<Texture> getBackImage();
 
 	int getMoney();
 

@@ -2,7 +2,7 @@ package dev.dankins.javamon.logic.entity;
 
 import java.util.Optional;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
 import dev.dankins.javamon.data.monster.instance.PartyImpl;
@@ -12,16 +12,18 @@ import dev.dankins.javamon.logic.battlesystem.Trainer;
 public class TrainerHandler extends WalkableHandler implements Trainer {
 
 	private final String trainerName;
+	private final AssetDescriptor<Texture> trainerImage;
 	private final String trainerLossQuip;
 	private final PartyImpl party;
 	private final int winnings;
 	private int range;
 
 	public TrainerHandler(final String name, final Optional<Spriteset> sprites,
-			final String trainerName, final String trainerLossQuip, final int winnings,
-			final PartyImpl party) {
+			final String trainerName, final String trainerImage, final String trainerLossQuip,
+			final int winnings, final PartyImpl party) {
 		super(name, sprites);
 		this.trainerName = trainerName;
+		this.trainerImage = new AssetDescriptor<Texture>(trainerImage, Texture.class);
 		this.trainerLossQuip = trainerLossQuip;
 		this.party = party;
 		this.winnings = winnings;
@@ -39,7 +41,7 @@ public class TrainerHandler extends WalkableHandler implements Trainer {
 	}
 
 	@Override
-	public boolean isTrainerBattle() {
+	public boolean isTrainer() {
 		return true;
 	}
 
@@ -54,20 +56,8 @@ public class TrainerHandler extends WalkableHandler implements Trainer {
 	}
 
 	@Override
-	public Texture getImage(final AssetManager assets) {
-		// TODO
-		return null;
-	}
-
-	@Override
-	public Texture getBackImage(final AssetManager assets) {
-		// TODO
-		return null;
-	}
-
-	@Override
-	public boolean modifyMoney(final int winnings) {
-		return false;
+	public AssetDescriptor<Texture> getImage() {
+		return trainerImage;
 	}
 
 	public int getRange() {

@@ -118,14 +118,12 @@ public class MonsterInstanceImpl implements MonsterInstance {
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return "" + idNumber;
 	}
 
 	@Override
 	public String getOT() {
-		// TODO Auto-generated method stub
-		return null;
+		return originalTrainer;
 	}
 
 	@Override

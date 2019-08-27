@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.dankins.javamon.RandomNumberGenerator;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class Chance extends Effect {
 
@@ -22,10 +23,11 @@ public class Chance extends Effect {
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(final EffectHandler effectHandler, final MonsterInstanceImpl user,
+			final MonsterInstanceImpl target, final AttackBase move) {
 		if (RandomNumberGenerator.random.nextInt(100) < chance) {
 			for (final Effect effect : effects) {
-				effect.use(user, target, move);
+				effect.use(effectHandler, user, target, move);
 			}
 		}
 	}

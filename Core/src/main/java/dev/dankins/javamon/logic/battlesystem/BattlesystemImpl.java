@@ -20,19 +20,18 @@ public class BattlesystemImpl implements Battlesystem, Runnable {
 	private final BattleMenuHandler menu;
 	private final BattleTurn turn;
 
-	private final Trainer player;
+	private final Player player;
 	private MonsterInstanceImpl playerMonster;
 	private final Trainer enemy;
 	private MonsterInstanceImpl enemyMonster;
-	private final boolean isRunnable;
+
 	private boolean run = false;
 
-	public BattlesystemImpl(final BattleMenuHandler menu, final Trainer player,
+	public BattlesystemImpl(final BattleMenuHandler menu, final Player player,
 			final Trainer enemy) {
 		this.menu = menu;
 		this.player = player;
 		this.enemy = enemy;
-		isRunnable = !enemy.isTrainerBattle();
 
 		playerMonster = (MonsterInstanceImpl) player.getParty().firstPokemon();
 		enemyMonster = (MonsterInstanceImpl) enemy.getParty().firstPokemon();
@@ -61,19 +60,16 @@ public class BattlesystemImpl implements Battlesystem, Runnable {
 
 	@Override
 	public void run() {
-		// menu.battleWildStart();
 		playerMonster.battleStatus = new BattleStatus();
 		enemyMonster.battleStatus = new BattleStatus();
 
-		if (isRunnable) {
-			menu.print("A wild " + enemyMonster.getName() + " appeared!");
+		if (enemy.isTrainer()) {
+			menu.startTrainerBattle(enemy, enemyMonster);
 		} else {
-			menu.print(enemy.getName() + " wants to battle!");
+			menu.startWildBattle(enemyMonster);
 		}
-		menu.printnw("Go! " + playerMonster.getName() + "!!");
-		// menu.playerThrowPokemon();
-
-		((Player) player).getPokeData().seen(enemyMonster.monster.number);
+		player.getPokeData().seen(enemyMonster.monster.number);
+		menu.startPlayerBattle(playerMonster);
 
 		BattleResult result = null;
 		do {
@@ -107,7 +103,7 @@ public class BattlesystemImpl implements Battlesystem, Runnable {
 					enemyMonster = (MonsterInstanceImpl) enemy.getParty().firstPokemon();
 					enemyMonster.battleStatus = new BattleStatus();
 					menu.print("Trainer threw out " + enemyMonster.getName() + "!");
-					((Player) player).getPokeData().seen(enemyMonster.monster.number);
+					player.getPokeData().seen(enemyMonster.monster.number);
 				} else {
 					result = BattleResult.Win;
 					break;
@@ -119,7 +115,7 @@ public class BattlesystemImpl implements Battlesystem, Runnable {
 		case Catch:
 			menu.print(player.getName() + " caught the " + enemyMonster.getName() + "!");
 			player.getParty().add(enemyMonster);
-			((Player) player).getPokeData().caught(enemyMonster.monster.number);
+			player.getPokeData().caught(enemyMonster.monster.number);
 			break;
 		case Lose:
 			menu.print(player.getName() + " is out of useable Pokemon!");
@@ -130,7 +126,7 @@ public class BattlesystemImpl implements Battlesystem, Runnable {
 			menu.print("You Ran...");
 			break;
 		case Win:
-			if (!isRunnable) {
+			if (enemy.isTrainer()) {
 				menu.print(player.getName() + " defeated " + enemy.getName() + "!");
 				menu.print(enemy.getTrainerLossQuip());
 				player.modifyMoney(enemy.getWinnings());
@@ -172,7 +168,7 @@ public class BattlesystemImpl implements Battlesystem, Runnable {
 				menu.print("Go! " + playerMonster.getName() + "!");
 				break;
 			case Run:
-				if (!isRunnable) {
+				if (enemy.isTrainer()) {
 					menu.print("You can't run from a trainer battle!");
 					continue;
 				}

@@ -3,6 +3,7 @@ package dev.dankins.javamon.logic.entity;
 import java.util.Map;
 import java.util.Optional;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.google.common.collect.Maps;
@@ -78,7 +79,6 @@ public class Player extends WalkableHandler
 		return money;
 	}
 
-	@Override
 	public boolean modifyMoney(final int mod) {
 		if (money + mod < 0) {
 			return false;
@@ -124,19 +124,16 @@ public class Player extends WalkableHandler
 	}
 
 	@Override
-	public Texture getImage(final AssetManager assets) {
-		// return assets.get("res/trainer/player.png");
-		return new Texture("trainer/player.png");
+	public AssetDescriptor<Texture> getImage() {
+		return new AssetDescriptor<Texture>("entity/player.png", Texture.class);
+	}
+
+	public AssetDescriptor<Texture> getBackImage() {
+		return new AssetDescriptor<Texture>("playerBack.png", Texture.class);
 	}
 
 	@Override
-	public Texture getBackImage(final AssetManager assets) {
-		// return assets.get("res/playerBack.png");
-		return new Texture("playerBack.png");
-	}
-
-	@Override
-	public boolean isTrainerBattle() {
+	public boolean isTrainer() {
 		return true;
 	}
 

@@ -17,7 +17,8 @@ public class BattleTurn {
 		this.random = random;
 	}
 
-	public void turn(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final int move) {
+	public void turn(final MonsterInstanceImpl user, final MonsterInstanceImpl target,
+			final int move) {
 		boolean attack = true;
 
 		// prechecks--------------------------------------------------------------
@@ -52,11 +53,17 @@ public class BattleTurn {
 		if (user.battleStatus.getFlag("isDisabled")) {
 			if (user.battleStatus.getCounter("DisableCounter") <= 0) {
 				user.battleStatus.setFlag("isDisabled", false);
-				menu.print(user.getName() + "'s " + user.attacks.get(user.battleStatus.getCounter("DisabledMove")).attack.name + " has been un-disabled!");
+				menu.print(
+						user.getName() + "'s "
+								+ user.attacks.get(
+										user.battleStatus.getCounter("DisabledMove")).attack.name
+								+ " has been un-disabled!");
 				user.battleStatus.setFlag("DisabledMoveChosen", false);
 				user.battleStatus.setCounter("DisabledMove", 0);
 			} else if (move == user.battleStatus.getCounter("DisabledMove")) {
-				menu.print(user.attacks.get(user.battleStatus.getCounter("DisabledMove")).attack.name + " is disabled!");
+				menu.print(
+						user.attacks.get(user.battleStatus.getCounter("DisabledMove")).attack.name
+								+ " is disabled!");
 				attack = false;
 				user.battleStatus.decrementCounter("DisableCounter");
 			}
@@ -122,7 +129,7 @@ public class BattleTurn {
 			// }
 			// } else {
 			menu.print(user.getName() + " uses " + user.attacks.get(move).attack.name + "!");
-			user.attacks.get(move).attack.use(user, target);
+			user.attacks.get(move).attack.use(menu, user, target);
 			user.battleStatus.lastMove = move;
 			// }
 
@@ -169,7 +176,8 @@ public class BattleTurn {
 	}
 
 	private int confusionCalc(final MonsterInstanceImpl user) {
-		int damage = (2 * user.getLevel() / 5 + 2) * user.getAttack() * 40 / user.getDefense() / 50 + 2;
+		int damage = (2 * user.getLevel() / 5 + 2) * user.getAttack() * 40 / user.getDefense() / 50
+				+ 2;
 		damage *= user.battleStatus.getMultiplier(Stat.ATTACK);
 		return damage;
 	}

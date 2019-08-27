@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.dankins.javamon.RandomNumberGenerator;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class SetCounter extends Effect {
 
@@ -21,12 +22,9 @@ public class SetCounter extends Effect {
 
 	@JsonCreator
 	public SetCounter(@JsonProperty("target") final Target target,
-		@JsonProperty("counter") final String counter,
-		@JsonProperty("text") final String text,
-		@JsonProperty("type") final type type,
-		@JsonProperty("n") final int n,
-		@JsonProperty("max") final int max,
-		@JsonProperty("min") final int min) {
+			@JsonProperty("counter") final String counter, @JsonProperty("text") final String text,
+			@JsonProperty("type") final type type, @JsonProperty("n") final int n,
+			@JsonProperty("max") final int max, @JsonProperty("min") final int min) {
 		this.target = target;
 		this.counter = counter;
 		this.text = text;
@@ -37,7 +35,8 @@ public class SetCounter extends Effect {
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(final EffectHandler effectHandler, final MonsterInstanceImpl user,
+			final MonsterInstanceImpl target, final AttackBase move) {
 		MonsterInstanceImpl p;
 		if (this.target == Target.TARGET) {
 			p = target;
@@ -59,7 +58,7 @@ public class SetCounter extends Effect {
 		if (text != null) {
 			text = text.replace("$target", p.getName());
 			text = text.replace("$lastMove", p.attacks.get(p.battleStatus.lastMove).attack.name);
-			// menu.print(text);
+			effectHandler.print(text);
 		}
 	}
 

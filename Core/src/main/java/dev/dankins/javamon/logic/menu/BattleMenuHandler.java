@@ -11,13 +11,14 @@ import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.BattleMenu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
-import dev.dankins.javamon.logic.EffectHandler;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
 import dev.dankins.javamon.logic.battlesystem.BattleAction;
 import dev.dankins.javamon.logic.battlesystem.BattlesystemImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 import dev.dankins.javamon.logic.battlesystem.Trainer;
 import dev.dankins.javamon.logic.battlesystem.WildTrainer;
+import dev.dankins.javamon.logic.entity.Player;
 
 public class BattleMenuHandler extends MenuHandler<BattleMenu> implements EffectHandler {
 
@@ -27,22 +28,17 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Effect
 	private final BattlesystemImpl battlesystem;
 	private boolean battleIsOver = false;
 
-	public BattleMenuHandler(final Game game, final Trainer player, final Trainer enemy) {
+	public BattleMenuHandler(final Game game, final Player player, final Trainer enemy) {
 		super(game, Menu_Class);
 		battlesystem = new BattlesystemImpl(this, player, enemy);
-		menu.setupMenu(battlesystem, player, enemy);
+		menu.setupMenu(player, enemy);
 		initScreen();
 		ThreadUtils.makeAnonThread(battlesystem);
 	}
 
-	public BattleMenuHandler(final Game game, final Trainer player,
+	public BattleMenuHandler(final Game game, final Player player,
 			final MonsterInstanceImpl wildPokemon) {
-		super(game, Menu_Class);
-		final WildTrainer enemy = new WildTrainer(wildPokemon);
-		battlesystem = new BattlesystemImpl(this, player, enemy);
-		menu.setupMenu(battlesystem, player, enemy);
-		initScreen();
-		ThreadUtils.makeAnonThread(battlesystem);
+		this(game, player, new WildTrainer(wildPokemon));
 	}
 
 	@Override
@@ -50,7 +46,27 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Effect
 		if (battleIsOver) {
 			return false;
 		}
-		return false;
+		return true;
+	}
+
+	public void startTrainerBattle(final Trainer enemy, final MonsterInstance monster) {
+		menu.startBattle();
+		print(enemy.getName() + " wants to fight!");
+		menu.moveEnemyFromWindow();
+		print(enemy.getName() + " sent out " + monster.getName() + "!");
+		menu.enemyMonster(monster);
+	}
+
+	public void startWildBattle(final MonsterInstance monster) {
+		menu.startBattle();
+		print("A wild " + monster.getName() + " appeared!");
+		menu.enemyMonster(monster);
+	}
+
+	public void startPlayerBattle(final MonsterInstance monster) {
+		printnw("Go! " + monster.getName() + "!!");
+		menu.movePlayerFromWindow();
+		menu.playerMonster(monster);
 	}
 
 	@Override
@@ -82,10 +98,9 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Effect
 		menu.setMessageBoxContents(string);
 	}
 
-	public void quit() {
-		battleIsOver = true;
-		ThreadUtils.notifyOnObject(menu);
-		screen.disposeMe();
+	@Override
+	public void updateHealth() {
+		menu.updateHealth(battlesystem.getPlayerMonster(), battlesystem.getEnemyMonster());
 	}
 
 	public BattleAction openMenu() {
@@ -119,6 +134,12 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Effect
 					Integer.parseInt(respawn[3]));
 			game.getMapHandler().getMap().executeMapScript(game);
 		});
+	}
+
+	public void quit() {
+		battleIsOver = true;
+		ThreadUtils.notifyOnObject(menu);
+		screen.disposeMe();
 	}
 
 }

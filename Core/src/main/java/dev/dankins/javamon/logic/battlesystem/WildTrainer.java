@@ -1,6 +1,6 @@
 package dev.dankins.javamon.logic.battlesystem;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
@@ -28,17 +28,13 @@ public class WildTrainer implements Trainer {
 	}
 
 	@Override
-	public Texture getImage(final AssetManager assets) {
-		return null;
+	public AssetDescriptor<Texture> getImage() {
+		return new AssetDescriptor<Texture>(
+				"pokemon/" + wildPokemon.getBaseMonster().number + ".png", Texture.class);
 	}
 
 	@Override
-	public Texture getBackImage(final AssetManager assets) {
-		return null;
-	}
-
-	@Override
-	public boolean isTrainerBattle() {
+	public boolean isTrainer() {
 		return false;
 	}
 
@@ -50,11 +46,6 @@ public class WildTrainer implements Trainer {
 	@Override
 	public int getWinnings() {
 		return 0;
-	}
-
-	@Override
-	public boolean modifyMoney(final int winnings) {
-		return false;
 	}
 
 }

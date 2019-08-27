@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class StatEffect extends Effect {
 
@@ -22,18 +23,18 @@ public class StatEffect extends Effect {
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(final EffectHandler effectHandler, final MonsterInstanceImpl user,
+			final MonsterInstanceImpl target, final AttackBase move) {
 		if (this.target == Target.TARGET) {
 			if (target.battleStatus.getFlag("mist") && level < 0) {
 				return;
 			}
 			target.battleStatus.modify(stat, level);
 			if (level > 0) {
-				// menu.print(target.getName() + "'s " + stat.name() + " has
-				// been raised!");
+				effectHandler.print(target.getName() + "'s " + stat.name() + " has been raised!");
 			} else {
-				// menu.print(target.getName() + "'s " + stat.name() + " has
-				// been lowered...");
+				effectHandler
+						.print(target.getName() + "'s " + stat.name() + " has been lowered...");
 			}
 
 		} else {
@@ -42,10 +43,9 @@ public class StatEffect extends Effect {
 			}
 			user.battleStatus.modify(stat, level);
 			if (level > 0) {
-				// menu.print(user.getName() + " raised it's " + stat.name());
+				effectHandler.print(user.getName() + " raised it's " + stat.name());
 			} else {
-				// menu.print(user.getName() + "'s lowered it's " +
-				// stat.name());
+				effectHandler.print(user.getName() + "'s lowered it's " + stat.name());
 			}
 		}
 	}

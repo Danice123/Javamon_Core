@@ -1,12 +1,26 @@
 package dev.dankins.javamon.display.screen.menu;
 
+import dev.dankins.javamon.data.monster.instance.MonsterInstance;
 import dev.dankins.javamon.display.screen.Menu;
+import dev.dankins.javamon.logic.abstraction.Player;
 import dev.dankins.javamon.logic.abstraction.Trainer;
-import dev.dankins.javamon.logic.battlesystem.Battlesystem;
 
 public interface BattleMenu extends Menu {
 
-	void setupMenu(Battlesystem system, Trainer player, Trainer enemy);
+	void setupMenu(Player player, Trainer enemy);
+
+	void startBattle();
+
+	void moveEnemyFromWindow();
+
+	void movePlayerFromWindow();
+
+	void enemyMonster(MonsterInstance monster);
+
+	void playerMonster(final MonsterInstance monster);
 
 	void setMessageBoxContents(String message);
+
+	void updateHealth(MonsterInstance player, MonsterInstance enemy);
+
 }

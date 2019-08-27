@@ -21,4 +21,6 @@ public interface PartyMenu extends Menu {
 		View, Switch, UseItem;
 	}
 
+	void resetAfterSwitch();
+
 }

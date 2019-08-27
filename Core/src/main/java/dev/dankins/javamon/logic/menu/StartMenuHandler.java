@@ -17,7 +17,7 @@ public class StartMenuHandler extends MenuHandler<StartMenu> {
 		super(game, Menu_Class);
 		hasPokemon = game.getPlayer().getParty().size() > 0;
 		hasPokedex = game.getPlayer().getFlag("HasPokedex");
-		menu.setupMenu(hasPokemon, hasPokedex);
+		menu.setupMenu(hasPokemon, true);
 		initScreen();
 	}
 
@@ -25,7 +25,7 @@ public class StartMenuHandler extends MenuHandler<StartMenu> {
 	protected boolean handleResponse() {
 		switch (menu.getMenuChoice()) {
 		case Pokedex:
-			if (hasPokedex) {
+			if (true) {
 				final PokedexHandler pokedexHandler = new PokedexHandler(game);
 				pokedexHandler.waitAndHandle();
 			}

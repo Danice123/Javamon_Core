@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.dankins.javamon.RandomNumberGenerator;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class LevelDamage extends Effect {
 
@@ -26,7 +27,7 @@ public class LevelDamage extends Effect {
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(EffectHandler effectHandler, final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
 		if (random) {
 			percent = (RandomNumberGenerator.random.nextInt(max - min) + min) * 10;
 		}

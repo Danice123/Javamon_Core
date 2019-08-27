@@ -14,6 +14,7 @@ import dev.dankins.javamon.data.monster.attack.result.AttackResult;
 import dev.dankins.javamon.data.monster.attack.result.Failed;
 import dev.dankins.javamon.data.monster.attack.result.Missed;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class AttackBase {
 
@@ -46,7 +47,8 @@ public class AttackBase {
 		this.effects = effects == null ? Lists.newArrayList() : effects;
 	}
 
-	public AttackResult use(final MonsterInstanceImpl user, final MonsterInstanceImpl target) {
+	public AttackResult use(final EffectHandler effectHandler, final MonsterInstanceImpl user,
+			final MonsterInstanceImpl target) {
 		for (final Require requirement : requirements) {
 			if (!requirement.check(user, target, this)) {
 				return new Failed();
@@ -58,7 +60,7 @@ public class AttackBase {
 		}
 
 		for (final Effect effect : effects) {
-			effect.use(user, target, this);
+			effect.use(effectHandler, user, target, this);
 		}
 		return null;
 	}

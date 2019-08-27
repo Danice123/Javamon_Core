@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import dev.dankins.javamon.RandomNumberGenerator;
-import dev.dankins.javamon.ThreadUtils;
 import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Type;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.attack.DamageType;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class Damage extends Effect {
 
@@ -34,38 +34,38 @@ public class Damage extends Effect {
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(final EffectHandler effectHandler, final MonsterInstanceImpl user,
+			final MonsterInstanceImpl target, final AttackBase move) {
 		// Calculate
 		int damage = damageCalc(user, target, move);
 		final int critmod = crit(crit + user.battleStatus.getCounter("CriticalRateBoost"));
 		damage = damage * critmod;
 
 		// Do Damage
-		for (int i = 0; i < damage; i++) {
-			target.changeHealth(-1);
-			ThreadUtils.sleep(10);
-		}
-		// menu.print("--DEBUG-- " + damage + " damage");
+		target.changeHealth(-damage);
+		effectHandler.updateHealth();
+
 		if (critmod > 1) {
-			// menu.print("It was a critical hit!");
+			effectHandler.print("It was a critical hit!");
 		}
 
 		// return if extra effects
 		if (effectM(target, move) != null) {
-			// menu.print(effectM(target, move));
+			effectHandler.print(effectM(target, move));
 		}
 
 		// Drain
 		if (drain > 0) {
 			user.changeHealth(damage / (100 / drain));
-			// menu.print(user.getName() + " drained " + target.getName() + "'s
-			// health!");
+			effectHandler.updateHealth();
+			effectHandler.print(user.getName() + " drained " + target.getName() + "'s health!");
 		}
 
 		// Recoil
 		if (recoil > 0) {
 			user.changeHealth(damage / (100 / recoil));
-			// menu.print(user.getName() + " took damage from the attack!");
+			effectHandler.updateHealth();
+			effectHandler.print(user.getName() + " took damage from the attack!");
 		}
 	}
 

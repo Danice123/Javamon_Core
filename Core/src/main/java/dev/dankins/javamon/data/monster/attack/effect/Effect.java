@@ -6,10 +6,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 @JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "effect")
 public abstract class Effect {
 
-	public abstract void use(MonsterInstanceImpl user, MonsterInstanceImpl target, AttackBase move);
+	public abstract void use(EffectHandler effectHandler, MonsterInstanceImpl user, MonsterInstanceImpl target, AttackBase move);
 
 }

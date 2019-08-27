@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import dev.dankins.javamon.data.monster.Status;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 
 public class StatusEffect extends Effect {
 
@@ -20,7 +21,8 @@ public class StatusEffect extends Effect {
 	}
 
 	@Override
-	public void use(final MonsterInstanceImpl user, final MonsterInstanceImpl target, final AttackBase move) {
+	public void use(final EffectHandler effectHandler, final MonsterInstanceImpl user,
+			final MonsterInstanceImpl target, final AttackBase move) {
 		if (this.target == Target.TARGET) {
 			if (status != Status.FAINTED && target.status != Status.NONE) {
 				return;
@@ -28,26 +30,26 @@ public class StatusEffect extends Effect {
 			target.status = status;
 			switch (status) {
 			case BURN:
-				// menu.print(target.getName() + " has been burnt!");
+				effectHandler.print(target.getName() + " has been burnt!");
 				break;
 			case FREEZE:
-				// menu.print(target.getName() + " has been frozen solid!");
+				effectHandler.print(target.getName() + " has been frozen solid!");
 				break;
 			case PARALYSIS:
-				// menu.print(target.getName() + " has been paralyzed!");
+				effectHandler.print(target.getName() + " has been paralyzed!");
 				break;
 			case POISON:
-				// menu.print(target.getName() + " has been poisoned!");
+				effectHandler.print(target.getName() + " has been poisoned!");
 				break;
 			case POISON_TOXIC:
-				// menu.print(target.getName() + " has been badly poisoned!");
+				effectHandler.print(target.getName() + " has been badly poisoned!");
 				break;
 			case SLEEP:
-				// menu.print(target.getName() + " has been put to sleep!");
+				effectHandler.print(target.getName() + " has been put to sleep!");
 				break;
 			case FAINTED:
 				target.changeHealth(-target.getCurrentHealth());
-				// menu.print("The attack was a OHKO!");
+				effectHandler.print("The attack was a OHKO!");
 				break;
 			default:
 				break;
@@ -59,22 +61,22 @@ public class StatusEffect extends Effect {
 			user.status = status;
 			switch (status) {
 			case BURN:
-				// menu.print(user.getName() + " has been burnt!");
+				effectHandler.print(user.getName() + " has been burnt!");
 				break;
 			case FREEZE:
-				// menu.print(user.getName() + " has been frozen solid!");
+				effectHandler.print(user.getName() + " has been frozen solid!");
 				break;
 			case PARALYSIS:
-				// menu.print(user.getName() + " has been paralyzed!");
+				effectHandler.print(user.getName() + " has been paralyzed!");
 				break;
 			case POISON:
-				// menu.print(user.getName() + " has been poisoned!");
+				effectHandler.print(user.getName() + " has been poisoned!");
 				break;
 			case POISON_TOXIC:
-				// menu.print(user.getName() + " has been badly poisoned!");
+				effectHandler.print(user.getName() + " has been badly poisoned!");
 				break;
 			case SLEEP:
-				// menu.print(user.getName() + " has been put to sleep!");
+				effectHandler.print(user.getName() + " has been put to sleep!");
 				break;
 			case FAINTED:
 				user.changeHealth(-user.getCurrentHealth());
