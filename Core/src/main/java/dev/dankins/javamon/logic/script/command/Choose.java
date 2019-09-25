@@ -49,7 +49,7 @@ public class Choose extends Command {
 				.map(option -> parseString(option, strings)).collect(Collectors.toList());
 
 		final ChoiceboxHandler box = new ChoiceboxHandler(game, parsedText, parsedOptions);
-		game.getPlayer().getStrings().put(output, box.waitForResponse());
+		strings.put(parseString(output, strings), box.waitForResponse());
 
 		return Optional.empty();
 	}

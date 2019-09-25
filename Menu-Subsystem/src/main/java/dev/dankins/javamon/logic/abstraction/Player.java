@@ -1,5 +1,7 @@
 package dev.dankins.javamon.logic.abstraction;
 
+import java.util.Map;
+
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -17,5 +19,7 @@ public interface Player extends Trainer {
 	CollectionLibrary getPokeData();
 
 	Inventory getInventory();
+
+	Map<String, String> getStrings();
 
 }

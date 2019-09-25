@@ -50,6 +50,13 @@ public class BagHandler extends MenuHandler<BagMenu> implements EffectHandler {
 				// Item with effect
 				final Optional<List<Effect>> effect = item.getEffects();
 				if (effect.isPresent()) {
+					if (game.getPlayer().getParty().size() == 0) {
+						final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
+								"You can't use that now!");
+						chatboxHandler.waitAndHandle();
+						return true;
+					}
+
 					final ChoosePokemonHandler choosePokemonHandler = new ChoosePokemonHandler(game,
 							null, PartyMenuType.UseItem, true);
 					choosePokemonHandler.waitAndHandle();

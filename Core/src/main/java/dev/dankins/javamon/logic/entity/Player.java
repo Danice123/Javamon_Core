@@ -1,12 +1,10 @@
 package dev.dankins.javamon.logic.entity;
 
-import java.util.Map;
 import java.util.Optional;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.RandomNumberGenerator;
@@ -20,7 +18,6 @@ import dev.dankins.javamon.logic.battlesystem.Trainer;
 public class Player extends WalkableHandler
 		implements dev.dankins.javamon.logic.abstraction.Player, Trainer {
 
-	private Map<String, Boolean> flag;
 	private CollectionLibraryImpl pokeData;
 	private PartyImpl party;
 	private Inventory inventory;
@@ -30,7 +27,6 @@ public class Player extends WalkableHandler
 
 	public Player(final Optional<Spriteset> sprites) {
 		super("Player", sprites);
-		flag = Maps.newHashMap();
 		pokeData = new CollectionLibraryImpl();
 		party = new PartyImpl();
 		inventory = new Inventory();
@@ -41,18 +37,6 @@ public class Player extends WalkableHandler
 
 	public long getPlayerId() {
 		return id;
-	}
-
-	public boolean getFlag(final String s) {
-		try {
-			return flag.get(s);
-		} catch (final NullPointerException e) {
-			return false;
-		}
-	}
-
-	public void setFlag(final String s, final boolean state) {
-		flag.put(s, state);
 	}
 
 	@Override
@@ -91,7 +75,6 @@ public class Player extends WalkableHandler
 		final SaveFile s = new SaveFile();
 		s.money = money;
 		s.id = id;
-		s.flag = flag;
 		s.strings = strings;
 		s.pokeData = pokeData;
 		s.party = party.serialize();
@@ -107,7 +90,6 @@ public class Player extends WalkableHandler
 	public String load(final AssetManager assetManager, final SaveFile s) {
 		money = s.money;
 		id = s.id;
-		flag = s.flag;
 		strings = s.strings;
 		pokeData = s.pokeData;
 		party = new PartyImpl(assetManager, s.party);
@@ -128,6 +110,7 @@ public class Player extends WalkableHandler
 		return new AssetDescriptor<Texture>("entity/player.png", Texture.class);
 	}
 
+	@Override
 	public AssetDescriptor<Texture> getBackImage() {
 		return new AssetDescriptor<Texture>("playerBack.png", Texture.class);
 	}

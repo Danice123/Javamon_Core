@@ -28,7 +28,6 @@ public class SaveFile {
 	public List<ItemSerialized> inventory;
 	public List<ItemSerialized> itemStorage;
 	public CollectionLibraryImpl pokeData;
-	public Map<String, Boolean> flag;
 	public Map<String, String> strings;
 
 	@JsonCreator
@@ -40,7 +39,6 @@ public class SaveFile {
 			@JsonProperty("inventory") final List<ItemSerialized> inventory,
 			@JsonProperty("itemStorage") final List<ItemSerialized> itemStorage,
 			@JsonProperty("pokeData") final CollectionLibraryImpl pokeData,
-			@JsonProperty("flag") final Map<String, Boolean> flag,
 			@JsonProperty("strings") final Map<String, String> strings) {
 		this.layer = layer;
 		this.x = x;
@@ -53,7 +51,6 @@ public class SaveFile {
 		this.inventory = inventory;
 		this.itemStorage = itemStorage;
 		this.pokeData = pokeData;
-		this.flag = flag;
 		this.strings = strings;
 	}
 

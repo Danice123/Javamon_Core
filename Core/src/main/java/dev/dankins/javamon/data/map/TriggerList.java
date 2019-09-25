@@ -31,7 +31,7 @@ public class TriggerList {
 						assets.get("scripts/" + trigger.script.substring(1) + ".ps", Script.class),
 						trigger.arguments);
 			} else {
-				triggerMap[trigger.layer][trigger.x][trigger.y] = new Trigger(
+				triggerMap[trigger.layer][trigger.x][trigger.y] = new Trigger(trigger.name,
 						assets.get("maps/" + mapName + "/" + trigger.script + ".ps", Script.class),
 						trigger.arguments);
 			}

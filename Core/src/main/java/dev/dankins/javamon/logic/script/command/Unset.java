@@ -15,15 +15,16 @@ import dev.dankins.javamon.logic.script.ScriptTarget;
 
 public class Unset extends Command {
 
-	private String flag;
+	private String string;
 
+	// !Unset:<String>
 	public Unset(final List<String> args) throws ScriptLoadingException {
 		super(args);
 		try {
 			final Iterator<String> i = args.iterator();
-			flag = i.next();
+			string = i.next();
 		} catch (final NoSuchElementException e) {
-			throw new ScriptLoadingException("Goto",
+			throw new ScriptLoadingException("Unset",
 					SCRIPT_LOADING_ERROR_TYPE.invalidNumberOfArguments);
 		}
 	}
@@ -31,7 +32,10 @@ public class Unset extends Command {
 	@Override
 	public Optional<String> execute(final Game game, final Map<String, String> strings,
 			final Optional<ScriptTarget> target) throws ScriptException {
-		game.getPlayer().setFlag(parseString(flag, strings), false);
+
+		game.getPlayer().getStrings().remove(parseString(string, strings));
+		strings.remove(parseString(string, strings));
+
 		return Optional.empty();
 	}
 

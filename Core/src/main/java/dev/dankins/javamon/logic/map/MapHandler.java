@@ -2,7 +2,10 @@ package dev.dankins.javamon.logic.map;
 
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -122,6 +125,11 @@ public class MapHandler {
 			}
 		}
 		ThreadUtils.notifyOnObject(map);
+
+		// Draw background
+		final Color bg = mapData.getBackgroundColor();
+		Gdx.gl.glClearColor(bg.r, bg.g, bg.b, bg.a);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		// Code from world to set correct camera coords
 		camera.translate(player.getEntity().getX() / 16 - camera.position.x + 0.8f,

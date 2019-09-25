@@ -10,14 +10,9 @@ public class StartMenuHandler extends MenuHandler<StartMenu> {
 	static public final Class<? extends Menu> MENU_TYPE = StartMenu.class;
 	static public Class<? extends StartMenu> Menu_Class;
 
-	private final boolean hasPokemon;
-	private final boolean hasPokedex;
-
 	public StartMenuHandler(final Game game) {
 		super(game, Menu_Class);
-		hasPokemon = game.getPlayer().getParty().size() > 0;
-		hasPokedex = game.getPlayer().getFlag("HasPokedex");
-		menu.setupMenu(hasPokemon, hasPokedex);
+		menu.setupMenu(game.getPlayer());
 		initScreen();
 	}
 
@@ -25,16 +20,12 @@ public class StartMenuHandler extends MenuHandler<StartMenu> {
 	protected boolean handleResponse() {
 		switch (menu.getMenuChoice()) {
 		case Pokedex:
-			if (true) {
-				final PokedexHandler pokedexHandler = new PokedexHandler(game);
-				pokedexHandler.waitAndHandle();
-			}
+			final PokedexHandler pokedexHandler = new PokedexHandler(game);
+			pokedexHandler.waitAndHandle();
 			return true;
 		case Pokemon:
-			if (hasPokemon) {
-				final PartyHandler partyHandler = new PartyHandler(game);
-				partyHandler.waitAndHandle();
-			}
+			final PartyHandler partyHandler = new PartyHandler(game);
+			partyHandler.waitAndHandle();
 			return true;
 		case Bag:
 			final BagHandler bagHandler = new BagHandler(game);

@@ -22,7 +22,7 @@ import dev.dankins.javamon.logic.script.Target;
 public class Walk extends Command {
 
 	private Target target;
-	private List<Direction> directions;
+	private List<String> directions;
 
 	public Walk(final List<String> args) throws ScriptLoadingException {
 		super(args);
@@ -31,7 +31,7 @@ public class Walk extends Command {
 			target = new Target(i.next());
 			directions = Lists.newArrayList();
 			while (i.hasNext()) {
-				directions.add(new Direction(i.next()));
+				directions.add(i.next());
 			}
 		} catch (final NoSuchElementException e) {
 			throw new ScriptLoadingException("Walk",
@@ -45,9 +45,11 @@ public class Walk extends Command {
 
 		final Optional<EntityHandler> entity = this.target.getTarget(game, target);
 		if (entity.isPresent()) {
-			for (final Direction direction : directions) {
-				((WalkableHandler) entity.get()).walk(game.getMapHandler(),
-						direction.getDirection(game, entity.get(), target));
+			for (final String s : directions) {
+				for (final String direction : parseString(s, strings).split(" ")) {
+					((WalkableHandler) entity.get()).walk(game.getMapHandler(),
+							new Direction(direction).getDirection(game, entity.get(), target));
+				}
 			}
 		} else {
 			throw new ScriptException("Walk", ScriptException.SCRIPT_ERROR_TYPE.entityDoesNotExist);

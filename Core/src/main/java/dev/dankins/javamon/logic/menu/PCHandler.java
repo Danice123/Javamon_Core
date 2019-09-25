@@ -13,25 +13,22 @@ public class PCHandler extends MenuHandler<PCMenu> {
 
 	public PCHandler(final Game game) {
 		super(game, Menu_Class);
-		menu.setupMenu(game.getPlayer().getFlag("KnowsStorageName"), game.getPlayer().getName());
+		menu.setupMenu(game.getPlayer());
 		initScreen();
 	}
 
 	@Override
 	protected boolean handleResponse() {
+		ChatboxHandler chatboxHandler;
 		switch (menu.getMenuChoice()) {
 		case Pokemon:
-			if (game.getPlayer().getFlag("KnowsStorageName")) {
-
-			} else {
-				final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-						"Accessed someone's PC./nAccessed Pokemon Storage System.");
-				chatboxHandler.waitAndHandle();
-				ThreadUtils.sleep(10);
-			}
+			chatboxHandler = new ChatboxHandler(game,
+					"Accessed someone's PC./nAccessed Pokemon Storage System.");
+			chatboxHandler.waitAndHandle();
+			ThreadUtils.sleep(10);
 			return true;
 		case Item:
-			final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
+			chatboxHandler = new ChatboxHandler(game,
 					"Accessed my PC./nAccessed Item Storage System.");
 			chatboxHandler.waitAndHandle();
 			ThreadUtils.sleep(10);

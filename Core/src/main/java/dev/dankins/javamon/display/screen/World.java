@@ -2,9 +2,7 @@ package dev.dankins.javamon.display.screen;
 
 import java.util.Optional;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import dev.dankins.javamon.Coord;
@@ -43,8 +41,6 @@ public class World extends Screen {
 
 	@Override
 	protected void renderScreen(final RenderHelper rh, final float delta) {
-		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		mapHandler.render(camera);
 	}
 
@@ -169,7 +165,8 @@ public class World extends Screen {
 
 			final Optional<TrainerHandler> trainer = mapHandler.getMap()
 					.getTrainerFacingPlayer(player.getCoord(), player.getLayer());
-			if (trainer.isPresent() && !player.getFlag(trainer.get().getEntity().getName())) {
+			if (trainer.isPresent()
+					&& !player.getStrings().containsKey(trainer.get().getEntity().getName())) {
 				while (trainer.get().walk(mapHandler, trainer.get().getFacing())) {
 				}
 				trainer.get().activate(game);

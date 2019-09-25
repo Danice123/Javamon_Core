@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -139,6 +140,11 @@ public class MapData {
 
 	public int getAdjMapTweak(final Dir dir) {
 		return tweaks.get(dir);
+	}
+
+	public Color getBackgroundColor() {
+		final String bg = map.getProperties().get("backgroundcolor", String.class);
+		return bg == null ? Color.BLACK : Color.valueOf(bg);
 	}
 
 	public List<EntityBehaviorThread> getEntityThreads() {

@@ -18,9 +18,9 @@ public class Branch extends Command {
 	private final String branch;
 	private final Query query;
 
-	// !Branch:<Branch> <flag>
+	// !Branch:<Branch> <StringName>
+	// !Branch:<Branch> <StringName> <StringValue>
 	// !Branch:<Branch> Item <ItemToCheck>
-	// !Branch:<Branch> String <StringName> <StringValue>
 	public Branch(final List<String> args) throws ScriptLoadingException {
 		super(args);
 		try {
@@ -32,16 +32,16 @@ public class Branch extends Command {
 			case "Item":
 				query = new PlayerItem(i.next());
 				break;
-			case "String":
-				final String stringName = i.next();
-				String stringValue = i.next();
-				while (i.hasNext()) {
-					stringValue = stringValue + " " + i.next();
-				}
-				query = new PlayerString(stringName, stringValue);
-				break;
 			default:
-				query = new PlayerFlag(queryType);
+				if (i.hasNext()) {
+					String value = i.next();
+					while (i.hasNext()) {
+						value = value + " " + i.next();
+					}
+					query = new StringQuery(queryType, value);
+				} else {
+					query = new StringQuery(queryType);
+				}
 			}
 		} catch (final NoSuchElementException e) {
 			throw new ScriptLoadingException("Branch",
@@ -62,18 +62,29 @@ public class Branch extends Command {
 		boolean resolve(Game game, Map<String, String> strings, Optional<ScriptTarget> target);
 	}
 
-	private class PlayerFlag implements Query {
+	private class StringQuery implements Query {
 
-		private final String flag;
+		private final String string;
+		private final Optional<String> value;
 
-		public PlayerFlag(final String flag) {
-			this.flag = flag;
+		public StringQuery(final String string) {
+			this.string = string;
+			value = Optional.empty();
+		}
+
+		public StringQuery(final String string, final String value) {
+			this.string = string;
+			this.value = Optional.of(value);
 		}
 
 		@Override
 		public boolean resolve(final Game game, final Map<String, String> strings,
 				final Optional<ScriptTarget> target) {
-			return game.getPlayer().getFlag(parseString(flag, strings));
+			if (value.isPresent()) {
+				return strings.get(parseString(string, strings))
+						.equals(parseString(value.get(), strings));
+			}
+			return strings.containsKey(parseString(string, strings));
 		}
 
 	}
@@ -94,22 +105,4 @@ public class Branch extends Command {
 
 	}
 
-	private class PlayerString implements Query {
-
-		private final String string;
-		private final String value;
-
-		public PlayerString(final String string, final String value) {
-			this.string = string;
-			this.value = value;
-		}
-
-		@Override
-		public boolean resolve(final Game game, final Map<String, String> strings,
-				final Optional<ScriptTarget> target) {
-			return game.getPlayer().getStrings().get(parseString(string, strings))
-					.equals(parseString(value, strings));
-		}
-
-	}
 }
