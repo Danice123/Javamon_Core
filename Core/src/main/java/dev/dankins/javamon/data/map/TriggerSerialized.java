@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Maps;
 
 public class TriggerSerialized {
 
@@ -24,6 +25,6 @@ public class TriggerSerialized {
 		this.layer = layer;
 		this.script = script;
 		this.name = name;
-		this.arguments = arguments;
+		this.arguments = arguments == null ? Maps.newHashMap() : arguments;
 	}
 }

@@ -23,7 +23,7 @@ public class Choose extends Command {
 	private String output;
 	private List<String> options;
 
-	// !Choose:<Display text> <options>...
+	// !Choose:<Display text> <Cache Output> <options>...
 	public Choose(final List<String> args) throws ScriptLoadingException {
 		super(args);
 		try {
