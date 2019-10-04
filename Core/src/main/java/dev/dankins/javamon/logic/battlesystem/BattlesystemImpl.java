@@ -5,9 +5,11 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import dev.dankins.javamon.RandomNumberGenerator;
+import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Status;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
+import dev.dankins.javamon.data.monster.attack.effect.Effect;
 import dev.dankins.javamon.data.monster.instance.AttackInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl.Levelup;
@@ -153,13 +155,13 @@ public class BattlesystemImpl implements Battlesystem, Runnable {
 				break;
 			case Item:
 				menu.print(player.getName() + " used " + menuResponse.item.getName() + "!");
-				// final Action action = menuResponse.item.getEffect().get();
-				// action.use(menu, playerMonster, enemyMonster, new
-				// ItemMove());
-				//
-				// if (enemyMonster.battleStatus.getFlag("isCaught")) {
-				// return;
-				// }
+				final Item item = (Item) menuResponse.item;
+				for (final Effect effect : item.getEffects().get()) {
+					effect.use(menu, playerMonster, enemyMonster, null);
+				}
+				if (enemyMonster.battleStatus.getFlag("isCaught")) {
+					return;
+				}
 				break;
 			case Switch:
 				menu.print(playerMonster.getName() + "! Enough! Come back!");

@@ -28,6 +28,7 @@ public class Heal extends Effect {
 		if (rawValue != null) {
 			user.changeHealth(rawValue);
 		}
+		effectHandler.updateHealth();
 		effectHandler.print(user.getName() + " has been healed!");
 	}
 
