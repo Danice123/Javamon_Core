@@ -16,10 +16,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.MainLoader;
+import dev.dankins.javamon.battle.data.monster.MonsterImpl;
 import dev.dankins.javamon.data.map.EntitySerialized;
 import dev.dankins.javamon.data.map.EntitySerialized.Type;
 import dev.dankins.javamon.data.map.TrainerMonsterSerialized;
-import dev.dankins.javamon.data.monster.MonsterImpl;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 

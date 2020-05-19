@@ -3,7 +3,7 @@ package dev.dankins.javamon.logic.battlesystem;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.PartyImpl;
 
 public class WildTrainer implements Trainer {

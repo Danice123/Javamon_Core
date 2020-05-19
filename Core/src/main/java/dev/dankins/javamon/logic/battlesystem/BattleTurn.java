@@ -2,9 +2,9 @@ package dev.dankins.javamon.logic.battlesystem;
 
 import java.util.Random;
 
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
 import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Status;
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
 import dev.dankins.javamon.logic.menu.BattleMenuHandler;
 
 public class BattleTurn {

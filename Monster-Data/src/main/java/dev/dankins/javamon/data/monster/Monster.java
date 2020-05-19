@@ -8,9 +8,7 @@ public interface Monster {
 
 	String getFormattedNumber();
 
-	Type getType(int typeSlot);
-
-	boolean isDualType();
+	MultiType getType();
 
 	int getHeight();
 

@@ -6,8 +6,8 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import dev.dankins.javamon.battle.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.item.ItemSerialized;
-import dev.dankins.javamon.data.monster.instance.MonsterSerialized;
 import dev.dankins.javamon.logic.Dir;
 
 public class SaveFile {

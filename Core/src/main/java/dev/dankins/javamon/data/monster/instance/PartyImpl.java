@@ -6,6 +6,8 @@ import java.util.List;
 import com.badlogic.gdx.assets.AssetManager;
 import com.google.common.collect.Lists;
 
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.monster.Status;
 
 public class PartyImpl extends AbstractList<MonsterInstance> implements Party {

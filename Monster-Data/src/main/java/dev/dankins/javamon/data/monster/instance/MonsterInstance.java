@@ -27,6 +27,8 @@ public interface MonsterInstance {
 
 	int getCurrentHealth();
 
+	void changeHealth(int amount);
+
 	float getCurrentHealthPercent();
 
 	int getAttack();
@@ -44,6 +46,8 @@ public interface MonsterInstance {
 	int getEV(Stat stat);
 
 	Status getStatus();
+
+	void setStatus(Status status);
 
 	List<? extends Attack> getAttacks();
 

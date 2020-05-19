@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.MonsterInstance;
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
 import dev.dankins.javamon.data.script.ScriptLoadingException;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.script.Command;

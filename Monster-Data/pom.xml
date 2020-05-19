@@ -16,5 +16,13 @@
   		<artifactId>junit</artifactId>
   		<version>4.12</version>
   	</dependency>
+	<dependency>
+  		<groupId>com.badlogicgames.gdx</groupId>
+  		<artifactId>gdx</artifactId>
+ 	</dependency>
+ 	<dependency>
+ 		<groupId>com.google.guava</groupId>
+ 		<artifactId>guava</artifactId>
+ 	</dependency>
   </dependencies>
 </project>

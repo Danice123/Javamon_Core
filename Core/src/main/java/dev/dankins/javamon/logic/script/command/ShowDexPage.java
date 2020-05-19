@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import dev.dankins.javamon.data.monster.MonsterImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterImpl;
 import dev.dankins.javamon.data.script.ScriptLoadingException;
 import dev.dankins.javamon.data.script.ScriptLoadingException.SCRIPT_LOADING_ERROR_TYPE;
 import dev.dankins.javamon.logic.Game;

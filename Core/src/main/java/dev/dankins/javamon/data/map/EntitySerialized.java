@@ -11,8 +11,8 @@ import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.RandomNumberGenerator;
-import dev.dankins.javamon.data.monster.MonsterImpl;
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.PartyImpl;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.display.Spriteset;

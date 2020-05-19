@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import com.google.common.collect.Lists;
 
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
 import dev.dankins.javamon.data.script.ScriptLoadingException;
 import dev.dankins.javamon.data.script.ScriptLoadingException.SCRIPT_LOADING_ERROR_TYPE;
 import dev.dankins.javamon.logic.Game;

@@ -6,8 +6,8 @@ import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.ThreadUtils;
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
 import dev.dankins.javamon.data.monster.instance.MonsterInstance;
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.BattleMenu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;

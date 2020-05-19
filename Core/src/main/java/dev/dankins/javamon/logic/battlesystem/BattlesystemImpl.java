@@ -5,14 +5,14 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 import dev.dankins.javamon.RandomNumberGenerator;
+import dev.dankins.javamon.battle.data.monster.AttackInstanceImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl.Levelup;
 import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Status;
 import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.data.monster.attack.effect.Effect;
-import dev.dankins.javamon.data.monster.instance.AttackInstanceImpl;
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl;
-import dev.dankins.javamon.data.monster.instance.MonsterInstanceImpl.Levelup;
 import dev.dankins.javamon.logic.entity.Player;
 import dev.dankins.javamon.logic.menu.BattleMenuHandler;
 

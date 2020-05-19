@@ -13,11 +13,11 @@ import com.badlogic.gdx.utils.Array;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
+import dev.dankins.javamon.battle.data.monster.MonsterImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.SaveFile;
 import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.item.ItemSerialized;
-import dev.dankins.javamon.data.monster.MonsterImpl;
-import dev.dankins.javamon.data.monster.instance.MonsterSerialized;
 
 public class SaveLoader extends SynchronousAssetLoader<SaveFile, SaveLoader.Parameters> {
 

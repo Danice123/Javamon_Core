@@ -2,15 +2,28 @@ package dev.dankins.javamon.data.monster;
 
 public enum Type {
 
-	BUG(7, "Bug"), DARK(17, "Dark"), DRAGON(16, "Dragon"), ELECTRIC(13, "Electric"), FIGHTING(2, "Fighting"), FIRE(10,
-			"Fire"), FLYING(3, "Flying"), GHOST(8, "Ghost"), GRASS(12, "Grass"), GROUND(5,
-					"Ground"), ICE(15, "Ice"), NORMAL(1, "Normal"), POISON(4,
-							"Poison"), PSYCHIC(14, "Psychic"), ROCK(6, "Rock"), STEEL(9, "Steel"), WATER(11, "Water");
+	BUG(7, "Bug"),
+	DARK(17, "Dark"),
+	DRAGON(16, "Dragon"),
+	ELECTRIC(13, "Electric"),
+	FIGHTING(2, "Fighting"),
+	FIRE(10, "Fire"),
+	FLYING(3, "Flying"),
+	GHOST(8, "Ghost"),
+	GRASS(12, "Grass"),
+	GROUND(5, "Ground"),
+	ICE(15, "Ice"),
+	NORMAL(1, "Normal"),
+	POISON(4, "Poison"),
+	PSYCHIC(14, "Psychic"),
+	ROCK(6, "Rock"),
+	STEEL(9, "Steel"),
+	WATER(11, "Water");
 
 	private int id;
 	public final String name;
 
-	Type(int id, String name) {
+	Type(final int id, final String name) {
 		this.id = id;
 		this.name = name;
 	}
@@ -19,417 +32,319 @@ public enum Type {
 		return id;
 	}
 
-	@SuppressWarnings("incomplete-switch")
-	public static float getEffectiveness(Type one, Type two, Type move) {
-		float m = 1;
-		switch (one) {
+	public static float getEffectiveness(final Type target, final Type move) {
+		switch (target) {
 		case BUG:
 			switch (move) {
 			case FIGHTING:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FIRE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FLYING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case GRASS:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GROUND:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ROCK:
-				m = (float) 2;
-				break;
+				return 2f;
+			default:
+				return 1f;
 			}
-			break;
 		case DARK:
 			switch (move) {
 			case BUG:
-				m = (float) 2;
-				break;
+				return 2f;
 			case DARK:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FIGHTING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case GHOST:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case PSYCHIC:
-				m = (float) 0;
-				break;
+				return 0f;
+			default:
+				return 1f;
 			}
-			break;
 		case DRAGON:
 			switch (move) {
 			case DRAGON:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ELECTRIC:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FIRE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GRASS:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ICE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case WATER:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
 		case ELECTRIC:
 			switch (move) {
 			case ELECTRIC:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FLYING:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GROUND:
-				m = (float) 2;
-				break;
+				return 2f;
 			case STEEL:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
 		case FIGHTING:
 			switch (move) {
 			case BUG:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case DARK:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FLYING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case PSYCHIC:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ROCK:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
 		case FIRE:
 			switch (move) {
 			case BUG:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FIRE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GRASS:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GROUND:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ICE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ROCK:
-				m = (float) 2;
-				break;
+				return 2f;
 			case STEEL:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case WATER:
-				m = (float) 2;
-				break;
+				return 2f;
+			default:
+				return 1f;
 			}
-			break;
 		case FLYING:
 			switch (move) {
 			case BUG:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ELECTRIC:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FIGHTING:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GRASS:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GROUND:
-				m = (float) 0;
-				break;
+				return 0f;
 			case ICE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ROCK:
-				m = (float) 2;
-				break;
+				return 2f;
+			default:
+				return 1f;
 			}
-			break;
 		case GHOST:
 			switch (move) {
 			case BUG:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case DARK:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FIGHTING:
-				m = (float) 0;
-				break;
+				return 0f;
 			case GHOST:
-				m = (float) 2;
-				break;
+				return 2f;
 			case NORMAL:
-				m = (float) 0;
-				break;
+				return 0f;
 			case POISON:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
 		case GRASS:
 			switch (move) {
 			case BUG:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ELECTRIC:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FIRE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FLYING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case GRASS:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GROUND:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ICE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case POISON:
-				m = (float) 2;
-				break;
+				return 2f;
 			case WATER:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
 		case GROUND:
 			switch (move) {
 			case ELECTRIC:
-				m = (float) 0;
-				break;
+				return 0f;
 			case GRASS:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ICE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case POISON:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ROCK:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case WATER:
-				m = (float) 2;
-				break;
+				return 2f;
+			default:
+				return 1f;
 			}
-			break;
 		case ICE:
 			switch (move) {
 			case FIGHTING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FIRE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ICE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ROCK:
-				m = (float) 2;
-				break;
+				return 2f;
 			case STEEL:
-				m = (float) 2;
-				break;
+				return 2f;
+			default:
+				return 1f;
 			}
-			break;
 		case NORMAL:
 			switch (move) {
 			case FIGHTING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case GHOST:
-				m = (float) 0;
-				break;
+				return 0f;
+			default:
+				return 1f;
 			}
-			break;
 		case POISON:
 			switch (move) {
 			case BUG:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FIGHTING:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GRASS:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GROUND:
-				m = (float) 2;
-				break;
+				return 2f;
 			case POISON:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case PSYCHIC:
-				m = (float) 2;
-				break;
+				return 2f;
+			default:
+				return 1f;
 			}
-			break;
 		case PSYCHIC:
 			switch (move) {
 			case BUG:
-				m = (float) 2;
-				break;
+				return 2f;
 			case DARK:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FIGHTING:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GHOST:
-				m = (float) 2;
-				break;
+				return 2f;
 			case PSYCHIC:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
 		case ROCK:
 			switch (move) {
 			case FIGHTING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FIRE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FLYING:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GRASS:
-				m = (float) 2;
-				break;
+				return 2f;
 			case GROUND:
-				m = (float) 2;
-				break;
+				return 2f;
 			case NORMAL:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case POISON:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case STEEL:
-				m = (float) 2;
-				break;
+				return 2f;
 			case WATER:
-				m = (float) 2;
-				break;
+				return 2f;
+			default:
+				return 1f;
 			}
-			break;
 		case STEEL:
 			switch (move) {
 			case BUG:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case DARK:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case DRAGON:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case FIGHTING:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FIRE:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FLYING:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GHOST:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GRASS:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GROUND:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ICE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case NORMAL:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case POISON:
-				m = (float) 0;
-				break;
+				return 0f;
 			case PSYCHIC:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case ROCK:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case STEEL:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
 		case WATER:
 			switch (move) {
 			case ELECTRIC:
-				m = (float) 2;
-				break;
+				return 2f;
 			case FIRE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case GRASS:
-				m = (float) 2;
-				break;
+				return 2f;
 			case ICE:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case STEEL:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
 			case WATER:
-				m = (float) 0.5;
-				break;
+				return 0.5f;
+			default:
+				return 1f;
 			}
-			break;
+		default:
+			return 1f;
 		}
-
-		if (two != null) {
-			m = m * getEffectiveness(two, null, move);
-		}
-		return m;
 	}
 
-	public static Type getType(int id) {
+	public static Type getType(final int id) {
 		switch (id) {
 		case 1:
 			return NORMAL;
