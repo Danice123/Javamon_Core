@@ -2,8 +2,6 @@ package dev.dankins.javamon.battle.data.attack;
 
 public enum AttackFlag {
 
-	UNDERGROUND,
-
 	DISABLED,
 	BLOCKED_STAT_CHANGES,
 	MULTI_TURN_MOVE,

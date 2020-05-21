@@ -10,7 +10,7 @@ import dev.dankins.javamon.battle.action.AttackAction;
 import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.battle.display.event.Event;
 
-@JsonTypeInfo(use = Id.CLASS, include = As.PROPERTY, property = "effect")
+@JsonTypeInfo(use = Id.MINIMAL_CLASS, include = As.PROPERTY, property = "effect")
 public interface Effect {
 
 	List<Event> use(AttackAction attack, MonsterHandler target);

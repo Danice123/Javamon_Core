@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import dev.dankins.javamon.battle.RandomNumberGenerator;
 import dev.dankins.javamon.battle.data.BattlesystemHook;
 import dev.dankins.javamon.battle.data.MonsterHandler;
+import dev.dankins.javamon.battle.data.StoreVariables;
 import dev.dankins.javamon.battle.data.attack.AttackFlag;
 import dev.dankins.javamon.battle.data.attack.AttackInstance;
 import dev.dankins.javamon.battle.data.attack.effect.CustomStatus;
@@ -29,15 +30,18 @@ public class AttackAction implements Action, Comparable<AttackAction> {
 	}
 
 	public List<Event> execute(final MonsterHandler target) {
-		final List<Event> events = Lists.newArrayList();
+		final List<Event> events = Lists
+				.newArrayList(new AttackEvent(user.getKey(), attackInstance));
 		for (final CustomStatus status : user.getTemporaryStatuses()) {
 			events.addAll(status.apply(BattlesystemHook.onAttackBegin));
+		}
+		for (final CustomStatus status : target.getTemporaryStatuses()) {
+			events.addAll(status.apply(BattlesystemHook.onAttackTargeted));
 		}
 		if (events.stream().anyMatch(event -> CancelEvent.class.isInstance(event))) {
 			return events;
 		}
 
-		events.add(new AttackEvent(user.getKey(), attackInstance));
 		// TODO: Maybe some edge cases here
 		user.setLastUsedMove(attackInstance);
 
@@ -54,14 +58,25 @@ public class AttackAction implements Action, Comparable<AttackAction> {
 		}
 
 		target.moveHitByThisTurn = attackInstance;
+		final int targetHealth = target.getMonster().getCurrentHealth();
 		for (final Effect effect : attackInstance.attack.effects) {
 			events.addAll(effect.use(this, target));
+		}
+		final int damageDone = targetHealth - target.getMonster().getCurrentHealth();
+
+		for (final CustomStatus status : user.getTemporaryStatuses()) {
+			events.addAll(status.apply(BattlesystemHook.onAttackEnd));
+		}
+		for (final CustomStatus status : target.getTemporaryStatuses()) {
+			target.setCounter(StoreVariables.DamageTaken.value, damageDone);
+			events.addAll(status.apply(BattlesystemHook.onAttackTargetedHit));
+			target.setCounter(StoreVariables.DamageTaken.value, null);
 		}
 		return events;
 	}
 
 	private boolean missCalc(final MonsterHandler target) {
-		if (target.getFlag(AttackFlag.UNDERGROUND) || target.getFlag(AttackFlag.FLYING)) {
+		if (target.getFlag(AttackFlag.FLYING)) {
 			return true;
 		}
 		final int chance = Math.round(

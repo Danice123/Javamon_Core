@@ -1,12 +1,19 @@
 package dev.dankins.javamon.battle;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 import dev.dankins.javamon.battle.action.Action;
 import dev.dankins.javamon.battle.action.AttackAction;
 import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.BattlesystemHook;
+import dev.dankins.javamon.battle.data.StoreVariables;
 import dev.dankins.javamon.battle.data.TrainerHandler;
 import dev.dankins.javamon.battle.data.attack.effect.CustomStatus;
 import dev.dankins.javamon.battle.display.BattlesystemListener;
+import dev.dankins.javamon.battle.display.event.CancelEvent;
+import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
 import dev.dankins.javamon.battle.display.event.GenericEvent;
 import dev.dankins.javamon.battle.display.event.TargetedEvent;
@@ -66,7 +73,25 @@ public class MainLogicHandler implements Runnable {
 			return new AttackAction(handler.getCurrentMonster(),
 					handler.getCurrentMonster().getLastUsedMove());
 		}
-		return handler.getNextAction(opponent);
+
+		final Action action = handler.getNextAction(opponent);
+
+		// Handle canceling the choice of an attack (Disable)
+		if (AttackAction.class.isInstance(action)) {
+			final List<Event> events = Lists.newArrayList();
+			handler.getCurrentMonster().getStore().put(StoreVariables.ChosenAttack.value,
+					((AttackAction) action).attackInstance);
+			for (final CustomStatus status : handler.getCurrentMonster().getTemporaryStatuses()) {
+				events.addAll(status.apply(BattlesystemHook.onAttackChoice));
+			}
+			handler.getCurrentMonster().getStore().remove(StoreVariables.ChosenAttack.value);
+
+			events.forEach(event -> listener.sendEvent(event));
+			if (events.stream().anyMatch(event -> CancelEvent.class.isInstance(event))) {
+				return getActionFromHandler(handler, opponent);
+			}
+		}
+		return action;
 	}
 
 	private void handleSwitch(final Action action, final String key) {

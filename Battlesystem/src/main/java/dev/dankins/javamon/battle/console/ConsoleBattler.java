@@ -50,7 +50,7 @@ public class ConsoleBattler {
 		final ConsolePlayer A = new ConsolePlayer("A", mA);
 
 		final ConsolePlayer B = new ConsolePlayer("B",
-				new MonsterInstance(monsterList.getMonster("Charmander"), 10, "Doug", 55555));
+				new MonsterInstance(monsterList.getMonster("Charmander"), 1, "Doug", 55555));
 
 		final HashMap<String, TrainerHandler> store = Maps.newHashMap();
 		store.put("A", A);

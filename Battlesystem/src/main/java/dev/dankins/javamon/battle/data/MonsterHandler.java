@@ -23,6 +23,7 @@ public class MonsterHandler {
 	private final EnumMap<Stat, Integer> statChangeLevel;
 	private final EnumMap<AttackFlag, Boolean> flags;
 	private final Map<String, Integer> counters;
+	private final Map<String, Object> store;
 	private final Set<CustomStatus> temporaryStatuses;
 
 	private AttackInstance lastUsedMove;
@@ -38,6 +39,7 @@ public class MonsterHandler {
 		statChangeLevel = Maps.newEnumMap(Stat.class);
 		flags = Maps.newEnumMap(AttackFlag.class);
 		counters = Maps.newHashMap();
+		store = Maps.newHashMap();
 		temporaryStatuses = Sets.newHashSet();
 
 		resetStats();
@@ -69,8 +71,16 @@ public class MonsterHandler {
 		return 0;
 	}
 
-	public void setCounter(final String counter, final int value) {
-		counters.put(counter, value);
+	public void setCounter(final String counter, final Integer value) {
+		if (value == null) {
+			counters.remove(counter);
+		} else {
+			counters.put(counter, value);
+		}
+	}
+
+	public Map<String, Object> getStore() {
+		return store;
 	}
 
 	public boolean isUsingMultiTurnMove() {

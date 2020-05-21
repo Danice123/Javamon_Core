@@ -2,5 +2,12 @@ package dev.dankins.javamon.battle.data;
 
 public enum BattlesystemHook {
 
-	onEffectInit, onTurnBegin, onAttackBegin, onTurnEnd
+	onEffectInit,
+	onAttackChoice,
+	onTurnBegin,
+	onAttackBegin,
+	onAttackTargeted,
+	onAttackEnd,
+	onAttackTargetedHit,
+	onTurnEnd,
 }
