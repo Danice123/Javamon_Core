@@ -13,6 +13,7 @@ import dev.dankins.javamon.data.Inventory;
 import dev.dankins.javamon.data.SaveFile;
 import dev.dankins.javamon.display.Spriteset;
 import dev.dankins.javamon.logic.Party;
+import dev.dankins.javamon.logic.PartyWrapper;
 
 public class Player extends WalkableHandler implements dev.dankins.javamon.logic.abstraction.Player {
 
@@ -42,9 +43,13 @@ public class Player extends WalkableHandler implements dev.dankins.javamon.logic
 		return pokeData;
 	}
 
-	@Override
 	public Party getParty() {
 		return party;
+	}
+
+	@Override
+	public dev.dankins.javamon.data.monster.instance.Party getParty_() {
+		return new PartyWrapper(party);
 	}
 
 	@Override

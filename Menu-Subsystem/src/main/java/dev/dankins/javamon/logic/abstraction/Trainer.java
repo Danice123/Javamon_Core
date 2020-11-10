@@ -7,7 +7,7 @@ import dev.dankins.javamon.data.monster.instance.Party;
 
 public interface Trainer {
 
-	Party getParty();
+	Party getParty_();
 
 	AssetDescriptor<Texture> getImage();
 
