@@ -9,4 +9,6 @@ public interface PlayerBattleMenu extends Menu {
 	void setupMenu(MonsterInstance pokemon);
 
 	BattleAction getAction();
+
+	Integer getActionChoice();
 }

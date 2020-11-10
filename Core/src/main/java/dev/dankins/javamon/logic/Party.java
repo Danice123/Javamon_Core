@@ -1,24 +1,26 @@
-package dev.dankins.javamon.data.monster.instance;
+package dev.dankins.javamon.logic;
 
 import java.util.AbstractList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import dev.dankins.javamon.data.monster.MonsterList;
+import dev.dankins.javamon.battle.data.monster.MonsterInstance;
+import dev.dankins.javamon.battle.data.monster.MonsterList;
 import dev.dankins.javamon.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.monster.Status;
 
-public class PartyImpl extends AbstractList<MonsterInstance> implements Party {
+public class Party extends AbstractList<dev.dankins.javamon.data.monster.instance.MonsterInstance>
+		implements dev.dankins.javamon.data.monster.instance.Party {
 
 	private static final int PARTY_SIZE = 6;
 
 	private final MonsterInstance[] party = new MonsterInstance[PARTY_SIZE];
 
-	public PartyImpl() {
+	public Party() {
 	}
 
-	public PartyImpl(final MonsterList monsterList, final List<MonsterSerialized> monsters) {
+	public Party(final MonsterList monsterList, final List<MonsterSerialized> monsters) {
 		for (final MonsterSerialized monster : monsters) {
 			add(monsterList.loadMonster(monster));
 		}

@@ -1,26 +1,26 @@
 package dev.dankins.javamon.logic.menu;
 
 import dev.dankins.javamon.ThreadUtils;
-import dev.dankins.javamon.data.monster.instance.MonsterInstance;
-import dev.dankins.javamon.data.monster.instance.PartyImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
+import dev.dankins.javamon.logic.Party;
 
 public class ChoosePokemonHandler extends MenuHandler<PartyMenu> {
 
 	static public final Class<? extends Menu> MENU_TYPE = PartyMenu.class;
 	static public Class<? extends PartyMenu> Menu_Class;
 
-	private final PartyImpl party;
+	private final Party party;
 	private MonsterInstance chosenPokemon = null;
 	private final MonsterInstance currentPokemon;
 	private final boolean canCancel;
 
-	public ChoosePokemonHandler(final Game game, final MonsterInstance currentPokemon,
-			final PartyMenuType type, final boolean canCancel) {
+	public ChoosePokemonHandler(final Game game, final MonsterInstance currentPokemon, final PartyMenuType type,
+			final boolean canCancel) {
 		super(game, Menu_Class);
 		this.currentPokemon = currentPokemon;
 		this.canCancel = canCancel;
@@ -40,8 +40,7 @@ public class ChoosePokemonHandler extends MenuHandler<PartyMenu> {
 		case Switch:
 			final MonsterInstance chosenPokemon = party.get(menu.getPokemonChoice());
 			if (chosenPokemon.equals(currentPokemon)) {
-				final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-						"That Pokemon is already fighting!");
+				final ChatboxHandler chatboxHandler = new ChatboxHandler(game, "That Pokemon is already fighting!");
 				chatboxHandler.waitAndHandle();
 				ThreadUtils.sleep(10);
 				return true;
@@ -50,8 +49,7 @@ public class ChoosePokemonHandler extends MenuHandler<PartyMenu> {
 				this.chosenPokemon = chosenPokemon;
 				return false;
 			}
-			final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-					"That Pokemon has no will to fight!");
+			final ChatboxHandler chatboxHandler = new ChatboxHandler(game, "That Pokemon has no will to fight!");
 			chatboxHandler.waitAndHandle();
 			ThreadUtils.sleep(10);
 			return true;

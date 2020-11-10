@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.ThreadUtils;
+import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.data.map.Trigger;
-import dev.dankins.javamon.data.monster.instance.MonsterInstance;
 import dev.dankins.javamon.display.RenderInfo;
 import dev.dankins.javamon.logic.Dir;
 import dev.dankins.javamon.logic.Game;

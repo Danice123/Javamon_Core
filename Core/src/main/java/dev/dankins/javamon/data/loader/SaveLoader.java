@@ -13,11 +13,11 @@ import com.badlogic.gdx.utils.Array;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
-import dev.dankins.javamon.battle.data.monster.MonsterImpl;
-import dev.dankins.javamon.battle.data.monster.MonsterSerialized;
+import dev.dankins.javamon.battle.data.monster.Monster;
 import dev.dankins.javamon.data.SaveFile;
 import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.item.ItemSerialized;
+import dev.dankins.javamon.data.monster.MonsterSerialized;
 
 public class SaveLoader extends SynchronousAssetLoader<SaveFile, SaveLoader.Parameters> {
 
@@ -29,8 +29,8 @@ public class SaveLoader extends SynchronousAssetLoader<SaveFile, SaveLoader.Para
 	}
 
 	@Override
-	public SaveFile load(final AssetManager assetManager, final String fileName,
-			final FileHandle file, final Parameters parameter) {
+	public SaveFile load(final AssetManager assetManager, final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		return loadSave(file);
 	}
 
@@ -42,7 +42,7 @@ public class SaveLoader extends SynchronousAssetLoader<SaveFile, SaveLoader.Para
 
 		final List<AssetDescriptor> deps = Lists.newArrayList();
 		for (final MonsterSerialized monster : save.party) {
-			deps.add(new AssetDescriptor<MonsterImpl>(monster.monster, MonsterImpl.class));
+			deps.add(new AssetDescriptor<Monster>(monster.monster, Monster.class));
 		}
 		for (final ItemSerialized item : save.inventory) {
 			deps.add(new AssetDescriptor<Item>(item.tag, Item.class));

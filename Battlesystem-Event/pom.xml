@@ -7,8 +7,8 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   
-  <artifactId>Battlesystem</artifactId>
-  <name>Javamon Battlesystem</name>
+  <artifactId>Battlesystem-Event</artifactId>
+  <name>Javamon Battlesystem Events</name>
   
 	<dependencies>
 		<dependency>
@@ -16,22 +16,9 @@
 			<artifactId>Monster-Data</artifactId>
 			<version>${project.version}</version>
  		</dependency>
-		<dependency>
-			<groupId>dev.dankins.javamon</groupId>
-			<artifactId>Battlesystem-Event</artifactId>
-			<version>${project.version}</version>
- 		</dependency>
 	  	<dependency>
 	 		<groupId>com.google.guava</groupId>
 	 		<artifactId>guava</artifactId>
 	 	</dependency>
-	 	<dependency>
-	  		<groupId>com.fasterxml.jackson.core</groupId>
-	  		<artifactId>jackson-databind</artifactId>
-	  	</dependency>
-	  	<dependency>
-	  		<groupId>com.fasterxml.jackson.dataformat</groupId>
-	  		<artifactId>jackson-dataformat-yaml</artifactId>
-	  	</dependency>
 	</dependencies>
 </project>

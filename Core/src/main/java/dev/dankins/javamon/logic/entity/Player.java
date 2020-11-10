@@ -11,14 +11,13 @@ import dev.dankins.javamon.RandomNumberGenerator;
 import dev.dankins.javamon.data.CollectionLibraryImpl;
 import dev.dankins.javamon.data.Inventory;
 import dev.dankins.javamon.data.SaveFile;
-import dev.dankins.javamon.data.monster.instance.PartyImpl;
 import dev.dankins.javamon.display.Spriteset;
-import dev.dankins.javamon.logic.battlesystem.Trainer;
+import dev.dankins.javamon.logic.Party;
 
-public class Player extends WalkableHandler implements dev.dankins.javamon.logic.abstraction.Player, Trainer {
+public class Player extends WalkableHandler implements dev.dankins.javamon.logic.abstraction.Player {
 
 	private CollectionLibraryImpl pokeData;
-	private PartyImpl party;
+	private Party party;
 	private Inventory inventory;
 	private Inventory itemStorage;
 	private int money;
@@ -27,7 +26,7 @@ public class Player extends WalkableHandler implements dev.dankins.javamon.logic
 	public Player(final Optional<Spriteset> sprites) {
 		super("Player", sprites);
 		pokeData = new CollectionLibraryImpl();
-		party = new PartyImpl();
+		party = new Party();
 		inventory = new Inventory();
 		itemStorage = new Inventory();
 		money = 0;
@@ -44,7 +43,7 @@ public class Player extends WalkableHandler implements dev.dankins.javamon.logic
 	}
 
 	@Override
-	public PartyImpl getParty() {
+	public Party getParty() {
 		return party;
 	}
 
@@ -91,7 +90,7 @@ public class Player extends WalkableHandler implements dev.dankins.javamon.logic
 		id = s.id;
 		strings = s.strings;
 		pokeData = s.pokeData;
-		party = new PartyImpl(assetManager.get("MonsterList"), s.party);
+		party = new Party(assetManager.get("MonsterList"), s.party);
 		inventory = new Inventory(assetManager, s.inventory);
 		itemStorage = new Inventory(assetManager, s.itemStorage);
 		entity.setFacing(s.facing);
@@ -119,12 +118,10 @@ public class Player extends WalkableHandler implements dev.dankins.javamon.logic
 		return true;
 	}
 
-	@Override
 	public String getTrainerLossQuip() {
 		return "...";
 	}
 
-	@Override
 	public int getWinnings() {
 		return 0;
 	}

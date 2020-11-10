@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
-import dev.dankins.javamon.data.monster.instance.MonsterInstance;
+import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.data.script.ScriptLoadingException;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.script.Command;
@@ -23,7 +22,7 @@ public class Heal extends Command {
 	public Optional<String> execute(final Game game, final Map<String, String> strings,
 			final Optional<ScriptTarget> target) throws ScriptException {
 		for (final MonsterInstance monster : game.getPlayer().getParty()) {
-			((MonsterInstanceImpl) monster).heal();
+			monster.heal();
 		}
 
 		return Optional.empty();

@@ -11,11 +11,11 @@ import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.RandomNumberGenerator;
-import dev.dankins.javamon.data.monster.MonsterList;
-import dev.dankins.javamon.data.monster.instance.PartyImpl;
+import dev.dankins.javamon.battle.data.monster.MonsterList;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.display.Spriteset;
 import dev.dankins.javamon.logic.Dir;
+import dev.dankins.javamon.logic.Party;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.entity.TrainerHandler;
 import dev.dankins.javamon.logic.entity.WalkableHandler;
@@ -84,7 +84,7 @@ public class EntitySerialized {
 			return npc;
 		case TRAINER:
 			final long trainerId = RandomNumberGenerator.random.nextInt(1000000);
-			final PartyImpl party = new PartyImpl();
+			final Party party = new Party();
 			for (final TrainerMonsterSerialized monster : trainer.party) {
 				MonsterList monsterList = assets.get("monsterList");
 				party.add(monsterList.generateWild(monster.name, monster.level, name, trainerId));

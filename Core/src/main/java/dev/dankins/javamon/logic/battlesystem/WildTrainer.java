@@ -4,21 +4,21 @@ import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
 import dev.dankins.javamon.data.monster.instance.MonsterInstance;
-import dev.dankins.javamon.data.monster.instance.PartyImpl;
+import dev.dankins.javamon.logic.Party;
 
 public class WildTrainer implements Trainer {
 
-	private final PartyImpl party;
+	private final Party party;
 	private final MonsterInstance wildPokemon;
 
 	public WildTrainer(final MonsterInstance wildPokemon) {
 		this.wildPokemon = wildPokemon;
-		party = new PartyImpl();
+		party = new Party();
 		party.add(wildPokemon);
 	}
 
 	@Override
-	public PartyImpl getParty() {
+	public Party getParty() {
 		return party;
 	}
 

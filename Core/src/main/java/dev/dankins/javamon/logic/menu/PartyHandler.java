@@ -1,18 +1,18 @@
 package dev.dankins.javamon.logic.menu;
 
-import dev.dankins.javamon.data.monster.instance.PartyImpl;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
+import dev.dankins.javamon.logic.Party;
 
 public class PartyHandler extends MenuHandler<PartyMenu> {
 
 	static public final Class<? extends Menu> MENU_TYPE = PartyMenu.class;
 	static public Class<? extends PartyMenu> Menu_Class;
 
-	private final PartyImpl party;
+	private final Party party;
 
 	public PartyHandler(final Game game) {
 		super(game, Menu_Class);

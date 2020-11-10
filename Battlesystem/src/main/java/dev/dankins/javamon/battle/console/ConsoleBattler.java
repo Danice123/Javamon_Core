@@ -13,7 +13,6 @@ import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.battle.data.monster.MonsterList;
 import dev.dankins.javamon.battle.display.BattlesystemListener;
 import dev.dankins.javamon.battle.display.event.Event;
-import dev.dankins.javamon.battle.display.event.EventType;
 import dev.dankins.javamon.battle.display.event.FaintedMonsterEvent;
 import dev.dankins.javamon.battle.display.event.ReturnMonsterEvent;
 import dev.dankins.javamon.battle.display.event.SendMonsterEvent;
@@ -75,7 +74,7 @@ public class ConsoleBattler {
 		}
 
 		@Override
-		public Event sendEvent(final Event event) {
+		public void sendEvent(final Event event) {
 			switch (event.getType()) {
 			case StartBattle:
 				System.out.println("Battle Start!");
@@ -152,12 +151,6 @@ public class ConsoleBattler {
 			default:
 				System.out.println("Unhandled event " + event.getType());
 			}
-			return new Event() {
-				@Override
-				public EventType getType() {
-					return null;
-				}
-			};
 		}
 	}
 

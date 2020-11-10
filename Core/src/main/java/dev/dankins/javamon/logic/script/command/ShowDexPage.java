@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import dev.dankins.javamon.battle.data.monster.MonsterImpl;
+import dev.dankins.javamon.battle.data.monster.Monster;
 import dev.dankins.javamon.data.script.ScriptLoadingException;
 import dev.dankins.javamon.data.script.ScriptLoadingException.SCRIPT_LOADING_ERROR_TYPE;
 import dev.dankins.javamon.logic.Game;
@@ -32,15 +32,14 @@ public class ShowDexPage extends Command {
 				withInfo = false;
 			}
 		} catch (final NoSuchElementException e) {
-			throw new ScriptLoadingException("ShowDexPage",
-					SCRIPT_LOADING_ERROR_TYPE.invalidNumberOfArguments);
+			throw new ScriptLoadingException("ShowDexPage", SCRIPT_LOADING_ERROR_TYPE.invalidNumberOfArguments);
 		}
 	}
 
 	@Override
 	public Optional<String> execute(final Game game, final Map<String, String> strings,
 			final Optional<ScriptTarget> target) throws ScriptException {
-		final MonsterImpl pokemon = game.getMonsterList().getMonster(parseString(monster, strings));
+		final Monster pokemon = game.getMonsterList().getMonster(parseString(monster, strings));
 		final PokedexPageHandler handler = new PokedexPageHandler(game, pokemon, withInfo);
 		handler.waitAndHandle();
 		game.getPlayer().getPokeData().seen(pokemon.number);

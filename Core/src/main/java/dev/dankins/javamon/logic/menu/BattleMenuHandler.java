@@ -6,32 +6,37 @@ import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.ThreadUtils;
+import dev.dankins.javamon.battle.BattleStateChange;
 import dev.dankins.javamon.battle.MainLogicHandler;
-import dev.dankins.javamon.battle.display.BattlesystemListener;
-import dev.dankins.javamon.battle.display.event.Event;
-import dev.dankins.javamon.data.monster.instance.MonsterInstance;
+import dev.dankins.javamon.battle.action.Action;
+import dev.dankins.javamon.battle.action.SwitchAction;
+import dev.dankins.javamon.battle.data.MonsterHandler;
+import dev.dankins.javamon.battle.data.TrainerHandler;
+import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.BattleMenu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
-import dev.dankins.javamon.logic.battlesystem.BattleAction;
-import dev.dankins.javamon.logic.battlesystem.BattlesystemImpl;
 import dev.dankins.javamon.logic.battlesystem.Trainer;
 import dev.dankins.javamon.logic.battlesystem.WildTrainer;
 import dev.dankins.javamon.logic.entity.Player;
 
-public class BattleMenuHandler extends MenuHandler<BattleMenu> implements BattlesystemListener {
+public class BattleMenuHandler extends MenuHandler<BattleMenu>
+		implements dev.dankins.javamon.battle.data.TrainerHandler {
 
 	static public final Class<? extends Menu> MENU_TYPE = BattleMenu.class;
 	static public Class<? extends BattleMenu> Menu_Class;
 
+	private final Player player;
+	private MonsterHandler currentMonster;
 	private final MainLogicHandler battlesystem;
 	private boolean battleIsOver = false;
 
 	public BattleMenuHandler(final Game game, final Player player, final Trainer enemy) {
 		super(game, Menu_Class);
-		battlesystem = new MainLogicHandler(this, player, enemy);
+		this.player = player;
+		battlesystem = new MainLogicHandler(menu, this, enemy);
 		menu.setupMenu(player, enemy);
 		initScreen();
 		ThreadUtils.makeAnonThread(battlesystem);
@@ -50,32 +55,23 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Battle
 	}
 
 	@Override
-	public Event sendEvent(Event event) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void startTrainerBattle(final Trainer enemy, final MonsterInstance monster) {
-		menu.startBattle();
-		print(enemy.getName() + " wants to fight!");
-		menu.moveEnemyFromWindow();
-		print(enemy.getName() + " sent out " + monster.getName() + "!");
-		menu.enemyMonster(monster);
-	}
-
-	public void startWildBattle(final MonsterInstance monster) {
-		menu.startBattle();
-		print("A wild " + monster.getName() + " appeared!");
-		menu.enemyMonster(monster);
-	}
-
-	public void startPlayerBattle(final MonsterInstance monster) {
-		printnw("Go! " + monster.getName() + "!!");
-		menu.movePlayerFromWindow();
-		menu.playerMonster(monster);
+	public Action getNextAction(TrainerHandler opponent) {
+		final PlayerBattleHandler playerBattleHandler = new PlayerBattleHandler(game, player, currentMonster);
+		playerBattleHandler.waitAndHandle();
+		ThreadUtils.sleep(100);
+		return playerBattleHandler.getChosenAction();
 	}
 
 	@Override
+	public SwitchAction getNextMonster() throws BattleStateChange {
+		final ChoosePokemonHandler choosePokemonInBattleHandler = new ChoosePokemonHandler(game,
+				currentMonster.getMonster(), PartyMenuType.Switch, false);
+		choosePokemonInBattleHandler.waitAndHandle();
+		ThreadUtils.sleep(10);
+		return new SwitchAction(new MonsterHandler("key", choosePokemonInBattleHandler.getChosenPokemon()), (v) -> {
+		});
+	}
+
 	public void print(final String string) {
 		final ChatboxHandler chatboxHandler = new ChatboxHandler(game, string);
 		chatboxHandler.waitAndHandle();
@@ -102,32 +98,10 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Battle
 		menu.setMessageBoxContents(string);
 	}
 
-	@Override
-	public void updateHealth() {
-		menu.updateHealth(battlesystem.getPlayerMonster(), battlesystem.getEnemyMonster());
-	}
-
-	public BattleAction openMenu() {
-		menu.setMessageBoxContents("Choose an action!");
-		final PlayerBattleHandler playerBattleHandler = new PlayerBattleHandler(game, battlesystem);
-		playerBattleHandler.waitAndHandle();
-		ThreadUtils.sleep(100);
-		menu.setMessageBoxContents("");
-		return playerBattleHandler.getChosenAction();
-	}
-
-	public MonsterInstance switchToNewPokemon() {
-		final ChoosePokemonHandler choosePokemonInBattleHandler = new ChoosePokemonHandler(game,
-				battlesystem.getPlayerMonster(), PartyMenuType.Switch, false);
-		choosePokemonInBattleHandler.waitAndHandle();
-		ThreadUtils.sleep(10);
-		return choosePokemonInBattleHandler.getChosenPokemon();
-	}
-
 	public void respawnPlayer() {
 		game.getPlayer().modifyMoney(game.getPlayer().getMoney() / -2);
 		for (final MonsterInstance monster : game.getPlayer().getParty()) {
-			((MonsterInstanceImpl) monster).heal();
+			monster.heal();
 		}
 
 		final String[] respawn = game.getPlayer().getStrings().get("respawnPoint").split(":");
@@ -143,6 +117,24 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Battle
 		battleIsOver = true;
 		ThreadUtils.notifyOnObject(menu);
 		screen.disposeMe();
+	}
+
+	@Override
+	public String getKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MonsterHandler getCurrentMonster() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.MainLoader;
-import dev.dankins.javamon.battle.data.monster.MonsterImpl;
+import dev.dankins.javamon.battle.data.monster.Monster;
 import dev.dankins.javamon.data.map.EntitySerialized;
 import dev.dankins.javamon.data.map.EntitySerialized.Type;
 import dev.dankins.javamon.data.map.TrainerMonsterSerialized;
@@ -33,8 +33,8 @@ public class EntityLoader extends SynchronousAssetLoader<EntityHandler, EntityLo
 	}
 
 	@Override
-	public EntityHandler load(final AssetManager assetManager, final String fileName,
-			final FileHandle file, final Parameters parameter) {
+	public EntityHandler load(final AssetManager assetManager, final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		final EntitySerialized entity = loadEntity(file);
 		return entity.buildEntity(assetManager, file.parent().path());
 	}
@@ -52,25 +52,21 @@ public class EntityLoader extends SynchronousAssetLoader<EntityHandler, EntityLo
 		}
 
 		if (entity.spriteset != null) {
-			final FileHandle spriteFolder = Gdx.files.getFileHandle("entity/sprites",
-					FileType.Internal);
-			deps.add(new AssetDescriptor<Texture>(spriteFolder.child(entity.spriteset + ".png"),
-					Texture.class));
+			final FileHandle spriteFolder = Gdx.files.getFileHandle("entity/sprites", FileType.Internal);
+			deps.add(new AssetDescriptor<Texture>(spriteFolder.child(entity.spriteset + ".png"), Texture.class));
 		}
 
 		if (entity.script != null) {
 			if (entity.script.startsWith("$")) {
-				deps.add(new AssetDescriptor<Script>(
-						"scripts/" + entity.script.substring(1) + ".ps", Script.class));
+				deps.add(new AssetDescriptor<Script>("scripts/" + entity.script.substring(1) + ".ps", Script.class));
 			} else {
-				deps.add(new AssetDescriptor<Script>(file.parent().child(entity.script + ".ps"),
-						Script.class));
+				deps.add(new AssetDescriptor<Script>(file.parent().child(entity.script + ".ps"), Script.class));
 			}
 		}
 
 		if (entity.trainer != null) {
 			for (final TrainerMonsterSerialized monster : entity.trainer.party) {
-				deps.add(new AssetDescriptor<MonsterImpl>(monster.name, MonsterImpl.class));
+				deps.add(new AssetDescriptor<Monster>(monster.name, Monster.class));
 			}
 		}
 		return Array.with(deps.toArray(new AssetDescriptor[0]));

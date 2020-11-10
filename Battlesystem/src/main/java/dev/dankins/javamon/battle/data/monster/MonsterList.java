@@ -52,13 +52,12 @@ public class MonsterList implements dev.dankins.javamon.data.monster.MonsterList
 	}
 
 	@Override
-	public dev.dankins.javamon.data.monster.instance.MonsterInstance generateWild(String monsterName, int level,
-			String playerName, long playerId) {
+	public MonsterInstance generateWild(String monsterName, int level, String playerName, long playerId) {
 		return new MonsterInstance(getMonster(monsterName), level, playerName, playerId);
 	}
 
 	@Override
-	public dev.dankins.javamon.data.monster.instance.MonsterInstance loadMonster(MonsterSerialized monster) {
+	public MonsterInstance loadMonster(MonsterSerialized monster) {
 		return new MonsterInstance(getMonster(monster.monster), monster);
 	}
 }

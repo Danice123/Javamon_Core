@@ -15,7 +15,7 @@ import dev.dankins.javamon.battle.display.event.attack.UpdateHealthEvent;
 import dev.dankins.javamon.data.monster.MultiType;
 import dev.dankins.javamon.data.monster.Stat;
 
-public class MonsterHandler {
+public class MonsterHandler implements Monster {
 
 	private final String key;
 	private final MonsterInstance monster;
@@ -156,24 +156,20 @@ public class MonsterHandler {
 
 	public int getSpecialAttack(final boolean isCrit) {
 		if (statChangeLevel.get(Stat.SPECIAL_ATTACK) > 0) {
-			return Math.round(monster.getSpecialAttack()
-					* (statChangeLevel.get(Stat.SPECIAL_ATTACK) + 2) / 2);
+			return Math.round(monster.getSpecialAttack() * (statChangeLevel.get(Stat.SPECIAL_ATTACK) + 2) / 2);
 		}
 		if (statChangeLevel.get(Stat.SPECIAL_ATTACK) < 0 && !isCrit) {
-			return Math.round(monster.getSpecialAttack() * 2
-					/ (-statChangeLevel.get(Stat.SPECIAL_ATTACK) + 2));
+			return Math.round(monster.getSpecialAttack() * 2 / (-statChangeLevel.get(Stat.SPECIAL_ATTACK) + 2));
 		}
 		return monster.getSpecialAttack();
 	}
 
 	public int getSpecialDefense(final boolean isCrit) {
 		if (statChangeLevel.get(Stat.SPECIAL_DEFENSE) > 0 && !isCrit) {
-			return Math.round(monster.getSpecialDefense()
-					* (statChangeLevel.get(Stat.SPECIAL_DEFENSE) + 2) / 2);
+			return Math.round(monster.getSpecialDefense() * (statChangeLevel.get(Stat.SPECIAL_DEFENSE) + 2) / 2);
 		}
 		if (statChangeLevel.get(Stat.SPECIAL_DEFENSE) < 0) {
-			return Math.round(monster.getSpecialDefense() * 2
-					/ (-statChangeLevel.get(Stat.SPECIAL_DEFENSE) + 2));
+			return Math.round(monster.getSpecialDefense() * 2 / (-statChangeLevel.get(Stat.SPECIAL_DEFENSE) + 2));
 		}
 		return monster.getSpecialDefense();
 	}

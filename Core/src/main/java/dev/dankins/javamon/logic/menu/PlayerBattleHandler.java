@@ -1,6 +1,11 @@
 package dev.dankins.javamon.logic.menu;
 
 import dev.dankins.javamon.ThreadUtils;
+import dev.dankins.javamon.battle.action.Action;
+import dev.dankins.javamon.battle.action.AttackAction;
+import dev.dankins.javamon.battle.action.RunAction;
+import dev.dankins.javamon.battle.action.SwitchAction;
+import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.item.ItemStack;
 import dev.dankins.javamon.display.screen.Menu;
@@ -8,30 +13,31 @@ import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.display.screen.menu.PlayerBattleMenu;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
-import dev.dankins.javamon.logic.battlesystem.BattleAction;
-import dev.dankins.javamon.logic.battlesystem.Battlesystem;
+import dev.dankins.javamon.logic.entity.Player;
 
 public class PlayerBattleHandler extends MenuHandler<PlayerBattleMenu> {
 
 	static public final Class<? extends Menu> MENU_TYPE = PlayerBattleMenu.class;
 	static public Class<? extends PlayerBattleMenu> Menu_Class;
 
-	private final Battlesystem system;
-	private BattleAction chosenAction;
+	private final Player player;
+	private final MonsterHandler monsterHandler;
 
-	public PlayerBattleHandler(final Game game, final Battlesystem system) {
+	private Action chosenAction;
+
+	public PlayerBattleHandler(final Game game, final Player player, MonsterHandler monsterHandler) {
 		super(game, Menu_Class);
-		this.system = system;
-		menu.setupMenu(system.getPlayerMonster());
+		this.player = player;
+		this.monsterHandler = monsterHandler;
+		menu.setupMenu(monsterHandler.getMonster());
 		initScreen();
 	}
 
 	@Override
 	protected boolean handleResponse() {
-		switch (menu.getAction().action) {
+		switch (menu.getAction()) {
 		case Item:
-			final ChooseItemHandler chooseItemHandler = new ChooseItemHandler(game,
-					game.getPlayer().getInventory());
+			final ChooseItemHandler chooseItemHandler = new ChooseItemHandler(game, player.getInventory());
 			chooseItemHandler.waitAndHandle();
 			if (chooseItemHandler.wasCancelled()) {
 				return true;
@@ -43,51 +49,45 @@ public class PlayerBattleHandler extends MenuHandler<PlayerBattleMenu> {
 						final ItemStack stack = (ItemStack) chosenItem;
 						stack.remove(1);
 						if (stack.size() <= 0) {
-							game.getPlayer().getInventory().removeItem(chosenItem);
+							player.getInventory().removeItem(chosenItem);
 						}
 					} else {
-						game.getPlayer().getInventory().removeItem(chosenItem);
+						player.getInventory().removeItem(chosenItem);
 					}
 				}
-				chosenAction = new BattleAction(chosenItem);
+				// chosenAction = new BattleAction(chosenItem);
 				return false;
 			} else {
-				final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-						"You can't use that now!");
+				final ChatboxHandler chatboxHandler = new ChatboxHandler(game, "You can't use that now!");
 				chatboxHandler.waitAndHandle();
 			}
 			return true;
 		case Switch:
 			final ChoosePokemonHandler choosePokemonInBattleHandler = new ChoosePokemonHandler(game,
-					system.getPlayerMonster(), PartyMenuType.Switch, true);
+					monsterHandler.getMonster(), PartyMenuType.Switch, true);
 			choosePokemonInBattleHandler.waitAndHandle();
 			ThreadUtils.sleep(10);
 			if (choosePokemonInBattleHandler.getChosenPokemon() != null) {
-				chosenAction = new BattleAction(choosePokemonInBattleHandler.getChosenPokemon());
+				chosenAction = new SwitchAction(
+						new MonsterHandler("key", choosePokemonInBattleHandler.getChosenPokemon()), (v) -> {
+						});
 				return false;
 			} else {
 				return true;
 			}
 		case Attack:
-			if (system.getPlayerMonster().getAttacks().get(menu.getAction().info)
-					.getCurrentUsage() <= 0) {
-				final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-						"That move doesn't have any PP!");
-				chatboxHandler.waitAndHandle();
-				return true;
-			} else {
-				chosenAction = menu.getAction();
-				return false;
-			}
+			chosenAction = new AttackAction(monsterHandler,
+					monsterHandler.getMonster().getAttacks().get(menu.getActionChoice()));
+			return false;
 		case Run:
-			chosenAction = menu.getAction();
+			chosenAction = new RunAction(monsterHandler, 0); // TODO: Track run attempts
 			return false;
 		default:
 			return true;
 		}
 	}
 
-	public BattleAction getChosenAction() {
+	public Action getChosenAction() {
 		return chosenAction;
 	}
 }

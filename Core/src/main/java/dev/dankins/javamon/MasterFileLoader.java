@@ -10,23 +10,22 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dev.dankins.javamon.battle.data.attack.Attack;
 import dev.dankins.javamon.battle.data.loader.AttackLoader;
 import dev.dankins.javamon.battle.data.loader.MonsterListLoader;
 import dev.dankins.javamon.battle.data.loader.MonsterLoader;
-import dev.dankins.javamon.battle.data.monster.MonsterImpl;
-import dev.dankins.javamon.battle.data.monster.MonsterListImpl;
+import dev.dankins.javamon.battle.data.monster.Monster;
+import dev.dankins.javamon.battle.data.monster.MonsterList;
 import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.loader.EncounterListLoader;
 import dev.dankins.javamon.data.loader.ItemLoader;
 import dev.dankins.javamon.data.loader.TriggerListLoader;
 import dev.dankins.javamon.data.map.EncounterList;
 import dev.dankins.javamon.data.map.TriggerList;
-import dev.dankins.javamon.data.monster.attack.AttackBase;
 import dev.dankins.javamon.logic.map.MapData;
 import dev.dankins.javamon.logic.map.MapLoader;
 
-public class MasterFileLoader
-		extends SynchronousAssetLoader<MasterFile, MasterFileLoader.Parameters> {
+public class MasterFileLoader extends SynchronousAssetLoader<MasterFile, MasterFileLoader.Parameters> {
 
 	private final ObjectMapper mapper;
 
@@ -36,22 +35,18 @@ public class MasterFileLoader
 	}
 
 	@Override
-	public MasterFile load(final AssetManager assetManager, final String fileName,
-			final FileHandle file, final Parameters parameter) {
+	public MasterFile load(final AssetManager assetManager, final String fileName, final FileHandle file,
+			final Parameters parameter) {
 		try {
 			final MasterFile master = mapper.readValue(file.file(), MasterFile.class);
 			master.setGameDirectory(file.parent());
 
-			assetManager.setLoader(AttackBase.class,
-					new AttackLoader(mapper, file.sibling(master.attackDBPath)));
-			assetManager.setLoader(MonsterImpl.class,
-					new MonsterLoader(mapper, file.sibling(master.monsterDBPath)));
-			assetManager.setLoader(MonsterListImpl.class,
+			assetManager.setLoader(Attack.class, new AttackLoader(mapper, file.sibling(master.attackDBPath)));
+			assetManager.setLoader(Monster.class, new MonsterLoader(mapper, file.sibling(master.monsterDBPath)));
+			assetManager.setLoader(MonsterList.class,
 					new MonsterListLoader(mapper, file.sibling(master.monsterDBPath)));
-			assetManager.setLoader(Item.class,
-					new ItemLoader(mapper, file.sibling(master.itemDBPath)));
-			assetManager.setLoader(TriggerList.class,
-					new TriggerListLoader(mapper, file.sibling(master.itemDBPath)));
+			assetManager.setLoader(Item.class, new ItemLoader(mapper, file.sibling(master.itemDBPath)));
+			assetManager.setLoader(TriggerList.class, new TriggerListLoader(mapper, file.sibling(master.itemDBPath)));
 			assetManager.setLoader(EncounterList.class,
 					new EncounterListLoader(mapper, file.sibling(master.itemDBPath)));
 			assetManager.setLoader(MapData.class, new MapLoader(file.sibling(master.itemDBPath)));

@@ -1,6 +1,6 @@
 package dev.dankins.javamon.logic.menu;
 
-import dev.dankins.javamon.data.monster.MonsterList;
+import dev.dankins.javamon.battle.data.monster.MonsterList;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.PokedexMenu;
 import dev.dankins.javamon.logic.Game;

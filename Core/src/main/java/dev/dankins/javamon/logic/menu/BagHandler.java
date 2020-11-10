@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import dev.dankins.javamon.ThreadUtils;
+import dev.dankins.javamon.battle.data.attack.effect.Effect;
 import dev.dankins.javamon.data.Inventory;
 import dev.dankins.javamon.data.item.Item;
 import dev.dankins.javamon.data.item.ItemStack;
-import dev.dankins.javamon.data.monster.attack.effect.Effect;
 import dev.dankins.javamon.data.monster.instance.MonsterInstance;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.display.screen.Menu;
@@ -51,14 +51,13 @@ public class BagHandler extends MenuHandler<BagMenu> implements EffectHandler {
 				final Optional<List<Effect>> effect = item.getEffects();
 				if (effect.isPresent()) {
 					if (game.getPlayer().getParty().size() == 0) {
-						final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-								"You can't use that now!");
+						final ChatboxHandler chatboxHandler = new ChatboxHandler(game, "You can't use that now!");
 						chatboxHandler.waitAndHandle();
 						return true;
 					}
 
-					final ChoosePokemonHandler choosePokemonHandler = new ChoosePokemonHandler(game,
-							null, PartyMenuType.UseItem, true);
+					final ChoosePokemonHandler choosePokemonHandler = new ChoosePokemonHandler(game, null,
+							PartyMenuType.UseItem, true);
 					choosePokemonHandler.waitAndHandle();
 					if (choosePokemonHandler.getChosenPokemon() == null) {
 						return true;
@@ -80,8 +79,7 @@ public class BagHandler extends MenuHandler<BagMenu> implements EffectHandler {
 					}
 				}
 			} else {
-				final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-						"You can't use that now!");
+				final ChatboxHandler chatboxHandler = new ChatboxHandler(game, "You can't use that now!");
 				chatboxHandler.waitAndHandle();
 			}
 
@@ -99,8 +97,7 @@ public class BagHandler extends MenuHandler<BagMenu> implements EffectHandler {
 					playerInventory.removeItem(item);
 				}
 			} else {
-				final ChatboxHandler chatboxHandler = new ChatboxHandler(game,
-						"That's too important to toss!");
+				final ChatboxHandler chatboxHandler = new ChatboxHandler(game, "That's too important to toss!");
 				chatboxHandler.waitAndHandle();
 				ThreadUtils.sleep(10);
 			}

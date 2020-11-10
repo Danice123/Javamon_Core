@@ -7,7 +7,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import dev.dankins.javamon.data.monster.attack.effect.Effect;
+import dev.dankins.javamon.battle.data.attack.effect.Effect;
 import dev.dankins.javamon.data.script.Script;
 
 public class Item implements dev.dankins.javamon.data.abstraction.Item {
@@ -25,14 +25,12 @@ public class Item implements dev.dankins.javamon.data.abstraction.Item {
 
 	@JsonCreator
 	public Item(@JsonProperty("name") final String name, @JsonProperty("tag") final String tag,
-			@JsonProperty("cost") final Integer cost,
-			@JsonProperty("stackable") final boolean stackable,
+			@JsonProperty("cost") final Integer cost, @JsonProperty("stackable") final boolean stackable,
 			@JsonProperty("tossable") final boolean tossable,
 			@JsonProperty("usableInBattle") final boolean usableInBattle,
 			@JsonProperty("usableInField") final boolean usableInField,
 			@JsonProperty("consumedOnUse") final boolean consumedOnUse,
-			@JsonProperty("effects") final List<Effect> effects,
-			@JsonProperty("script") final String script) {
+			@JsonProperty("effects") final List<Effect> effects, @JsonProperty("script") final String script) {
 		this.name = name;
 		this.tag = tag;
 		this.cost = cost;
