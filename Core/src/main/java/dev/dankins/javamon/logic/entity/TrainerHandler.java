@@ -11,7 +11,6 @@ import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.display.Spriteset;
 import dev.dankins.javamon.logic.Party;
-import dev.dankins.javamon.logic.battlesystem.Trainer;
 
 public class TrainerHandler extends WalkableHandler implements Trainer {
 

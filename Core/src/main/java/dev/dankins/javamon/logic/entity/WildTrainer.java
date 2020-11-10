@@ -1,9 +1,14 @@
-package dev.dankins.javamon.logic.battlesystem;
+package dev.dankins.javamon.logic.entity;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
-import dev.dankins.javamon.data.monster.instance.MonsterInstance;
+import dev.dankins.javamon.battle.BattleStateChange;
+import dev.dankins.javamon.battle.action.Action;
+import dev.dankins.javamon.battle.action.SwitchAction;
+import dev.dankins.javamon.battle.data.MonsterHandler;
+import dev.dankins.javamon.battle.data.TrainerHandler;
+import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.logic.Party;
 
 public class WildTrainer implements Trainer {
@@ -45,6 +50,30 @@ public class WildTrainer implements Trainer {
 	@Override
 	public int getWinnings() {
 		return 0;
+	}
+
+	@Override
+	public MonsterHandler getCurrentMonster() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Action getNextAction(TrainerHandler opponent) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SwitchAction getNextMonster() throws BattleStateChange {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getKey() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

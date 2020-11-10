@@ -86,7 +86,7 @@ public class EntitySerialized {
 			final long trainerId = RandomNumberGenerator.random.nextInt(1000000);
 			final Party party = new Party();
 			for (final TrainerMonsterSerialized monster : trainer.party) {
-				MonsterList monsterList = assets.get("monsterList");
+				MonsterList monsterList = assets.get("MonsterList");
 				party.add(monsterList.generateWild(monster.name, monster.level, name, trainerId));
 			}
 

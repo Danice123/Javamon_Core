@@ -18,9 +18,9 @@ import dev.dankins.javamon.display.screen.menu.BattleMenu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
-import dev.dankins.javamon.logic.battlesystem.Trainer;
-import dev.dankins.javamon.logic.battlesystem.WildTrainer;
 import dev.dankins.javamon.logic.entity.Player;
+import dev.dankins.javamon.logic.entity.Trainer;
+import dev.dankins.javamon.logic.entity.WildTrainer;
 
 public class BattleMenuHandler extends MenuHandler<BattleMenu>
 		implements dev.dankins.javamon.battle.data.TrainerHandler {

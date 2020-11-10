@@ -16,10 +16,9 @@ import dev.dankins.javamon.display.screen.menu.BagMenu.BagMenuType;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
-import dev.dankins.javamon.logic.battlesystem.EffectHandler;
 import dev.dankins.javamon.logic.script.ScriptHandler;
 
-public class BagHandler extends MenuHandler<BagMenu> implements EffectHandler {
+public class BagHandler extends MenuHandler<BagMenu> {
 
 	static public final Class<? extends Menu> MENU_TYPE = BagMenu.class;
 	static public Class<? extends BagMenu> Menu_Class;
@@ -107,16 +106,6 @@ public class BagHandler extends MenuHandler<BagMenu> implements EffectHandler {
 		default:
 			return true;
 		}
-	}
-
-	@Override
-	public void print(final String text) {
-		final ChatboxHandler chatboxHandler = new ChatboxHandler(game, text);
-		chatboxHandler.waitAndHandle();
-	}
-
-	@Override
-	public void updateHealth() {
 	}
 
 }

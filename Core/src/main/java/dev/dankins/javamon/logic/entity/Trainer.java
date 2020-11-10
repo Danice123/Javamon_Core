@@ -1,4 +1,4 @@
-package dev.dankins.javamon.logic.battlesystem;
+package dev.dankins.javamon.logic.entity;
 
 import dev.dankins.javamon.battle.data.TrainerHandler;
 import dev.dankins.javamon.logic.Party;

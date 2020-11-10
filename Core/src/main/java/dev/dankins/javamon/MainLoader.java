@@ -51,8 +51,7 @@ public class MainLoader extends AssetManager {
 	static public final MenuFileHandleResolver MENU_FILE_RESOLVER = new MenuFileHandleResolver();
 	static public final InternalFileHandleResolver FILE_RESOLVER = new InternalFileHandleResolver();
 
-	public final ObjectMapper objectMapper = new ObjectMapper(
-			new YAMLFactory().enable(Feature.MINIMIZE_QUOTES));
+	public final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory().enable(Feature.MINIMIZE_QUOTES));
 
 	public MainLoader(final String gamepath) {
 		super(MENU_FILE_RESOLVER);
@@ -70,13 +69,12 @@ public class MainLoader extends AssetManager {
 		load(gamepath, MasterFile.class);
 	}
 
-	static private List<Class<? extends MenuHandler<?>>> handlers = Lists.newArrayList(
-			BagHandler.class, BattleMenuHandler.class, ChatboxHandler.class, ChoiceboxHandler.class,
-			ChooseItemHandler.class, ChoosePokemonHandler.class, GameMenuHandler.class,
-			ItemStorageHandler.class, PartyHandler.class, PartyStatusHandler.class, PCHandler.class,
-			PlayerBattleHandler.class, PokedexHandler.class, PokedexPageHandler.class,
-			SaveHandler.class, ShopHandler.class, StartMenuHandler.class, TextInputHandler.class,
-			TrainerHandler.class);
+	static private List<Class<? extends MenuHandler<?>>> handlers = Lists.newArrayList(BagHandler.class,
+			BattleMenuHandler.class, ChatboxHandler.class, ChoiceboxHandler.class, ChooseItemHandler.class,
+			ChoosePokemonHandler.class, GameMenuHandler.class, ItemStorageHandler.class, PartyHandler.class,
+			PartyStatusHandler.class, PCHandler.class, PlayerBattleHandler.class, PokedexHandler.class,
+			PokedexPageHandler.class, SaveHandler.class, ShopHandler.class, StartMenuHandler.class,
+			TextInputHandler.class, TrainerHandler.class);
 
 	public void loadMenus(final MasterFile master) {
 		final List<Class<?>> menuClasses = getMenuClasses(master.getMenuJar());
@@ -93,8 +91,7 @@ public class MainLoader extends AssetManager {
 					}
 				}
 			}
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException
-				| IllegalAccessException e) {
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
@@ -102,8 +99,8 @@ public class MainLoader extends AssetManager {
 	@SuppressWarnings("unchecked")
 	private List<Class<?>> getMenuClasses(final FileHandle jarFile) {
 		try {
-			final URLClassLoader child = new URLClassLoader(
-					new URL[] { jarFile.file().toURI().toURL() }, this.getClass().getClassLoader());
+			final URLClassLoader child = new URLClassLoader(new URL[] { jarFile.file().toURI().toURL() },
+					this.getClass().getClassLoader());
 
 			final Class<LoadMenusFromHere> loaderClass = (Class<LoadMenusFromHere>) Class
 					.forName("dev.dankins.javamon.MenuLoader", true, child);

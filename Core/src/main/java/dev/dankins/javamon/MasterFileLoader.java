@@ -51,6 +51,8 @@ public class MasterFileLoader extends SynchronousAssetLoader<MasterFile, MasterF
 					new EncounterListLoader(mapper, file.sibling(master.itemDBPath)));
 			assetManager.setLoader(MapData.class, new MapLoader(file.sibling(master.itemDBPath)));
 
+			assetManager.load("MonsterList", MonsterList.class);
+
 			return master;
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
