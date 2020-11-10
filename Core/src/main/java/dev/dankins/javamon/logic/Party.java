@@ -10,8 +10,7 @@ import dev.dankins.javamon.battle.data.monster.MonsterList;
 import dev.dankins.javamon.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.monster.Status;
 
-public class Party extends AbstractList<dev.dankins.javamon.data.monster.instance.MonsterInstance>
-		implements dev.dankins.javamon.data.monster.instance.Party {
+public class Party extends AbstractList<MonsterInstance> {
 
 	private static final int PARTY_SIZE = 6;
 

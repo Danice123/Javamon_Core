@@ -6,6 +6,7 @@ import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
 import dev.dankins.javamon.logic.Party;
+import dev.dankins.javamon.logic.PartyWrapper;
 
 public class PartyHandler extends MenuHandler<PartyMenu> {
 
@@ -17,7 +18,7 @@ public class PartyHandler extends MenuHandler<PartyMenu> {
 	public PartyHandler(final Game game) {
 		super(game, Menu_Class);
 		party = game.getPlayer().getParty();
-		menu.setupMenu(PartyMenuType.View, party);
+		menu.setupMenu(PartyMenuType.View, new PartyWrapper(party));
 		initScreen();
 	}
 

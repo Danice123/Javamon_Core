@@ -8,6 +8,7 @@ import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
 import dev.dankins.javamon.logic.Party;
+import dev.dankins.javamon.logic.PartyWrapper;
 
 public class ChoosePokemonHandler extends MenuHandler<PartyMenu> {
 
@@ -25,7 +26,7 @@ public class ChoosePokemonHandler extends MenuHandler<PartyMenu> {
 		this.currentPokemon = currentPokemon;
 		this.canCancel = canCancel;
 		party = game.getPlayer().getParty();
-		menu.setupMenu(type, party);
+		menu.setupMenu(type, new PartyWrapper(party));
 		initScreen();
 	}
 
