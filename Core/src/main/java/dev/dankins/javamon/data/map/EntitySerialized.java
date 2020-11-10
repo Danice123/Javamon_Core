@@ -11,8 +11,7 @@ import com.google.common.collect.Maps;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.RandomNumberGenerator;
-import dev.dankins.javamon.battle.data.monster.MonsterImpl;
-import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
+import dev.dankins.javamon.data.monster.MonsterList;
 import dev.dankins.javamon.data.monster.instance.PartyImpl;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.display.Spriteset;
@@ -43,10 +42,8 @@ public class EntitySerialized {
 	public EntitySerialized(@JsonProperty("x") final int x, @JsonProperty("y") final int y,
 			@JsonProperty("layer") final int layer, @JsonProperty("facing") final Dir facing,
 			@JsonProperty("name") final String name, @JsonProperty("type") final Type type,
-			@JsonProperty("spriteset") final String spriteset,
-			@JsonProperty("hidden") final boolean hidden,
-			@JsonProperty("behavior") final String behavior,
-			@JsonProperty("script") final String script,
+			@JsonProperty("spriteset") final String spriteset, @JsonProperty("hidden") final boolean hidden,
+			@JsonProperty("behavior") final String behavior, @JsonProperty("script") final String script,
 			@JsonProperty("strings") final Map<String, String> strings,
 			@JsonProperty("trainer") final TrainerSerialized trainer) {
 		this.x = x;
@@ -89,15 +86,12 @@ public class EntitySerialized {
 			final long trainerId = RandomNumberGenerator.random.nextInt(1000000);
 			final PartyImpl party = new PartyImpl();
 			for (final TrainerMonsterSerialized monster : trainer.party) {
-				final MonsterInstanceImpl p = new MonsterInstanceImpl(
-						assets.get(monster.name, MonsterImpl.class), monster.level, name,
-						trainerId);
-				party.add(p);
+				MonsterList monsterList = assets.get("monsterList");
+				party.add(monsterList.generateWild(monster.name, monster.level, name, trainerId));
 			}
 
-			final TrainerHandler t = new TrainerHandler(name, getSpriteset(assets, spriteset),
-					trainer.trainerName, trainer.trainerImage, trainer.trainerLossQuip,
-					trainer.winnings, party);
+			final TrainerHandler t = new TrainerHandler(name, getSpriteset(assets, spriteset), trainer.trainerName,
+					trainer.trainerImage, trainer.trainerLossQuip, trainer.winnings, party);
 			if (trainer.trainerRange != null) {
 				t.setRange(trainer.trainerRange);
 			}
@@ -118,8 +112,7 @@ public class EntitySerialized {
 		return Optional.of(new Spriteset((Texture) assets.get("entity/sprites/" + name + ".png")));
 	}
 
-	private Script getScript(final AssetManager assets, final String localScriptPath,
-			final String name) {
+	private Script getScript(final AssetManager assets, final String localScriptPath, final String name) {
 		if (name.startsWith("$")) {
 			return assets.get("scripts/" + name.substring(1) + ".ps", Script.class);
 		} else {

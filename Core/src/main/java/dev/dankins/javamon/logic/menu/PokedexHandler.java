@@ -1,6 +1,6 @@
 package dev.dankins.javamon.logic.menu;
 
-import dev.dankins.javamon.battle.data.monster.MonsterListImpl;
+import dev.dankins.javamon.data.monster.MonsterList;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.PokedexMenu;
 import dev.dankins.javamon.logic.Game;
@@ -11,7 +11,7 @@ public class PokedexHandler extends MenuHandler<PokedexMenu> {
 	static public final Class<? extends Menu> MENU_TYPE = PokedexMenu.class;
 	static public Class<? extends PokedexMenu> Menu_Class;
 
-	private final MonsterListImpl monsterList;
+	private final MonsterList monsterList;
 
 	public PokedexHandler(final Game game) {
 		super(game, Menu_Class);

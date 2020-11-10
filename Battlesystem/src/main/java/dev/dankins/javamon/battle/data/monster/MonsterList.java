@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import dev.dankins.javamon.data.monster.MonsterSerialized;
+
 public class MonsterList implements dev.dankins.javamon.data.monster.MonsterList {
 
 	public final Map<Integer, String> monsterList;
@@ -47,5 +49,16 @@ public class MonsterList implements dev.dankins.javamon.data.monster.MonsterList
 	@Override
 	public int getTotalMonsters() {
 		return totalMonsters;
+	}
+
+	@Override
+	public dev.dankins.javamon.data.monster.instance.MonsterInstance generateWild(String monsterName, int level,
+			String playerName, long playerId) {
+		return new MonsterInstance(getMonster(monsterName), level, playerName, playerId);
+	}
+
+	@Override
+	public dev.dankins.javamon.data.monster.instance.MonsterInstance loadMonster(MonsterSerialized monster) {
+		return new MonsterInstance(getMonster(monster.monster), monster);
 	}
 }

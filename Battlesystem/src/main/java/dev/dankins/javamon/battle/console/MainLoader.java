@@ -15,14 +15,14 @@ import dev.dankins.javamon.battle.data.monster.MonsterList;
 
 public class MainLoader extends AssetManager {
 
-	public final ObjectMapper objectMapper = new ObjectMapper(
-			new YAMLFactory().enable(Feature.MINIMIZE_QUOTES));
+	public final ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory().enable(Feature.MINIMIZE_QUOTES));
 
 	public MainLoader(final String gamepath) {
-		setLoader(Attack.class, new AttackLoader(objectMapper, new FileHandle("db/attack")));
-		setLoader(Monster.class, new MonsterLoader(objectMapper, new FileHandle("db/monster")));
-		setLoader(MonsterList.class,
-				new MonsterListLoader(objectMapper, new FileHandle("db/monster")));
+		FileHandle baseDir = new FileHandle(gamepath);
+
+		setLoader(Attack.class, new AttackLoader(objectMapper, baseDir.child("db").child("attack")));
+		setLoader(Monster.class, new MonsterLoader(objectMapper, baseDir.child("db").child("monster")));
+		setLoader(MonsterList.class, new MonsterListLoader(objectMapper, baseDir.child("db").child("monster")));
 
 		load("MonsterList", MonsterList.class);
 	}

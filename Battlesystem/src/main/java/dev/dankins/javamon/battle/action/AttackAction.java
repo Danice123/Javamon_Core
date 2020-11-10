@@ -30,8 +30,11 @@ public class AttackAction implements Action, Comparable<AttackAction> {
 	}
 
 	public List<Event> execute(final MonsterHandler target) {
-		final List<Event> events = Lists
-				.newArrayList(new AttackEvent(user.getKey(), attackInstance));
+		if (user.getMonster().getCurrentHealth() == 0) {
+			return Lists.newArrayList();
+		}
+
+		final List<Event> events = Lists.newArrayList(new AttackEvent(user.getKey(), attackInstance));
 		for (final CustomStatus status : user.getTemporaryStatuses()) {
 			events.addAll(status.apply(BattlesystemHook.onAttackBegin));
 		}
@@ -79,8 +82,7 @@ public class AttackAction implements Action, Comparable<AttackAction> {
 		if (target.getFlag(AttackFlag.FLYING)) {
 			return true;
 		}
-		final int chance = Math.round(
-				attackInstance.attack.accuracy * user.getHitModifier(target.getEvasionLevel()));
+		final int chance = Math.round(attackInstance.attack.accuracy * user.getHitModifier(target.getEvasionLevel()));
 		if (RandomNumberGenerator.random.nextInt(100) <= chance) {
 			return false;
 		}
@@ -100,8 +102,7 @@ public class AttackAction implements Action, Comparable<AttackAction> {
 		if (attackInstance.attack.priority == other.attackInstance.attack.priority) {
 			return Integer.compare(user.getSpeed(), other.user.getSpeed());
 		}
-		return Integer.compare(attackInstance.attack.priority,
-				other.attackInstance.attack.priority);
+		return Integer.compare(attackInstance.attack.priority, other.attackInstance.attack.priority);
 	}
 
 }

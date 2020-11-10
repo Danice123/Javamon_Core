@@ -4,17 +4,10 @@ public enum EventType {
 
 	Cancel,
 
-	StartBattle,
-	SendMonster,
-	ReturnMonster,
+	StartBattle, EscapeFailed, EscapeSuccess, TrainerLoss, EndBattle,
 
-	Attack,
-	UpdateHealth,
-	AttackFailed,
-	AttackMissed,
-	AttackDisplay,
-	CriticalHit,
-	TypeEffectiveness,
-	TypeChange,
+	SendMonster, ReturnMonster, FaintMonster, CannotSwitchToFaintedMonster,
+
+	Attack, UpdateHealth, AttackFailed, AttackMissed, AttackDisplay, CriticalHit, TypeEffectiveness, TypeChange,
 
 }

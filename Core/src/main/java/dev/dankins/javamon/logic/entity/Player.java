@@ -15,8 +15,7 @@ import dev.dankins.javamon.data.monster.instance.PartyImpl;
 import dev.dankins.javamon.display.Spriteset;
 import dev.dankins.javamon.logic.battlesystem.Trainer;
 
-public class Player extends WalkableHandler
-		implements dev.dankins.javamon.logic.abstraction.Player, Trainer {
+public class Player extends WalkableHandler implements dev.dankins.javamon.logic.abstraction.Player, Trainer {
 
 	private CollectionLibraryImpl pokeData;
 	private PartyImpl party;
@@ -92,7 +91,7 @@ public class Player extends WalkableHandler
 		id = s.id;
 		strings = s.strings;
 		pokeData = s.pokeData;
-		party = new PartyImpl(assetManager, s.party);
+		party = new PartyImpl(assetManager.get("MonsterList"), s.party);
 		inventory = new Inventory(assetManager, s.inventory);
 		itemStorage = new Inventory(assetManager, s.itemStorage);
 		entity.setFacing(s.facing);

@@ -3,15 +3,15 @@ package dev.dankins.javamon.logic.battlesystem;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
-import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
+import dev.dankins.javamon.data.monster.instance.MonsterInstance;
 import dev.dankins.javamon.data.monster.instance.PartyImpl;
 
 public class WildTrainer implements Trainer {
 
 	private final PartyImpl party;
-	private final MonsterInstanceImpl wildPokemon;
+	private final MonsterInstance wildPokemon;
 
-	public WildTrainer(final MonsterInstanceImpl wildPokemon) {
+	public WildTrainer(final MonsterInstance wildPokemon) {
 		this.wildPokemon = wildPokemon;
 		party = new PartyImpl();
 		party.add(wildPokemon);
@@ -29,8 +29,7 @@ public class WildTrainer implements Trainer {
 
 	@Override
 	public AssetDescriptor<Texture> getImage() {
-		return new AssetDescriptor<Texture>(
-				"pokemon/" + wildPokemon.getBaseMonster().number + ".png", Texture.class);
+		return new AssetDescriptor<Texture>("pokemon/" + wildPokemon.getBaseMonster().number + ".png", Texture.class);
 	}
 
 	@Override

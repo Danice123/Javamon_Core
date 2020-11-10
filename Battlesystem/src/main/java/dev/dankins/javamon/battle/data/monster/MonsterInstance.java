@@ -15,6 +15,7 @@ import dev.dankins.javamon.battle.data.attack.Attack;
 import dev.dankins.javamon.battle.data.attack.AttackInstance;
 import dev.dankins.javamon.data.monster.Gender;
 import dev.dankins.javamon.data.monster.Growth;
+import dev.dankins.javamon.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Status;
 
@@ -38,8 +39,7 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 	private Status status = Status.NONE;
 	public int sleepCounter;
 
-	public MonsterInstance(final Monster baseMonster, final int level, final String playerName,
-			final long playerId) {
+	public MonsterInstance(final Monster baseMonster, final int level, final String playerName, final long playerId) {
 		monster = baseMonster;
 		name = baseMonster.name;
 		originalTrainer = playerName;
@@ -68,9 +68,8 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 		EV.put(Stat.SPECIAL_DEFENSE, 0);
 		EV.put(Stat.SPEED, 0);
 
-		attacks = new AttackSet(
-				Arrays.stream(baseMonster.getTopFourMoves(level)).filter(attack -> attack != null)
-						.map(attack -> new AttackInstance(attack)).collect(Collectors.toList()));
+		attacks = new AttackSet(Arrays.stream(baseMonster.getTopFourMoves(level)).filter(attack -> attack != null)
+				.map(attack -> new AttackInstance(attack)).collect(Collectors.toList()));
 		currentHealth = getHealth();
 	}
 
@@ -82,11 +81,9 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 		EV = monster.EV;
 		originalTrainer = monster.originalTrainer;
 		idNumber = monster.idNumber;
-		attacks = new AttackSet(
-				monster.attacks.stream()
-						.map(attack -> new AttackInstance(
-								baseMonster.cachedAttacks.get(attack.attack), attack))
-						.collect(Collectors.toList()));
+		attacks = new AttackSet(monster.attacks.stream()
+				.map(attack -> new AttackInstance(baseMonster.cachedAttacks.get(attack.attack), attack))
+				.collect(Collectors.toList()));
 		name = monster.name;
 		customName = monster.customName;
 		level = monster.level;
@@ -106,7 +103,8 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 		return name;
 	}
 
-	public boolean nameIsCustom() {
+	@Override
+	public boolean isNameCustom() {
 		return customName;
 	}
 
@@ -116,8 +114,8 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 	}
 
 	@Override
-	public String getId() {
-		return "" + idNumber;
+	public long getId() {
+		return idNumber;
 	}
 
 	@Override
@@ -142,9 +140,13 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 	}
 
 	@Override
+	public Gender getGender() {
+		return gender;
+	}
+
+	@Override
 	public int getHealth() {
-		return calcStats(IV.get(Stat.HEALTH), monster.getBaseHealth(), EV.get(Stat.HEALTH)) + 10
-				+ level;
+		return calcStats(IV.get(Stat.HEALTH), monster.getBaseHealth(), EV.get(Stat.HEALTH)) + 10 + level;
 	}
 
 	@Override
@@ -160,14 +162,13 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 
 	@Override
 	public int getSpecialAttack() {
-		return calcStats(IV.get(Stat.SPECIAL_ATTACK), monster.getBaseSpecialAttack(),
-				EV.get(Stat.SPECIAL_ATTACK)) + 5;
+		return calcStats(IV.get(Stat.SPECIAL_ATTACK), monster.getBaseSpecialAttack(), EV.get(Stat.SPECIAL_ATTACK)) + 5;
 	}
 
 	@Override
 	public int getSpecialDefense() {
-		return calcStats(IV.get(Stat.SPECIAL_DEFENSE), monster.getBaseSpecialDefense(),
-				EV.get(Stat.SPECIAL_DEFENSE)) + 5;
+		return calcStats(IV.get(Stat.SPECIAL_DEFENSE), monster.getBaseSpecialDefense(), EV.get(Stat.SPECIAL_DEFENSE))
+				+ 5;
 	}
 
 	@Override
@@ -185,8 +186,18 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 	}
 
 	@Override
+	public Map<Stat, Integer> getIVs() {
+		return IV;
+	}
+
+	@Override
 	public int getEV(final Stat stat) {
 		return EV.get(stat);
+	}
+
+	@Override
+	public Map<Stat, Integer> getEVs() {
+		return EV;
 	}
 
 	@Override
@@ -238,6 +249,11 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 		status = Status.NONE;
 	}
 
+	@Override
+	public int getSleepCounter() {
+		return sleepCounter;
+	}
+
 	public Collection<Levelup> addExp(final int exp) {
 		if (level >= 100) {
 			return Lists.newArrayList();
@@ -251,8 +267,7 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 			levelup.level = level;
 			if (monster.learnableAttacks.get(level) != null) {
 				levelup.movesToLearn = monster.learnableAttacks.get(level).stream()
-						.map(attackName -> monster.cachedAttacks.get(attackName))
-						.collect(Collectors.toList());
+						.map(attackName -> monster.cachedAttacks.get(attackName)).collect(Collectors.toList());
 			}
 			levelsGained.add(levelup);
 		}

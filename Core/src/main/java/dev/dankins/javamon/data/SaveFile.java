@@ -6,8 +6,8 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import dev.dankins.javamon.battle.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.item.ItemSerialized;
+import dev.dankins.javamon.data.monster.MonsterSerialized;
 import dev.dankins.javamon.logic.Dir;
 
 public class SaveFile {
@@ -34,8 +34,7 @@ public class SaveFile {
 	public SaveFile(@JsonProperty("layer") final int layer, @JsonProperty("x") final int x,
 			@JsonProperty("y") final int y, @JsonProperty("mapName") final String mapName,
 			@JsonProperty("facing") final Dir facing, @JsonProperty("id") final long id,
-			@JsonProperty("money") final int money,
-			@JsonProperty("party") final List<MonsterSerialized> party,
+			@JsonProperty("money") final int money, @JsonProperty("party") final List<MonsterSerialized> party,
 			@JsonProperty("inventory") final List<ItemSerialized> inventory,
 			@JsonProperty("itemStorage") final List<ItemSerialized> itemStorage,
 			@JsonProperty("pokeData") final CollectionLibraryImpl pokeData,

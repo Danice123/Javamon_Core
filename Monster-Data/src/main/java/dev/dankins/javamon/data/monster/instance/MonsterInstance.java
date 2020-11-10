@@ -1,7 +1,9 @@
 package dev.dankins.javamon.data.monster.instance;
 
 import java.util.List;
+import java.util.Map;
 
+import dev.dankins.javamon.data.monster.Gender;
 import dev.dankins.javamon.data.monster.Monster;
 import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Status;
@@ -13,7 +15,9 @@ public interface MonsterInstance {
 
 	String getName();
 
-	String getId();
+	boolean isNameCustom();
+
+	long getId();
 
 	String getOT();
 
@@ -22,6 +26,8 @@ public interface MonsterInstance {
 	int getExp();
 
 	int getExpToNextLevel();
+
+	Gender getGender();
 
 	int getHealth();
 
@@ -43,12 +49,18 @@ public interface MonsterInstance {
 
 	int getIV(Stat stat);
 
+	Map<Stat, Integer> getIVs();
+
 	int getEV(Stat stat);
+
+	Map<Stat, Integer> getEVs();
 
 	Status getStatus();
 
 	void setStatus(Status status);
 
 	List<? extends Attack> getAttacks();
+
+	int getSleepCounter();
 
 }

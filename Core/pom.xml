@@ -13,6 +13,11 @@
   <dependencies>
   	<dependency>
   		<groupId>dev.dankins.javamon</groupId>
+  		<artifactId>Battlesystem</artifactId>
+  		<version>${parent.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>dev.dankins.javamon</groupId>
   		<artifactId>Menu-Subsystem</artifactId>
   		<version>${parent.version}</version>
   	</dependency>

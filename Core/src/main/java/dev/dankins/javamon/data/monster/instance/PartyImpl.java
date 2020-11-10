@@ -3,11 +3,10 @@ package dev.dankins.javamon.data.monster.instance;
 import java.util.AbstractList;
 import java.util.List;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.google.common.collect.Lists;
 
-import dev.dankins.javamon.battle.data.monster.MonsterInstanceImpl;
-import dev.dankins.javamon.battle.data.monster.MonsterSerialized;
+import dev.dankins.javamon.data.monster.MonsterList;
+import dev.dankins.javamon.data.monster.MonsterSerialized;
 import dev.dankins.javamon.data.monster.Status;
 
 public class PartyImpl extends AbstractList<MonsterInstance> implements Party {
@@ -19,9 +18,9 @@ public class PartyImpl extends AbstractList<MonsterInstance> implements Party {
 	public PartyImpl() {
 	}
 
-	public PartyImpl(final AssetManager assets, final List<MonsterSerialized> monsters) {
+	public PartyImpl(final MonsterList monsterList, final List<MonsterSerialized> monsters) {
 		for (final MonsterSerialized monster : monsters) {
-			add(new MonsterInstanceImpl(assets, monster));
+			add(monsterList.loadMonster(monster));
 		}
 	}
 
@@ -115,7 +114,7 @@ public class PartyImpl extends AbstractList<MonsterInstance> implements Party {
 	public List<MonsterSerialized> serialize() {
 		final List<MonsterSerialized> monsters = Lists.newArrayList();
 		for (final MonsterInstance monster : this) {
-			monsters.add(new MonsterSerialized((MonsterInstanceImpl) monster));
+			monsters.add(new MonsterSerialized(monster));
 		}
 		return monsters;
 	}

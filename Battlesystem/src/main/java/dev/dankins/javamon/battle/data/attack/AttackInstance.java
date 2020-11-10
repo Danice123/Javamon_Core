@@ -1,6 +1,6 @@
 package dev.dankins.javamon.battle.data.attack;
 
-import dev.dankins.javamon.battle.data.monster.AttackSerialized;
+import dev.dankins.javamon.data.monster.attack.AttackSerialized;
 
 public class AttackInstance implements dev.dankins.javamon.data.monster.attack.Attack {
 

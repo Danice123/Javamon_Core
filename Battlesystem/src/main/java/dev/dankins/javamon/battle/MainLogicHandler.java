@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.battle.action.Action;
 import dev.dankins.javamon.battle.action.AttackAction;
+import dev.dankins.javamon.battle.action.RunAction;
 import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.BattlesystemHook;
 import dev.dankins.javamon.battle.data.StoreVariables;
@@ -15,8 +16,12 @@ import dev.dankins.javamon.battle.display.BattlesystemListener;
 import dev.dankins.javamon.battle.display.event.CancelEvent;
 import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
+import dev.dankins.javamon.battle.display.event.FaintedMonsterEvent;
 import dev.dankins.javamon.battle.display.event.GenericEvent;
+import dev.dankins.javamon.battle.display.event.ReturnMonsterEvent;
+import dev.dankins.javamon.battle.display.event.SendMonsterEvent;
 import dev.dankins.javamon.battle.display.event.TargetedEvent;
+import dev.dankins.javamon.battle.display.event.TrainerEvent;
 
 public class MainLogicHandler implements Runnable {
 
@@ -34,44 +39,54 @@ public class MainLogicHandler implements Runnable {
 	@Override
 	public void run() {
 		listener.sendEvent(new GenericEvent(EventType.StartBattle));
-		do {
-			final Action alphaAct = getActionFromHandler(alpha, bravo);
-			final Action bravoAct = getActionFromHandler(bravo, alpha);
+		try {
+			do {
+				final Action alphaAct = getActionFromHandler(alpha, bravo);
+				final Action bravoAct = getActionFromHandler(bravo, alpha);
 
-			// handleRun(alpha)
-			// handleRun(bravo)
-
-			handleSwitch(alphaAct, alpha.getKey());
-			handleSwitch(bravoAct, bravo.getKey());
-
-			// handleItem(alpha)
-			// handleItem(bravo)
-
-			if (AttackAction.class.isInstance(alphaAct)
-					&& AttackAction.class.isInstance(bravoAct)) {
-				handleBattle((AttackAction) alphaAct, (AttackAction) bravoAct);
-			} else {
-				if (AttackAction.class.isInstance(alphaAct)) {
-					((AttackAction) alphaAct).execute(bravo.getCurrentMonster())
-							.forEach(event -> listener.sendEvent(event));
+				if (RunAction.class.isInstance(alphaAct)) {
+					alphaAct.execute(bravo.getCurrentMonster()).forEach(event -> listener.sendEvent(event));
 				}
-				if (AttackAction.class.isInstance(bravoAct)) {
-					((AttackAction) bravoAct).execute(alpha.getCurrentMonster())
-							.forEach(event -> listener.sendEvent(event));
+				if (RunAction.class.isInstance(bravoAct)) {
+					bravoAct.execute(alpha.getCurrentMonster()).forEach(event -> listener.sendEvent(event));
 				}
-			}
 
-			handlePostTurn(alpha);
-			handlePostTurn(bravo);
-		} while (true);
+				handleSwitch(alphaAct, alpha);
+				handleSwitch(bravoAct, bravo);
+
+				// handleItem(alpha)
+				// handleItem(bravo)
+
+				if (AttackAction.class.isInstance(alphaAct) && AttackAction.class.isInstance(bravoAct)) {
+					handleBattle((AttackAction) alphaAct, (AttackAction) bravoAct);
+				} else {
+					if (AttackAction.class.isInstance(alphaAct)) {
+						((AttackAction) alphaAct).execute(bravo.getCurrentMonster())
+								.forEach(event -> listener.sendEvent(event));
+					}
+					if (AttackAction.class.isInstance(bravoAct)) {
+						((AttackAction) bravoAct).execute(alpha.getCurrentMonster())
+								.forEach(event -> listener.sendEvent(event));
+					}
+				}
+
+				handlePostTurn(alpha);
+				handlePostTurn(bravo);
+			} while (true);
+		} catch (MonsterRan monsterRan) {
+			listener.sendEvent(new TargetedEvent(EventType.EscapeSuccess, monsterRan.runner.getMonster().getName()));
+		} catch (TrainerLoss trainerLoss) {
+			listener.sendEvent(new TrainerEvent(EventType.TrainerLoss, trainerLoss.trainer));
+		} catch (BattleStateChange change) {
+			System.out.println("Unhandled Battle State Change");
+		}
+		listener.sendEvent(new GenericEvent(EventType.EndBattle));
 	}
 
-	private Action getActionFromHandler(final TrainerHandler handler,
-			final TrainerHandler opponent) {
+	private Action getActionFromHandler(final TrainerHandler handler, final TrainerHandler opponent) {
 		// TODO: Setup allowing switching/items/running in some multi-turn cases
 		if (handler.getCurrentMonster().isUsingMultiTurnMove()) {
-			return new AttackAction(handler.getCurrentMonster(),
-					handler.getCurrentMonster().getLastUsedMove());
+			return new AttackAction(handler.getCurrentMonster(), handler.getCurrentMonster().getLastUsedMove());
 		}
 
 		final Action action = handler.getNextAction(opponent);
@@ -94,11 +109,11 @@ public class MainLogicHandler implements Runnable {
 		return action;
 	}
 
-	private void handleSwitch(final Action action, final String key) {
+	private void handleSwitch(final Action action, final TrainerHandler trainer) throws BattleStateChange {
 		if (SwitchAction.class.isInstance(action)) {
-			listener.sendEvent(new TargetedEvent(EventType.ReturnMonster, key));
-			// action.execute();
-			listener.sendEvent(new TargetedEvent(EventType.SendMonster, key));
+			listener.sendEvent(new ReturnMonsterEvent(trainer, trainer.getCurrentMonster()));
+			action.execute(null);
+			listener.sendEvent(new SendMonsterEvent(trainer, trainer.getCurrentMonster()));
 		}
 	}
 
@@ -111,23 +126,30 @@ public class MainLogicHandler implements Runnable {
 			alphaAct.execute(bravo.getCurrentMonster()).forEach(event -> listener.sendEvent(event));
 		} else {
 			if (RandomNumberGenerator.random.nextBoolean()) {
-				alphaAct.execute(bravo.getCurrentMonster())
-						.forEach(event -> listener.sendEvent(event));
-				bravoAct.execute(alpha.getCurrentMonster())
-						.forEach(event -> listener.sendEvent(event));
+				alphaAct.execute(bravo.getCurrentMonster()).forEach(event -> listener.sendEvent(event));
+				bravoAct.execute(alpha.getCurrentMonster()).forEach(event -> listener.sendEvent(event));
 			} else {
-				bravoAct.execute(alpha.getCurrentMonster())
-						.forEach(event -> listener.sendEvent(event));
-				alphaAct.execute(bravo.getCurrentMonster())
-						.forEach(event -> listener.sendEvent(event));
+				bravoAct.execute(alpha.getCurrentMonster()).forEach(event -> listener.sendEvent(event));
+				alphaAct.execute(bravo.getCurrentMonster()).forEach(event -> listener.sendEvent(event));
 			}
 		}
 	}
 
-	private void handlePostTurn(final TrainerHandler handler) {
+	private void handlePostTurn(final TrainerHandler handler) throws BattleStateChange {
 		for (final CustomStatus status : handler.getCurrentMonster().getTemporaryStatuses()) {
 			status.apply(BattlesystemHook.onTurnEnd).forEach(event -> listener.sendEvent(event));
 		}
 		handler.getCurrentMonster().moveHitByThisTurn = null;
+
+		if (handler.getCurrentMonster().getMonster().getCurrentHealth() == 0) {
+			listener.sendEvent(new FaintedMonsterEvent(handler, handler.getCurrentMonster()));
+			SwitchAction forcedSwitch = handler.getNextMonster();
+			while (forcedSwitch.target.getMonster().getCurrentHealth() == 0) {
+				listener.sendEvent(new GenericEvent(EventType.CannotSwitchToFaintedMonster));
+				forcedSwitch = handler.getNextMonster();
+			}
+			forcedSwitch.execute(null);
+			listener.sendEvent(new SendMonsterEvent(handler, handler.getCurrentMonster()));
+		}
 	}
 }

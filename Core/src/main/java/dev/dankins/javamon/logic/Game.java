@@ -12,8 +12,8 @@ import com.badlogic.gdx.graphics.Texture;
 import dev.dankins.javamon.MainLoader;
 import dev.dankins.javamon.MasterFile;
 import dev.dankins.javamon.ThreadUtils;
-import dev.dankins.javamon.battle.data.monster.MonsterListImpl;
 import dev.dankins.javamon.data.SaveFile;
+import dev.dankins.javamon.data.monster.MonsterList;
 import dev.dankins.javamon.data.script.Script;
 import dev.dankins.javamon.display.Display;
 import dev.dankins.javamon.display.Spriteset;
@@ -35,7 +35,7 @@ public class Game implements Runnable {
 	private final MainLoader assets;
 	private Player player;
 	private final MapHandler mapHandler;
-	private MonsterListImpl monsterList;
+	private MonsterList monsterList;
 
 	// hacky
 	public boolean controlLock;
@@ -60,7 +60,7 @@ public class Game implements Runnable {
 		return mapHandler;
 	}
 
-	public MonsterListImpl getMonsterList() {
+	public MonsterList getMonsterList() {
 		return monsterList;
 	}
 
@@ -92,7 +92,6 @@ public class Game implements Runnable {
 		// Load Game
 		final MasterFile master = assets.get(masterFile);
 		assets.loadMenus(master);
-		assets.load("MonsterList", MonsterListImpl.class);
 		assets.load(master.playerSpriteset, Texture.class);
 		assets.load(master.startScript, Script.class);
 
@@ -116,8 +115,7 @@ public class Game implements Runnable {
 		gameMenuHandler.waitAndHandle();
 
 		// Create player
-		final Spriteset spriteset = new Spriteset(
-				assets.get(master.playerSpriteset, Texture.class));
+		final Spriteset spriteset = new Spriteset(assets.get(master.playerSpriteset, Texture.class));
 		player = new Player(Optional.of(spriteset));
 		mapHandler.setPlayer(player);
 
