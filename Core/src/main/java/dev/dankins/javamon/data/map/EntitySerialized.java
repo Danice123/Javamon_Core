@@ -17,7 +17,7 @@ import dev.dankins.javamon.display.Spriteset;
 import dev.dankins.javamon.logic.Dir;
 import dev.dankins.javamon.logic.Party;
 import dev.dankins.javamon.logic.entity.EntityHandler;
-import dev.dankins.javamon.logic.entity.TrainerHandler;
+import dev.dankins.javamon.logic.entity.Trainer;
 import dev.dankins.javamon.logic.entity.WalkableHandler;
 import dev.dankins.javamon.logic.entity.behavior.BehaviorFactory;
 
@@ -90,7 +90,7 @@ public class EntitySerialized {
 				party.add(monsterList.generateWild(monster.name, monster.level, name, trainerId));
 			}
 
-			final TrainerHandler t = new TrainerHandler(name, getSpriteset(assets, spriteset), trainer.trainerName,
+			final Trainer t = new Trainer(name, getSpriteset(assets, spriteset), trainer.trainerName,
 					trainer.trainerImage, trainer.trainerLossQuip, trainer.winnings, party);
 			if (trainer.trainerRange != null) {
 				t.setRange(trainer.trainerRange);

@@ -1,16 +1,22 @@
-package dev.dankins.javamon.logic.abstraction;
+package dev.dankins.javamon.data.monster.instance;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
 
-import dev.dankins.javamon.data.monster.instance.Party;
-
 public interface Trainer {
+
+	String getKey();
+
+	String getName();
 
 	Party getParty_();
 
 	AssetDescriptor<Texture> getImage();
 
+	MonsterInstance getCurrentMonster_();
+
 	boolean isTrainer();
+
+	String getTrainerLossQuip();
 
 }

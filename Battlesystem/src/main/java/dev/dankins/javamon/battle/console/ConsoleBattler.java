@@ -13,12 +13,8 @@ import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.battle.data.monster.MonsterList;
 import dev.dankins.javamon.battle.display.BattlesystemListener;
 import dev.dankins.javamon.battle.display.event.Event;
-import dev.dankins.javamon.battle.display.event.FaintedMonsterEvent;
-import dev.dankins.javamon.battle.display.event.ReturnMonsterEvent;
-import dev.dankins.javamon.battle.display.event.SendMonsterEvent;
 import dev.dankins.javamon.battle.display.event.TargetedEvent;
 import dev.dankins.javamon.battle.display.event.TextEvent;
-import dev.dankins.javamon.battle.display.event.TrainerEvent;
 import dev.dankins.javamon.battle.display.event.attack.AttackEvent;
 import dev.dankins.javamon.battle.display.event.attack.TypeChangeEvent;
 import dev.dankins.javamon.battle.display.event.attack.TypeEffectivenessEvent;
@@ -111,14 +107,16 @@ public class ConsoleBattler {
 					System.out.println(te.effectM());
 				}
 				break;
-			case TypeChange:
-				final TypeChangeEvent tc = (TypeChangeEvent) event;
-				System.out.println(
-						tc.monster.getMonster().getName() + " transformed into the " + tc.type.toString() + " type!");
+			case TypeChange: {
+				final TypeChangeEvent e = (TypeChangeEvent) event;
+				System.out.println(store.get(e.key).getCurrentMonster().getMonster().getName()
+						+ " transformed into the " + e.type.toString() + " type!");
 				break;
+			}
 			case FaintMonster: {
-				final FaintedMonsterEvent e = (FaintedMonsterEvent) event;
-				System.out.println(e.trainer.getName() + "'s " + e.monster.getMonster().getName() + " fainted!");
+				final TargetedEvent e = (TargetedEvent) event;
+				System.out.println(e.getTarget() + "'s "
+						+ store.get(e.getTarget()).getCurrentMonster().getMonster().getName() + " fainted!");
 				break;
 			}
 			case CannotSwitchToFaintedMonster: {
@@ -126,18 +124,20 @@ public class ConsoleBattler {
 				break;
 			}
 			case SendMonster: {
-				final SendMonsterEvent e = (SendMonsterEvent) event;
-				System.out.println(e.trainer.getName() + " sent out " + e.monster.getMonster().getName());
+				final TargetedEvent e = (TargetedEvent) event;
+				System.out.println(e.getTarget() + " sent out "
+						+ store.get(e.getTarget()).getCurrentMonster().getMonster().getName());
 				break;
 			}
 			case ReturnMonster: {
-				final ReturnMonsterEvent e = (ReturnMonsterEvent) event;
-				System.out.println(e.trainer.getName() + " returned " + e.monster.getMonster().getName());
+				final TargetedEvent e = (TargetedEvent) event;
+				System.out.println(e.getTarget() + " returned "
+						+ store.get(e.getTarget()).getCurrentMonster().getMonster().getName());
 				break;
 			}
 			case TrainerLoss: {
-				final TrainerEvent e = (TrainerEvent) event;
-				System.out.println(e.trainer.getName() + " lost the battle!");
+				final TargetedEvent e = (TargetedEvent) event;
+				System.out.println(e.getTarget() + " lost the battle!");
 				break;
 			}
 			case EscapeSuccess:

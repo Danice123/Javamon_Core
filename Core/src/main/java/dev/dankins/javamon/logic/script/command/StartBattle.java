@@ -10,7 +10,7 @@ import dev.dankins.javamon.data.script.ScriptLoadingException;
 import dev.dankins.javamon.data.script.ScriptLoadingException.SCRIPT_LOADING_ERROR_TYPE;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.entity.EntityHandler;
-import dev.dankins.javamon.logic.entity.TrainerHandler;
+import dev.dankins.javamon.logic.entity.Trainer;
 import dev.dankins.javamon.logic.menu.BattleMenuHandler;
 import dev.dankins.javamon.logic.script.Command;
 import dev.dankins.javamon.logic.script.ScriptException;
@@ -27,8 +27,7 @@ public class StartBattle extends Command {
 			final Iterator<String> i = args.iterator();
 			target = new Target(i.next());
 		} catch (final NoSuchElementException e) {
-			throw new ScriptLoadingException("StartBattle",
-					SCRIPT_LOADING_ERROR_TYPE.invalidNumberOfArguments);
+			throw new ScriptLoadingException("StartBattle", SCRIPT_LOADING_ERROR_TYPE.invalidNumberOfArguments);
 		}
 	}
 
@@ -39,19 +38,16 @@ public class StartBattle extends Command {
 		final Optional<EntityHandler> entity = this.target.getTarget(game, target);
 		if (entity.isPresent()) {
 			try {
-				final TrainerHandler trainer = (TrainerHandler) entity.get();
+				final Trainer trainer = (Trainer) entity.get();
 
-				final BattleMenuHandler battleMenuHandler = new BattleMenuHandler(game,
-						game.getPlayer(), trainer);
+				final BattleMenuHandler battleMenuHandler = new BattleMenuHandler(game, game.getPlayer(), trainer);
 				battleMenuHandler.waitAndHandle();
 
 			} catch (final ClassCastException e) {
-				throw new ScriptException("StartBattle",
-						ScriptException.SCRIPT_ERROR_TYPE.invalidTarget);
+				throw new ScriptException("StartBattle", ScriptException.SCRIPT_ERROR_TYPE.invalidTarget);
 			}
 		} else {
-			throw new ScriptException("StartBattle",
-					ScriptException.SCRIPT_ERROR_TYPE.entityDoesNotExist);
+			throw new ScriptException("StartBattle", ScriptException.SCRIPT_ERROR_TYPE.entityDoesNotExist);
 		}
 
 		return Optional.empty();

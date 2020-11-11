@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import dev.dankins.javamon.Coord;
 import dev.dankins.javamon.ThreadUtils;
-import dev.dankins.javamon.battle.data.monster.MonsterInstance;
 import dev.dankins.javamon.data.map.Trigger;
 import dev.dankins.javamon.display.RenderInfo;
 import dev.dankins.javamon.logic.Dir;
@@ -15,10 +14,9 @@ import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.Key;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.entity.Player;
-import dev.dankins.javamon.logic.entity.TrainerHandler;
+import dev.dankins.javamon.logic.entity.Trainer;
 import dev.dankins.javamon.logic.map.MapHandler;
 import dev.dankins.javamon.logic.map.WildEncounter;
-import dev.dankins.javamon.logic.menu.BattleMenuHandler;
 import dev.dankins.javamon.logic.menu.StartMenuHandler;
 
 public class World extends Screen {
@@ -154,7 +152,7 @@ public class World extends Screen {
 				return;
 			}
 
-			final Optional<TrainerHandler> trainer = mapHandler.getMap().getTrainerFacingPlayer(player.getCoord(),
+			final Optional<Trainer> trainer = mapHandler.getMap().getTrainerFacingPlayer(player.getCoord(),
 					player.getLayer());
 			if (trainer.isPresent() && !player.getStrings().containsKey(trainer.get().getEntity().getName())) {
 				while (trainer.get().walk(mapHandler, trainer.get().getFacing())) {
@@ -166,15 +164,15 @@ public class World extends Screen {
 					.getWildPokemonEncounter(player.getCoord(), player.getLayer());
 
 			if (wildPokemonEncounter.isPresent()) {
-				MonsterInstance wildPokemon = game.getMonsterList().generateWild(wildPokemonEncounter.get().monsterName,
-						wildPokemonEncounter.get().level, player.getName(), player.getPlayerId());
-				final BattleMenuHandler battleMenuHandler = new BattleMenuHandler(game, game.getPlayer(), wildPokemon);
-				ThreadUtils.makeAnonThread(new Runnable() {
-					@Override
-					public void run() {
-						battleMenuHandler.waitAndHandle();
-					}
-				});
+//				MonsterInstance wildPokemon = game.getMonsterList().generateWild(wildPokemonEncounter.get().monsterName,
+//						wildPokemonEncounter.get().level, player.getName(), player.getPlayerId());
+//				final BattleMenuHandler battleMenuHandler = new BattleMenuHandler(game, game.getPlayer(), wildPokemon);
+//				ThreadUtils.makeAnonThread(new Runnable() {
+//					@Override
+//					public void run() {
+//						battleMenuHandler.waitAndHandle();
+//					}
+//				});
 			}
 		}
 	}

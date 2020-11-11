@@ -25,7 +25,7 @@ import dev.dankins.javamon.logic.Dir;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.entity.Player;
-import dev.dankins.javamon.logic.entity.TrainerHandler;
+import dev.dankins.javamon.logic.entity.Trainer;
 import dev.dankins.javamon.logic.entity.WalkableHandler;
 import dev.dankins.javamon.logic.entity.behavior.EntityBehaviorThread;
 import dev.dankins.javamon.logic.script.ScriptHandler;
@@ -47,8 +47,8 @@ public class MapData {
 	private final Map<Dir, Integer> layerChange;
 
 	public MapData(final String mapName, final MapHandler mapHandler, final TiledMap mapData,
-			final List<EntityHandler> entityList, final TriggerList triggerList,
-			final EncounterList encounterList, final Optional<Script> mapScript) {
+			final List<EntityHandler> entityList, final TriggerList triggerList, final EncounterList encounterList,
+			final Optional<Script> mapScript) {
 		this.mapName = mapName;
 		map = mapData;
 		entities = entityList;
@@ -65,8 +65,8 @@ public class MapData {
 				final WalkableHandler walkable = (WalkableHandler) entity;
 				if (walkable.getBehavior().isPresent()) {
 					walkable.getBehavior().get().setMapHandler(mapHandler);
-					final EntityBehaviorThread thread = new EntityBehaviorThread(
-							walkable.getBehavior().get(), walkable);
+					final EntityBehaviorThread thread = new EntityBehaviorThread(walkable.getBehavior().get(),
+							walkable);
 					entityThreads.add(thread);
 				}
 			}
@@ -91,20 +91,17 @@ public class MapData {
 		if (map.getProperties().get("Down") != null) {
 			adjMaps.put(Dir.South, (String) map.getProperties().get("Down"));
 			tweaks.put(Dir.South, getIntFromMapProperties(map.getProperties().get("DownTweak")));
-			layerChange.put(Dir.South,
-					getIntFromMapProperties(map.getProperties().get("DownLayer")));
+			layerChange.put(Dir.South, getIntFromMapProperties(map.getProperties().get("DownLayer")));
 		}
 		if (map.getProperties().get("Left") != null) {
 			adjMaps.put(Dir.West, (String) map.getProperties().get("Left"));
 			tweaks.put(Dir.West, getIntFromMapProperties(map.getProperties().get("LeftTweak")));
-			layerChange.put(Dir.West,
-					getIntFromMapProperties(map.getProperties().get("LeftLayer")));
+			layerChange.put(Dir.West, getIntFromMapProperties(map.getProperties().get("LeftLayer")));
 		}
 		if (map.getProperties().get("Right") != null) {
 			adjMaps.put(Dir.East, (String) map.getProperties().get("Right"));
 			tweaks.put(Dir.East, getIntFromMapProperties(map.getProperties().get("RightTweak")));
-			layerChange.put(Dir.East,
-					getIntFromMapProperties(map.getProperties().get("RightLayer")));
+			layerChange.put(Dir.East, getIntFromMapProperties(map.getProperties().get("RightLayer")));
 		}
 	}
 
@@ -307,22 +304,20 @@ public class MapData {
 		}
 	}
 
-	public Optional<TrainerHandler> getTrainerFacingPlayer(final Coord coord, final int layer) {
+	public Optional<Trainer> getTrainerFacingPlayer(final Coord coord, final int layer) {
 		for (final EntityHandler entity : entities) {
-			if (entity instanceof TrainerHandler) {
-				final TrainerHandler trainer = (TrainerHandler) entity;
+			if (entity instanceof Trainer) {
+				final Trainer trainer = (Trainer) entity;
 
 				if (entity.getY() == coord.y
 						&& (entity.getX() - coord.x > 0 && entity.getFacing().equals(Dir.West)
-								|| entity.getX() - coord.x < 0
-										&& entity.getFacing().equals(Dir.East))
+								|| entity.getX() - coord.x < 0 && entity.getFacing().equals(Dir.East))
 						&& Math.abs(entity.getX() - coord.x) <= trainer.getRange()) {
 					return Optional.of(trainer);
 				}
 				if (entity.getX() == coord.x
 						&& (entity.getY() - coord.y > 0 && entity.getFacing().equals(Dir.South)
-								|| entity.getY() - coord.y < 0
-										&& entity.getFacing().equals(Dir.North))
+								|| entity.getY() - coord.y < 0 && entity.getFacing().equals(Dir.North))
 						&& Math.abs(entity.getY() - coord.y) <= trainer.getRange()) {
 					return Optional.of(trainer);
 				}

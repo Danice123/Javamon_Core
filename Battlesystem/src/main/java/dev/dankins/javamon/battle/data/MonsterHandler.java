@@ -15,7 +15,7 @@ import dev.dankins.javamon.battle.display.event.attack.UpdateHealthEvent;
 import dev.dankins.javamon.data.monster.MultiType;
 import dev.dankins.javamon.data.monster.Stat;
 
-public class MonsterHandler implements Monster {
+public class MonsterHandler {
 
 	private final String key;
 	private final MonsterInstance monster;

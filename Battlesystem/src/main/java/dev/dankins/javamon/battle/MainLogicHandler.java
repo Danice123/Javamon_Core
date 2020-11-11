@@ -16,14 +16,12 @@ import dev.dankins.javamon.battle.display.BattlesystemListener;
 import dev.dankins.javamon.battle.display.event.CancelEvent;
 import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
-import dev.dankins.javamon.battle.display.event.FaintedMonsterEvent;
 import dev.dankins.javamon.battle.display.event.GenericEvent;
-import dev.dankins.javamon.battle.display.event.ReturnMonsterEvent;
-import dev.dankins.javamon.battle.display.event.SendMonsterEvent;
 import dev.dankins.javamon.battle.display.event.TargetedEvent;
-import dev.dankins.javamon.battle.display.event.TrainerEvent;
 
 public class MainLogicHandler implements Runnable {
+
+	public boolean battleIsOver = false;
 
 	private final BattlesystemListener listener;
 	private final TrainerHandler alpha;
@@ -76,11 +74,12 @@ public class MainLogicHandler implements Runnable {
 		} catch (MonsterRan monsterRan) {
 			listener.sendEvent(new TargetedEvent(EventType.EscapeSuccess, monsterRan.runner.getMonster().getName()));
 		} catch (TrainerLoss trainerLoss) {
-			listener.sendEvent(new TrainerEvent(EventType.TrainerLoss, trainerLoss.trainer));
+			listener.sendEvent(new TargetedEvent(EventType.TrainerLoss, trainerLoss.trainer.getKey()));
 		} catch (BattleStateChange change) {
 			System.out.println("Unhandled Battle State Change");
 		}
 		listener.sendEvent(new GenericEvent(EventType.EndBattle));
+		battleIsOver = true;
 	}
 
 	private Action getActionFromHandler(final TrainerHandler handler, final TrainerHandler opponent) {
@@ -111,9 +110,9 @@ public class MainLogicHandler implements Runnable {
 
 	private void handleSwitch(final Action action, final TrainerHandler trainer) throws BattleStateChange {
 		if (SwitchAction.class.isInstance(action)) {
-			listener.sendEvent(new ReturnMonsterEvent(trainer, trainer.getCurrentMonster()));
+			listener.sendEvent(new TargetedEvent(EventType.ReturnMonster, trainer.getKey()));
 			action.execute(null);
-			listener.sendEvent(new SendMonsterEvent(trainer, trainer.getCurrentMonster()));
+			listener.sendEvent(new TargetedEvent(EventType.SendMonster, trainer.getKey()));
 		}
 	}
 
@@ -142,14 +141,14 @@ public class MainLogicHandler implements Runnable {
 		handler.getCurrentMonster().moveHitByThisTurn = null;
 
 		if (handler.getCurrentMonster().getMonster().getCurrentHealth() == 0) {
-			listener.sendEvent(new FaintedMonsterEvent(handler, handler.getCurrentMonster()));
+			listener.sendEvent(new TargetedEvent(EventType.FaintMonster, handler.getKey()));
 			SwitchAction forcedSwitch = handler.getNextMonster();
 			while (forcedSwitch.target.getMonster().getCurrentHealth() == 0) {
 				listener.sendEvent(new GenericEvent(EventType.CannotSwitchToFaintedMonster));
 				forcedSwitch = handler.getNextMonster();
 			}
 			forcedSwitch.execute(null);
-			listener.sendEvent(new SendMonsterEvent(handler, handler.getCurrentMonster()));
+			listener.sendEvent(new TargetedEvent(EventType.SendMonster, handler.getKey()));
 		}
 	}
 }

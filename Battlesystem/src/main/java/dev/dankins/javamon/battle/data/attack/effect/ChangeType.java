@@ -29,7 +29,7 @@ public class ChangeType extends Targeted implements Effect {
 	public List<Event> use(final AttackAction attack, final MonsterHandler target) {
 		final MultiType typeToChangeTo = type.evaluate(attack, target);
 		getTarget(attack, target).setType(typeToChangeTo);
-		return Lists.newArrayList(new TypeChangeEvent(getTarget(attack, target), typeToChangeTo));
+		return Lists.newArrayList(new TypeChangeEvent(getTarget(attack, target).getKey(), typeToChangeTo));
 	}
 
 }

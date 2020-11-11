@@ -3,6 +3,8 @@ package dev.dankins.javamon.battle.console;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.graphics.Texture;
 import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.battle.BattleStateChange;
@@ -14,6 +16,8 @@ import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.battle.data.TrainerHandler;
 import dev.dankins.javamon.battle.data.monster.MonsterInstance;
+import dev.dankins.javamon.data.monster.Status;
+import dev.dankins.javamon.data.monster.instance.Party;
 
 public class ConsolePlayer implements TrainerHandler {
 
@@ -69,7 +73,7 @@ public class ConsolePlayer implements TrainerHandler {
 	public SwitchAction getNextMonster() throws BattleStateChange {
 		boolean hasMonsterLeft = false;
 		for (MonsterHandler monster : monsters) {
-			if (monster.getMonster().getCurrentHealth() > 0) {
+			if (!monster.getMonster().getStatus().equals(Status.FAINTED)) {
 				hasMonsterLeft = true;
 			}
 		}
@@ -105,5 +109,25 @@ public class ConsolePlayer implements TrainerHandler {
 		}
 
 		return getSwitch();
+	}
+
+	@Override
+	public Party getParty_() {
+		return null;
+	}
+
+	@Override
+	public AssetDescriptor<Texture> getImage() {
+		return null;
+	}
+
+	@Override
+	public boolean isTrainer() {
+		return true;
+	}
+
+	@Override
+	public String getTrainerLossQuip() {
+		return null;
 	}
 }

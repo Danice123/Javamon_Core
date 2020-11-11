@@ -2,6 +2,8 @@ package dev.dankins.javamon.logic.menu;
 
 import java.util.Arrays;
 
+import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.graphics.Texture;
 import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.Coord;
@@ -13,45 +15,62 @@ import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.battle.data.TrainerHandler;
 import dev.dankins.javamon.battle.data.monster.MonsterInstance;
+import dev.dankins.javamon.data.monster.instance.Party;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.BattleMenu;
 import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
+import dev.dankins.javamon.logic.PartyWrapper;
+import dev.dankins.javamon.logic.battle.BasicTrainer;
 import dev.dankins.javamon.logic.entity.Player;
 import dev.dankins.javamon.logic.entity.Trainer;
-import dev.dankins.javamon.logic.entity.WildTrainer;
 
-public class BattleMenuHandler extends MenuHandler<BattleMenu>
-		implements dev.dankins.javamon.battle.data.TrainerHandler {
+public class BattleMenuHandler extends MenuHandler<BattleMenu> implements TrainerHandler {
 
 	static public final Class<? extends Menu> MENU_TYPE = BattleMenu.class;
 	static public Class<? extends BattleMenu> Menu_Class;
 
-	private final Player player;
-	private MonsterHandler currentMonster;
 	private final MainLogicHandler battlesystem;
-	private boolean battleIsOver = false;
+	private final Player player;
+	private final TrainerHandler enemy;
+
+	private MonsterHandler currentMonster;
 
 	public BattleMenuHandler(final Game game, final Player player, final Trainer enemy) {
 		super(game, Menu_Class);
 		this.player = player;
-		battlesystem = new MainLogicHandler(menu, this, enemy);
-		menu.setupMenu(player, enemy);
+		currentMonster = new MonsterHandler(getKey(), player.getParty().firstPokemon());
+		this.enemy = new BasicTrainer(enemy);
+		battlesystem = new MainLogicHandler(menu, this, this.enemy);
+		menu.setupMenu(this, this.enemy);
 		initScreen();
 		ThreadUtils.makeAnonThread(battlesystem);
 	}
 
-	public BattleMenuHandler(final Game game, final Player player, final MonsterInstance wildPokemon) {
-		this(game, player, new WildTrainer(wildPokemon));
+	@Override
+	public String getKey() {
+		return "Player";
 	}
 
 	@Override
-	protected boolean handleResponse() {
-		if (battleIsOver) {
-			return false;
-		}
-		return true;
+	public String getName() {
+		return player.getName();
+	}
+
+	@Override
+	public AssetDescriptor<Texture> getImage() {
+		return player.getBackImage();
+	}
+
+	@Override
+	public Party getParty_() {
+		return new PartyWrapper(player.getParty());
+	}
+
+	@Override
+	public MonsterHandler getCurrentMonster() {
+		return currentMonster;
 	}
 
 	@Override
@@ -70,6 +89,24 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu>
 		ThreadUtils.sleep(10);
 		return new SwitchAction(new MonsterHandler("key", choosePokemonInBattleHandler.getChosenPokemon()), (v) -> {
 		});
+	}
+
+	@Override
+	protected boolean handleResponse() {
+		if (battlesystem.battleIsOver) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isTrainer() {
+		return true;
+	}
+
+	@Override
+	public String getTrainerLossQuip() {
+		return null;
 	}
 
 	public void print(final String string) {
@@ -94,10 +131,6 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu>
 		return -1;
 	}
 
-	public void printnw(final String string) {
-		menu.setMessageBoxContents(string);
-	}
-
 	public void respawnPlayer() {
 		game.getPlayer().modifyMoney(game.getPlayer().getMoney() / -2);
 		for (final MonsterInstance monster : game.getPlayer().getParty()) {
@@ -112,29 +145,4 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu>
 			game.getMapHandler().getMap().executeMapScript(game);
 		});
 	}
-
-	public void quit() {
-		battleIsOver = true;
-		ThreadUtils.notifyOnObject(menu);
-		screen.disposeMe();
-	}
-
-	@Override
-	public String getKey() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MonsterHandler getCurrentMonster() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

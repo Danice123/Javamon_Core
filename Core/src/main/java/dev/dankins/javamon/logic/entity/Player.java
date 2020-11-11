@@ -108,19 +108,12 @@ public class Player extends WalkableHandler implements dev.dankins.javamon.logic
 		return strings.get("playerName");
 	}
 
-	@Override
 	public AssetDescriptor<Texture> getImage() {
 		return new AssetDescriptor<Texture>("entity/player.png", Texture.class);
 	}
 
-	@Override
 	public AssetDescriptor<Texture> getBackImage() {
 		return new AssetDescriptor<Texture>("playerBack.png", Texture.class);
-	}
-
-	@Override
-	public boolean isTrainer() {
-		return true;
 	}
 
 	public String getTrainerLossQuip() {
