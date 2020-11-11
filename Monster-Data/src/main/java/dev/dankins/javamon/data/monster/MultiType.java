@@ -22,9 +22,20 @@ public class MultiType {
 		}
 	}
 
+	public Type getPrimary() {
+		return types.get(0);
+	}
+
+	public Type getSecondary() {
+		return types.get(1);
+	}
+
+	public boolean isDualType() {
+		return types.size() > 1;
+	}
+
 	public float getEffectiveness(final Type move) {
-		return types.stream().map(type -> Type.getEffectiveness(type, move)).reduce(1f,
-				(base, val) -> base * val);
+		return types.stream().map(type -> Type.getEffectiveness(type, move)).reduce(1f, (base, val) -> base * val);
 	}
 
 	@Override
