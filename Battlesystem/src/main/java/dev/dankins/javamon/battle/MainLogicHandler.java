@@ -84,6 +84,8 @@ public class MainLogicHandler implements Runnable {
 			for (Event event : winner.giveMoney(trainerLoss.trainer.getWinnings())) {
 				listener.sendEvent(event);
 			}
+		} catch (MonsterLoss monsterLoss) {
+
 		} catch (BattleStateChange change) {
 			System.out.println("Unhandled Battle State Change");
 		}
@@ -156,6 +158,11 @@ public class MainLogicHandler implements Runnable {
 			for (Event event : opponent.receiveExperience(handler.getCurrentMonster().getMonster().getExpDrop())) {
 				listener.sendEvent(event);
 			}
+
+			if (!handler.isTrainer()) {
+				throw new MonsterLoss();
+			}
+
 			SwitchAction forcedSwitch = handler.getNextMonster();
 			while (forcedSwitch.target.getMonster().getCurrentHealth() == 0) {
 				listener.sendEvent(new Event(EventType.CannotSwitchToFaintedMonster));

@@ -28,9 +28,7 @@ import dev.dankins.javamon.display.screen.menu.PartyMenu.PartyMenuType;
 import dev.dankins.javamon.logic.Game;
 import dev.dankins.javamon.logic.MenuHandler;
 import dev.dankins.javamon.logic.PartyWrapper;
-import dev.dankins.javamon.logic.battle.BasicTrainer;
 import dev.dankins.javamon.logic.entity.Player;
-import dev.dankins.javamon.logic.entity.Trainer;
 
 public class BattleMenuHandler extends MenuHandler<BattleMenu> implements TrainerHandler {
 
@@ -43,11 +41,11 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Traine
 
 	private MonsterHandler currentMonster;
 
-	public BattleMenuHandler(final Game game, final Player player, final Trainer enemy) {
+	public BattleMenuHandler(final Game game, final Player player, final TrainerHandler enemy) {
 		super(game, Menu_Class);
 		this.player = player;
+		this.enemy = enemy;
 		currentMonster = new MonsterHandler(getKey(), player.getParty().firstPokemon());
-		this.enemy = new BasicTrainer(enemy);
 		battlesystem = new MainLogicHandler(menu, this, this.enemy);
 		menu.setupMenu(this, this.enemy);
 		initScreen();

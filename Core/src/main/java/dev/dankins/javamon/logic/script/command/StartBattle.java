@@ -9,6 +9,7 @@ import java.util.Optional;
 import dev.dankins.javamon.data.script.ScriptLoadingException;
 import dev.dankins.javamon.data.script.ScriptLoadingException.SCRIPT_LOADING_ERROR_TYPE;
 import dev.dankins.javamon.logic.Game;
+import dev.dankins.javamon.logic.battle.BasicTrainer;
 import dev.dankins.javamon.logic.entity.EntityHandler;
 import dev.dankins.javamon.logic.entity.Trainer;
 import dev.dankins.javamon.logic.menu.BattleMenuHandler;
@@ -40,7 +41,8 @@ public class StartBattle extends Command {
 			try {
 				final Trainer trainer = (Trainer) entity.get();
 
-				final BattleMenuHandler battleMenuHandler = new BattleMenuHandler(game, game.getPlayer(), trainer);
+				final BattleMenuHandler battleMenuHandler = new BattleMenuHandler(game, game.getPlayer(),
+						new BasicTrainer(trainer));
 				battleMenuHandler.waitAndHandle();
 
 			} catch (final ClassCastException e) {
