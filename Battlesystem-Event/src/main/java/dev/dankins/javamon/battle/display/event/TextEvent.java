@@ -1,16 +1,10 @@
 package dev.dankins.javamon.battle.display.event;
 
-public class TextEvent extends GenericEvent {
-
-	private final String text;
+public class TextEvent extends Event {
 
 	public TextEvent(final EventType type, final String text) {
 		super(type);
-		this.text = text;
-	}
-
-	public String getText() {
-		return text;
+		this.parameters.put("Text", text);
 	}
 
 }

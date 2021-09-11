@@ -19,4 +19,6 @@ public interface Trainer {
 
 	String getTrainerLossQuip();
 
+	int getWinnings();
+
 }

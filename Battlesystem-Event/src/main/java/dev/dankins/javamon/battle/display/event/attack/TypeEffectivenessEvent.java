@@ -1,22 +1,15 @@
 package dev.dankins.javamon.battle.display.event.attack;
 
-import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
+import dev.dankins.javamon.battle.display.event.TextEvent;
 
-public class TypeEffectivenessEvent implements Event {
-
-	public final float amount;
+public class TypeEffectivenessEvent extends TextEvent {
 
 	public TypeEffectivenessEvent(final float amount) {
-		this.amount = amount;
+		super(EventType.TypeEffectiveness, effectM(amount));
 	}
 
-	@Override
-	public EventType getType() {
-		return EventType.TypeEffectiveness;
-	}
-
-	public String effectM() {
+	private static String effectM(float amount) {
 		if (amount == 1.0) {
 			return null;
 		}

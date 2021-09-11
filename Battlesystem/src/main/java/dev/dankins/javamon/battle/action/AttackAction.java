@@ -13,10 +13,8 @@ import dev.dankins.javamon.battle.data.attack.AttackInstance;
 import dev.dankins.javamon.battle.data.attack.effect.CustomStatus;
 import dev.dankins.javamon.battle.data.attack.effect.Effect;
 import dev.dankins.javamon.battle.data.attack.require.Requirement;
-import dev.dankins.javamon.battle.display.event.CancelEvent;
 import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
-import dev.dankins.javamon.battle.display.event.GenericEvent;
 import dev.dankins.javamon.battle.display.event.attack.AttackEvent;
 
 public class AttackAction implements Action, Comparable<AttackAction> {
@@ -41,7 +39,7 @@ public class AttackAction implements Action, Comparable<AttackAction> {
 		for (final CustomStatus status : target.getTemporaryStatuses()) {
 			events.addAll(status.apply(BattlesystemHook.onAttackTargeted));
 		}
-		if (events.stream().anyMatch(event -> CancelEvent.class.isInstance(event))) {
+		if (events.stream().anyMatch(event -> event.type == EventType.Cancel)) {
 			return events;
 		}
 
@@ -50,13 +48,13 @@ public class AttackAction implements Action, Comparable<AttackAction> {
 
 		for (final Requirement requirement : attackInstance.attack.requirements) {
 			if (!requirement.check(this, target)) {
-				events.add(new GenericEvent(EventType.AttackFailed));
+				events.add(new Event(EventType.AttackFailed));
 				return events;
 			}
 		}
 
 		if (attackInstance.attack.missable && missCalc(target)) {
-			events.add(new GenericEvent(EventType.AttackMissed));
+			events.add(new Event(EventType.AttackMissed));
 			return events;
 		}
 

@@ -1,6 +1,7 @@
 package dev.dankins.javamon.logic.menu;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +15,12 @@ import dev.dankins.javamon.battle.action.Action;
 import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.battle.data.TrainerHandler;
+import dev.dankins.javamon.battle.data.attack.Attack;
 import dev.dankins.javamon.battle.data.monster.MonsterInstance;
+import dev.dankins.javamon.battle.data.monster.MonsterInstance.Levelup;
+import dev.dankins.javamon.battle.display.event.Event;
+import dev.dankins.javamon.battle.display.event.EventType;
+import dev.dankins.javamon.battle.display.event.ExpEvent;
 import dev.dankins.javamon.data.monster.instance.Party;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.BattleMenu;
@@ -144,5 +150,39 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Traine
 					Integer.parseInt(respawn[3]));
 			game.getMapHandler().getMap().executeMapScript(game);
 		});
+	}
+
+	@Override
+	public List<Event> receiveExperience(int exp) {
+		List<Event> events = Lists.newArrayList();
+		events.add(new ExpEvent(getCurrentMonster().getMonster(), exp));
+		for (Levelup lu : getCurrentMonster().getMonster().addExp(exp)) {
+			Event lue = new Event(EventType.LevelUp);
+			lue.parameters.put("Monster", getCurrentMonster().getMonster());
+			lue.parameters.put("Level", lu.level);
+			events.add(lue);
+			for (Attack attack : lu.movesToLearn) {
+				Event ale = new Event(EventType.LearnNewAttack);
+				ale.parameters.put("Monster", getCurrentMonster().getMonster());
+				ale.parameters.put("Attack", attack);
+				events.add(ale);
+			}
+		}
+		return events;
+	}
+
+	@Override
+	public int getWinnings() {
+		// TODO: Handle loss losing money
+		return 0;
+	}
+
+	@Override
+	public List<Event> giveMoney(int winnings) {
+		player.modifyMoney(winnings);
+
+		Event e = new Event(EventType.WonMoney);
+		e.parameters.put("Winnings", winnings);
+		return Lists.newArrayList(e);
 	}
 }

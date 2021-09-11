@@ -13,10 +13,8 @@ import dev.dankins.javamon.battle.data.StoreVariables;
 import dev.dankins.javamon.battle.data.TrainerHandler;
 import dev.dankins.javamon.battle.data.attack.effect.CustomStatus;
 import dev.dankins.javamon.battle.display.BattlesystemListener;
-import dev.dankins.javamon.battle.display.event.CancelEvent;
 import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
-import dev.dankins.javamon.battle.display.event.GenericEvent;
 import dev.dankins.javamon.battle.display.event.TargetedEvent;
 
 public class MainLogicHandler implements Runnable {
@@ -36,7 +34,7 @@ public class MainLogicHandler implements Runnable {
 
 	@Override
 	public void run() {
-		listener.sendEvent(new GenericEvent(EventType.StartBattle));
+		listener.sendEvent(new Event(EventType.StartBattle));
 		try {
 			do {
 				final Action alphaAct = getActionFromHandler(alpha, bravo);
@@ -68,17 +66,28 @@ public class MainLogicHandler implements Runnable {
 					}
 				}
 
-				handlePostTurn(alpha);
-				handlePostTurn(bravo);
+				handlePostTurn(alpha, bravo);
+				handlePostTurn(bravo, alpha);
 			} while (true);
 		} catch (MonsterRan monsterRan) {
 			listener.sendEvent(new TargetedEvent(EventType.EscapeSuccess, monsterRan.runner.getMonster().getName()));
 		} catch (TrainerLoss trainerLoss) {
 			listener.sendEvent(new TargetedEvent(EventType.TrainerLoss, trainerLoss.trainer.getKey()));
+
+			TrainerHandler winner;
+			if (trainerLoss.trainer == alpha) {
+				winner = bravo;
+			} else {
+				winner = alpha;
+			}
+
+			for (Event event : winner.giveMoney(trainerLoss.trainer.getWinnings())) {
+				listener.sendEvent(event);
+			}
 		} catch (BattleStateChange change) {
 			System.out.println("Unhandled Battle State Change");
 		}
-		listener.sendEvent(new GenericEvent(EventType.EndBattle));
+		listener.sendEvent(new Event(EventType.EndBattle));
 		battleIsOver = true;
 	}
 
@@ -101,7 +110,7 @@ public class MainLogicHandler implements Runnable {
 			handler.getCurrentMonster().getStore().remove(StoreVariables.ChosenAttack.value);
 
 			events.forEach(event -> listener.sendEvent(event));
-			if (events.stream().anyMatch(event -> CancelEvent.class.isInstance(event))) {
+			if (events.stream().anyMatch(event -> event.type == EventType.Cancel)) {
 				return getActionFromHandler(handler, opponent);
 			}
 		}
@@ -134,7 +143,7 @@ public class MainLogicHandler implements Runnable {
 		}
 	}
 
-	private void handlePostTurn(final TrainerHandler handler) throws BattleStateChange {
+	private void handlePostTurn(final TrainerHandler handler, final TrainerHandler opponent) throws BattleStateChange {
 		for (final CustomStatus status : handler.getCurrentMonster().getTemporaryStatuses()) {
 			status.apply(BattlesystemHook.onTurnEnd).forEach(event -> listener.sendEvent(event));
 		}
@@ -142,9 +151,14 @@ public class MainLogicHandler implements Runnable {
 
 		if (handler.getCurrentMonster().getMonster().getCurrentHealth() == 0) {
 			listener.sendEvent(new TargetedEvent(EventType.FaintMonster, handler.getKey()));
+			// Handle trainer battle multiplier, lucky egg, affection?, multiple pokemon in
+			// battle, exp share/all, OT vs trade, post-evolve pokemon
+			for (Event event : opponent.receiveExperience(handler.getCurrentMonster().getMonster().getExpDrop())) {
+				listener.sendEvent(event);
+			}
 			SwitchAction forcedSwitch = handler.getNextMonster();
 			while (forcedSwitch.target.getMonster().getCurrentHealth() == 0) {
-				listener.sendEvent(new GenericEvent(EventType.CannotSwitchToFaintedMonster));
+				listener.sendEvent(new Event(EventType.CannotSwitchToFaintedMonster));
 				forcedSwitch = handler.getNextMonster();
 			}
 			forcedSwitch.execute(null);

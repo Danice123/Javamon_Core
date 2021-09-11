@@ -4,7 +4,7 @@ public enum EventType {
 
 	Cancel,
 
-	StartBattle, EscapeFailed, EscapeSuccess, TrainerLoss, EndBattle,
+	StartBattle, EscapeFailed, EscapeSuccess, TrainerLoss, EndBattle, ExpGain, LevelUp, LearnNewAttack, WonMoney,
 
 	SendMonster, ReturnMonster, FaintMonster, CannotSwitchToFaintedMonster,
 

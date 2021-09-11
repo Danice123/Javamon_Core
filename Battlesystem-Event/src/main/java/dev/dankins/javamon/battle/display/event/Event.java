@@ -1,6 +1,16 @@
 package dev.dankins.javamon.battle.display.event;
 
-public interface Event {
+import java.util.Map;
 
-	EventType getType();
+import com.google.common.collect.Maps;
+
+public class Event {
+
+	public final EventType type;
+	public final Map<String, Object> parameters;
+
+	public Event(EventType type) {
+		this.type = type;
+		parameters = Maps.newHashMap();
+	}
 }

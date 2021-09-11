@@ -1,7 +1,10 @@
 package dev.dankins.javamon.logic.battle;
 
+import java.util.List;
+
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
+import com.google.common.collect.Lists;
 
 import dev.dankins.javamon.battle.BattleStateChange;
 import dev.dankins.javamon.battle.TrainerLoss;
@@ -10,6 +13,7 @@ import dev.dankins.javamon.battle.action.AttackAction;
 import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.battle.data.TrainerHandler;
+import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.data.monster.instance.Party;
 import dev.dankins.javamon.logic.PartyWrapper;
 import dev.dankins.javamon.logic.entity.Trainer;
@@ -72,6 +76,21 @@ public class BasicTrainer implements TrainerHandler {
 	@Override
 	public String getTrainerLossQuip() {
 		return trainer.getTrainerLossQuip();
+	}
+
+	@Override
+	public List<Event> receiveExperience(int exp) {
+		return Lists.newArrayList();
+	}
+
+	@Override
+	public int getWinnings() {
+		return trainer.getWinnings();
+	}
+
+	@Override
+	public List<Event> giveMoney(int winnings) {
+		return Lists.newArrayList();
 	}
 
 }

@@ -254,6 +254,11 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 		return sleepCounter;
 	}
 
+	public int getExpDrop() {
+		// handle exp scaling
+		return monster.baseExp * level / 7;
+	}
+
 	public Collection<Levelup> addExp(final int exp) {
 		if (level >= 100) {
 			return Lists.newArrayList();
@@ -268,6 +273,8 @@ public class MonsterInstance implements dev.dankins.javamon.data.monster.instanc
 			if (monster.learnableAttacks.get(level) != null) {
 				levelup.movesToLearn = monster.learnableAttacks.get(level).stream()
 						.map(attackName -> monster.cachedAttacks.get(attackName)).collect(Collectors.toList());
+			} else {
+				levelup.movesToLearn = Lists.newArrayList();
 			}
 			levelsGained.add(levelup);
 		}

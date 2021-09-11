@@ -14,7 +14,6 @@ import dev.dankins.javamon.battle.data.attack.Class;
 import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
 import dev.dankins.javamon.battle.display.event.TextEvent;
-import dev.dankins.javamon.battle.display.event.attack.CritEvent;
 import dev.dankins.javamon.battle.display.event.attack.TypeEffectivenessEvent;
 import dev.dankins.javamon.battle.display.event.attack.UpdateHealthEvent;
 import dev.dankins.javamon.data.monster.Status;
@@ -28,9 +27,9 @@ public class Damage implements Effect {
 	private final int crit;
 
 	@JsonCreator
-	public Damage(@JsonProperty("power") final int power,
-			@JsonProperty("contact") final boolean contact, @JsonProperty("drain") final int drain,
-			@JsonProperty("recoil") final int recoil, @JsonProperty("crit") final int crit) {
+	public Damage(@JsonProperty("power") final int power, @JsonProperty("contact") final boolean contact,
+			@JsonProperty("drain") final int drain, @JsonProperty("recoil") final int recoil,
+			@JsonProperty("crit") final int crit) {
 		this.power = power;
 		this.contact = contact;
 		this.drain = drain;
@@ -43,20 +42,18 @@ public class Damage implements Effect {
 		final List<Event> results = Lists.newArrayList();
 
 		// Calculate
-		final boolean isCrit = isCrit(
-				crit + attack.user.getCounter(AttackCounter.CRITICAL_RATE_BOOST.toString()));
+		final boolean isCrit = isCrit(crit + attack.user.getCounter(AttackCounter.CRITICAL_RATE_BOOST.toString()));
 		final int damage = damageCalc(attack, target, isCrit);
 		results.add(target.doDamage(damage));
 		if (isCrit) {
-			results.add(new CritEvent());
+			results.add(new Event(EventType.CriticalHit));
 		}
-		results.add(new TypeEffectivenessEvent(
-				target.getType().getEffectiveness(attack.attackInstance.attack.type)));
+		results.add(new TypeEffectivenessEvent(target.getType().getEffectiveness(attack.attackInstance.attack.type)));
 
 		// Drain
 		if (drain > 0) {
-			results.add(new TextEvent(EventType.AttackDisplay, attack.user.getMonster().getName()
-					+ " drained " + target.getMonster().getName() + "'s health!"));
+			results.add(new TextEvent(EventType.AttackDisplay,
+					attack.user.getMonster().getName() + " drained " + target.getMonster().getName() + "'s health!"));
 			final int previousHealth = attack.user.getMonster().getCurrentHealth();
 			attack.user.getMonster().changeHealth(damage / (100 / drain));
 			results.add(new UpdateHealthEvent(attack.user.getKey(), previousHealth,
@@ -76,8 +73,7 @@ public class Damage implements Effect {
 		return results;
 	}
 
-	public int damageCalc(final AttackAction attack, final MonsterHandler target,
-			final boolean isCrit) {
+	public int damageCalc(final AttackAction attack, final MonsterHandler target, final boolean isCrit) {
 		float damage = (2f * attack.user.getMonster().getLevel() / 5f + 2f) * power;
 
 		// Physical stat calc
@@ -91,8 +87,7 @@ public class Damage implements Effect {
 		}
 		// Special stat calc
 		if (attack.attackInstance.attack.damageClass == Class.SPECIAL) {
-			damage = damage * attack.user.getSpecialAttack(isCrit)
-					/ target.getSpecialDefense(isCrit) / 50f + 2f;
+			damage = damage * attack.user.getSpecialAttack(isCrit) / target.getSpecialDefense(isCrit) / 50f + 2f;
 		}
 
 		// Crit
