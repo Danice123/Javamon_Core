@@ -2,6 +2,7 @@ package dev.dankins.javamon.logic.menu;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +22,7 @@ import dev.dankins.javamon.battle.data.monster.MonsterInstance.Levelup;
 import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
 import dev.dankins.javamon.battle.display.event.ExpEvent;
+import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.instance.Party;
 import dev.dankins.javamon.display.screen.Menu;
 import dev.dankins.javamon.display.screen.menu.BattleMenu;
@@ -151,7 +153,7 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Traine
 	}
 
 	@Override
-	public List<Event> receiveExperience(int exp) {
+	public List<Event> rewardEXP(int exp) {
 		List<Event> events = Lists.newArrayList();
 		events.add(new ExpEvent(getCurrentMonster().getMonster(), exp));
 		for (Levelup lu : getCurrentMonster().getMonster().addExp(exp)) {
@@ -176,11 +178,17 @@ public class BattleMenuHandler extends MenuHandler<BattleMenu> implements Traine
 	}
 
 	@Override
-	public List<Event> giveMoney(int winnings) {
+	public List<Event> rewardMoney(int winnings) {
 		player.modifyMoney(winnings);
 
 		Event e = new Event(EventType.WonMoney);
 		e.parameters.put("Winnings", winnings);
 		return Lists.newArrayList(e);
+	}
+
+	@Override
+	public List<Event> rewardEV(Map<Stat, Integer> evs) {
+		evs.forEach((Stat stat, Integer amount) -> getCurrentMonster().getMonster().changeStat(stat, amount));
+		return Lists.newArrayList();
 	}
 }

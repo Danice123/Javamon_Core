@@ -1,6 +1,7 @@
 package dev.dankins.javamon.logic.battle;
 
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +15,7 @@ import dev.dankins.javamon.battle.action.SwitchAction;
 import dev.dankins.javamon.battle.data.MonsterHandler;
 import dev.dankins.javamon.battle.data.TrainerHandler;
 import dev.dankins.javamon.battle.display.event.Event;
+import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.instance.Party;
 import dev.dankins.javamon.logic.PartyWrapper;
 import dev.dankins.javamon.logic.entity.Trainer;
@@ -79,7 +81,7 @@ public class BasicTrainer implements TrainerHandler {
 	}
 
 	@Override
-	public List<Event> receiveExperience(int exp) {
+	public List<Event> rewardEXP(int exp) {
 		return Lists.newArrayList();
 	}
 
@@ -89,7 +91,12 @@ public class BasicTrainer implements TrainerHandler {
 	}
 
 	@Override
-	public List<Event> giveMoney(int winnings) {
+	public List<Event> rewardMoney(int winnings) {
+		return Lists.newArrayList();
+	}
+
+	@Override
+	public List<Event> rewardEV(Map<Stat, Integer> evs) {
 		return Lists.newArrayList();
 	}
 

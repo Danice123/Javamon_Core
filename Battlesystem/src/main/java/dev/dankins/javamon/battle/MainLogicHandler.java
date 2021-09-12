@@ -81,7 +81,7 @@ public class MainLogicHandler implements Runnable {
 				winner = alpha;
 			}
 
-			for (Event event : winner.giveMoney(trainerLoss.trainer.getWinnings())) {
+			for (Event event : winner.rewardMoney(trainerLoss.trainer.getWinnings())) {
 				listener.sendEvent(event);
 			}
 		} catch (MonsterLoss monsterLoss) {
@@ -155,7 +155,7 @@ public class MainLogicHandler implements Runnable {
 			listener.sendEvent(new TargetedEvent(EventType.FaintMonster, handler.getKey()));
 			// Handle trainer battle multiplier, lucky egg, affection?, multiple pokemon in
 			// battle, exp share/all, OT vs trade, post-evolve pokemon
-			for (Event event : opponent.receiveExperience(handler.getCurrentMonster().getMonster().getExpDrop())) {
+			for (Event event : opponent.rewardEXP(handler.getCurrentMonster().getMonster().getExpDrop())) {
 				listener.sendEvent(event);
 			}
 

@@ -1,6 +1,7 @@
 package dev.dankins.javamon.battle.console;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ import dev.dankins.javamon.battle.data.monster.MonsterInstance.Levelup;
 import dev.dankins.javamon.battle.display.event.Event;
 import dev.dankins.javamon.battle.display.event.EventType;
 import dev.dankins.javamon.battle.display.event.ExpEvent;
+import dev.dankins.javamon.data.monster.Stat;
 import dev.dankins.javamon.data.monster.Status;
 import dev.dankins.javamon.data.monster.instance.Party;
 
@@ -138,7 +140,7 @@ public class ConsolePlayer implements TrainerHandler {
 	}
 
 	@Override
-	public List<Event> receiveExperience(int exp) {
+	public List<Event> rewardEXP(int exp) {
 		List<Event> events = Lists.newArrayList();
 		events.add(new ExpEvent(getCurrentMonster().getMonster(), exp));
 		for (Levelup lu : getCurrentMonster().getMonster().addExp(exp)) {
@@ -157,14 +159,21 @@ public class ConsolePlayer implements TrainerHandler {
 	}
 
 	@Override
+	public List<Event> rewardEV(Map<Stat, Integer> evs) {
+		evs.forEach((Stat stat, Integer amount) -> getCurrentMonster().getMonster().changeStat(stat, amount));
+		return Lists.newArrayList();
+	}
+
+	@Override
 	public int getWinnings() {
 		return 0;
 	}
 
 	@Override
-	public List<Event> giveMoney(int winnings) {
+	public List<Event> rewardMoney(int winnings) {
 		Event e = new Event(EventType.WonMoney);
 		e.parameters.put("Winnings", winnings);
 		return Lists.newArrayList(e);
 	}
+
 }
